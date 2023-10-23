@@ -1,9 +1,9 @@
-<h1 align="center">🔲 Project Name</h1>
-<p align="center">Project simple description</p>
+<h1 align="center">🎞️ MoonVs</h1>
+<p align="center">Movies and TV Shows catalog and recommendation</p>
 
-![Static Badge](https://img.shields.io/badge/version-1.0.0-blue)
+![Static Badge](https://img.shields.io/badge/version-0.1-blue)
 [![Static Badge](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
-![Static Badge](https://img.shields.io/badge/last%20update-2023--09--26-blue)
+![Static Badge](https://img.shields.io/badge/last%20update-2023--10--23-blue)
 
 <p align="center">
     <a href="#🗣️-languages">Languages</a> • 
@@ -23,8 +23,12 @@
 🚧 Developing 🚧
 
 ## ⚙️ Features
-- [ ] Not Implemented Feature
-- [X] Implemented Feature 
+- [X] User registration and authentication
+- [ ] Movies and TV Shows search
+- [ ] View of complete information about Movies and TV Shows
+- [ ] Rate and comment Movies and TV Shows
+- [ ] Create lists and add titles to the lists
+- [ ] Recommendation based on previous watched Movies and TV Shows
 
 ## 📲 Application Demo
 Images, links, infos...
@@ -40,7 +44,10 @@ Commands
 
 ## 🛠️ Tools
 <ul style="list-style:none">
-    <li><img src="./assets/icon" width="15"> <a href="https://site">Used Tech</a></li>
+    <li><img src="./assets/icons/Java.png" width=15> <a href="https://www.java.com/en/">Java 19</a></li>
+    <li><img src="./assets/icons/Spring.png" width=15> <a href="https://spring.io/">Spring Framework</a></li>
+    <li><img src="./assets/icons/Postgresql.png" width=15> <a href="https://www.postgresql.org/">PostgreSQL 16</a></li>
+    <li><img src="./assets/icons/IntelliJ.png" width=15> <a href="https://www.jetbrains.com/idea/">IntelliJ Idea</a></li>
 </ul>
 
 ## 👨‍💻 Author

@@ -1,8 +1,8 @@
-<h1 align="center">🔲 Project Name</h1>
-<p align="center">Project simple description</p>
+<h1 align="center">🎞️ MoonVs</h1>
+<p align="center">Catálogo e recomendação de filmes e séries</p>
 
-![Static Badge](https://img.shields.io/badge/versão-1.0.0-blue)
-[![Static Badge](https://img.shields.io/badge/licensa-MIT-blue)](./LICENSE)
+![Static Badge](https://img.shields.io/badge/versão-0.1-blue)
+[![Static Badge](https://img.shields.io/badge/licença-MIT-blue)](./LICENSE)
 ![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-23%2F09%2F2023-blue)
 
 <p align="center">
@@ -23,8 +23,12 @@
 🚧 Em Desenvolvimento 🚧
 
 ## ⚙️ Funcionalidades
-- [ ] Funcionalidade não Implementada
-- [X] Funcionalidade Implementada
+- [X] Cadastro e autenticação de usuários
+- [ ] Pesquisa de filmes e séries
+- [ ] Visualização de informações completas sobre filmes e séries
+- [ ] Avaliação e comentários de filmes e séries
+- [ ] Criação de listas, e inserção de títulos as listas
+- [ ] Recomendação baseada nos filmes e séries assistidos anteriormente
 
 ## 📲 Demonstração da Aplicação
 Imagens, links, informações...
@@ -40,7 +44,10 @@ Comandos
 
 ## 🛠️ Ferramentas
 <ul style="list-style:none">
-    <li><img src="./assets/icon" width="15"> <a href="https://site/pt-br">Tecnologia Usada</a></li>
+    <li><img src="./assets/icons/Java.png" width=15> <a href="https://www.java.com/pt-BR/">Java 19</a></li>
+    <li><img src="./assets/icons/Spring.png" width=15> <a href="https://spring.io/">Spring Framework</a></li>
+    <li><img src="./assets/icons/Postgresql.png" width=15> <a href="https://www.postgresql.org/">PostgreSQL 16</a></li>
+    <li><img src="./assets/icons/IntelliJ.png" width=15> <a href="https://www.jetbrains.com/pt-br/idea/">IntelliJ Idea</a></li>
 </ul>
 
 ## 👨‍💻 Autor
