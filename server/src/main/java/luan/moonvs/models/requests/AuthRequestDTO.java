@@ -1,3 +1,3 @@
 package luan.moonvs.models.requests;
 
-public record AuthRequestDTO(String login, String password) { }
+public record AuthRequestDTO(String username, String password) { }

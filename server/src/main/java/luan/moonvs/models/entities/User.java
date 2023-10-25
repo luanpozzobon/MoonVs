@@ -4,17 +4,19 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
 @Data
 
 @Entity(name = "users")
-public class User implements UserDetails {
+public class User implements UserDetails, Cloneable{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_user")
@@ -58,5 +60,15 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public User clone() {
+        try {
+            User clone = (User) super.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
