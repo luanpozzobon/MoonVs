@@ -3,13 +3,13 @@ package luan.moonvs.models.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -29,6 +29,9 @@ public class User implements UserDetails, Cloneable{
     private String password;
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     public User(String username, String email, String password, LocalDate birthDate) {
         this.username = username;
