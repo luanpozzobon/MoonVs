@@ -92,20 +92,36 @@ public class UserBuilder {
     }
 
     private void isEmailValid(String email) {
-        if (!email.contains("@"))
-            throw new IllegalArgumentException("O 'E-Mail' deve conter um caractere '@'");
-        // TODO - Implementar outras validações de E-Mail
+        final String EMAIL_PATTERN = "^[\\w\\d_.]+@[\\w\\d.-]+\\.[a-zA-Z]{2,}$";
+        if (!email.matches(EMAIL_PATTERN)) {
+            throw new IllegalArgumentException("O 'E-Mail' digitado não é válido!");
+        }
     }
 
     private void isPasswordValid(String password, String confirmedPassword) {
         final int MINIMUM_PASSWORD_LENGTH = 8;
+        final Pattern UPPERCASE_LETTERS = Pattern.compile("[A-Z]"),
+                      LOWERCASE_LETTERS = Pattern.compile("[a-z]"),
+                      NUMERIC_CHARS = Pattern.compile("\\d"),
+                      SPECIAL_CHARS = Pattern.compile("[!@#\\$%^&*()_+{}\\[\\]:;<>,.?~\\\\/-]");
+        final String ERROR_MESSAGE = "A 'Senha' deve conter ao menos";
         if (!this.isLengthValid(password, MINIMUM_PASSWORD_LENGTH))
-            throw new IllegalArgumentException(String.format("A 'Senha' deve conter ao menos %d caracteres", MINIMUM_PASSWORD_LENGTH));
+            throw new IllegalArgumentException(String.format("%s %d caracteres", ERROR_MESSAGE, MINIMUM_PASSWORD_LENGTH));
+
+        if (!UPPERCASE_LETTERS.matcher(password).find())
+            throw new IllegalArgumentException(String.format("%s uma letra maiúscula!", ERROR_MESSAGE));
+
+        if (!LOWERCASE_LETTERS.matcher(password).find())
+            throw new IllegalArgumentException(String.format("%s uma letra minúscula!", ERROR_MESSAGE));
+
+        if (!NUMERIC_CHARS.matcher(password).find())
+            throw new IllegalArgumentException(String.format("%s um caractere numérico!", ERROR_MESSAGE));
+
+        if (!SPECIAL_CHARS.matcher(password).find())
+            throw new IllegalArgumentException(String.format("%s um caractere especial!", ERROR_MESSAGE));
 
         if (!password.equals(confirmedPassword))
             throw new IllegalArgumentException("As senhas fornecidas não são iguais!");
-
-        // TODO - Implementar outras validações de senha
     }
 
     private void isBirthDateValid(LocalDate birthDate) {
