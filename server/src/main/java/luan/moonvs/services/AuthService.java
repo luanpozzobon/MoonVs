@@ -9,6 +9,7 @@ import luan.moonvs.models.responses.RegisterResponseDTO;
 import luan.moonvs.repositories.UserRepository;
 import luan.moonvs.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,16 +20,18 @@ public class AuthService {
     private final AuthenticationManager authManager;
     private final TokenService tokenService;
     private final UserRepository repository;
+    private final UserBuilder userBuilder;
 
     @Autowired
-    public AuthService(AuthenticationManager authManager, TokenService tokenService, UserRepository repository) {
+    public AuthService(AuthenticationManager authManager, TokenService tokenService, UserRepository repository, UserBuilder userBuilder) {
         this.authManager = authManager;
         this.tokenService = tokenService;
         this.repository = repository;
+        this.userBuilder = userBuilder;
     }
 
     public ResponseEntity<AuthResponseDTO> login(AuthRequestDTO authDTO) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.login(), authDTO.password());
+        var usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.username(), authDTO.password());
         var auth = authManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
@@ -36,15 +39,15 @@ public class AuthService {
     }
 
     public ResponseEntity<RegisterResponseDTO> register(RegisterRequestDTO registerDTO) {
-        if (repository.findByUsername(registerDTO.username()) != null)
-            return ResponseEntity.badRequest().body(new RegisterResponseDTO("Já existe um usuário com este 'Username'!"));
-
         try {
-            User user = new UserBuilder().build(registerDTO);
+            User user = userBuilder
+                    .withRegisterDto(registerDTO)
+                    .build();
+
             repository.save(user);
-            return ResponseEntity.ok().body(new RegisterResponseDTO("Usuário cadastrado com sucesso!"));
+            return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponseDTO("Usuário cadastrado com sucesso!"));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new RegisterResponseDTO(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponseDTO(e.getMessage()));
         }
     }
 }
