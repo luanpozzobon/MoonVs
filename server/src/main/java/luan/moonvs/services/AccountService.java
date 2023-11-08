@@ -37,17 +37,16 @@ public class AccountService {
         final String SUCCESS = "Usuário alterado com sucesso!";
         final User authUser = getAuthenticatedUser();
         String username, email;
-        if (accountRequestDTO.username().isPresent()) {
-            username = accountRequestDTO.username().get();
-        } else {
-            username = authUser.getUsername();
-        }
 
-        if (accountRequestDTO.email().isPresent()) {
-            email = accountRequestDTO.email().get();
-        } else {
+        if (accountRequestDTO.username() != null && !accountRequestDTO.username().isBlank())
+            username = accountRequestDTO.username();
+        else
+            username = authUser.getUsername();
+
+        if (accountRequestDTO.email() != null && !accountRequestDTO.email().isBlank())
+            email = accountRequestDTO.email();
+        else
             email = authUser.getEmail();
-        }
 
         try {
             User user = builder
@@ -65,7 +64,7 @@ public class AccountService {
 
     public ResponseEntity<String> updatePassword(PasswordRequestDTO passwordRequestDTO) {
         final String SUCCESS = "Senha atualizada com sucesso!",
-                     EMPTY_PASSWORD = "Digite uma senha para continuar!";
+                EMPTY_PASSWORD = "Digite uma senha para continuar!";
         final User authUser = getAuthenticatedUser();
 
         if (passwordRequestDTO.password().isEmpty())
