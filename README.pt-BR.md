@@ -33,14 +33,8 @@
 ## 📲 Demonstração da Aplicação
 Imagens, links, informações...
 
-## 📜 Pré-Requisitos
-Textos, links para download das ferramentas necessárias.
-
 ## 🚀 Rodando o Projeto
-Informações de como acessar e usar o projeto
-```
-Comandos
-```
+Atual mente, o projeto não está disponível para uso.
 
 ## 🛠️ Ferramentas
 <ul style="list-style:none">

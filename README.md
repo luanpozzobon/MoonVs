@@ -33,14 +33,8 @@
 ## 📲 Application Demo
 Images, links, infos...
 
-## 📜 Prerequisites
-Texts, links to download the neccessary tools
-
 ## 🚀 Running the Project
-Informations, about how to access and use the project
-```
-Commands
-```
+The project is not currently available for use.
 
 ## 🛠️ Tools
 <ul style="list-style:none">
