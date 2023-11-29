@@ -1,9 +1,9 @@
 <h1 align="center">🎞️ MoonVs</h1>
 <p align="center">Catálogo e recomendação de filmes e séries</p>
 
-![Static Badge](https://img.shields.io/badge/versão-0.1.1-blue)
+![Static Badge](https://img.shields.io/badge/versão-0.1.2-blue)
 [![Static Badge](https://img.shields.io/badge/licença-MIT-blue)](./LICENSE)
-![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-01%2F11%2F2023-blue)
+![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-08%2F11%2F2023-blue)
 
 <p align="center">
     <a href="#🗣️-idiomas">Idiomas</a> • 
@@ -33,14 +33,8 @@
 ## 📲 Demonstração da Aplicação
 Imagens, links, informações...
 
-## 📜 Pré-Requisitos
-Textos, links para download das ferramentas necessárias.
-
 ## 🚀 Rodando o Projeto
-Informações de como acessar e usar o projeto
-```
-Comandos
-```
+Atual mente, o projeto não está disponível para uso.
 
 ## 🛠️ Ferramentas
 <ul style="list-style:none">
