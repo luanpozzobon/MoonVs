@@ -1,9 +1,9 @@
 <h1 align="center">🎞️ MoonVs</h1>
 <p align="center">Movies and TV Shows catalog and recommendation</p>
 
-![Static Badge](https://img.shields.io/badge/version-0.1.1-blue)
+![Static Badge](https://img.shields.io/badge/version-0.2.0-blue)
 [![Static Badge](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
-![Static Badge](https://img.shields.io/badge/last%20update-2023--11--01-blue)
+![Static Badge](https://img.shields.io/badge/last%20update-2023--12--01-blue)
 
 <p align="center">
     <a href="#🗣️-languages">Languages</a> • 
@@ -24,7 +24,7 @@
 
 ## ⚙️ Features
 - [X] User registration and authentication
-- [ ] Movies and TV Shows search
+- [X] Movies and TV Shows search
 - [ ] View of complete information about Movies and TV Shows
 - [ ] Rate and comment Movies and TV Shows
 - [ ] Create lists and add titles to the lists
@@ -33,14 +33,8 @@
 ## 📲 Application Demo
 Images, links, infos...
 
-## 📜 Prerequisites
-Texts, links to download the neccessary tools
-
 ## 🚀 Running the Project
-Informations, about how to access and use the project
-```
-Commands
-```
+The project is not currently available for use.
 
 ## 🛠️ Tools
 <ul style="list-style:none">

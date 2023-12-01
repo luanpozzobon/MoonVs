@@ -10,6 +10,10 @@ api:
     token:
       secret: ${JWT_SECRET:secret-key}
 
+tmdb:
+  url: https://api.themoviedb.org/3/%s%s
+  token: ${TMDB_TOKEN:eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxY2M3MjRhZWE5MzdhODcyOWMxNWRiMjFiMzM4M2Y1YyIsInN1YiI6IjY0YzE4MjU2MmYxYmUwMDE0ZWY1ZWE4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.gOE5RcYgs-F5kj2ZATcgkV4rXntL5smbqSRrQzPNsCg}
+
 logging:
   level:
     org.springframework.security: DEBUG
