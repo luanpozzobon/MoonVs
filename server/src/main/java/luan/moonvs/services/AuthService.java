@@ -2,10 +2,10 @@ package luan.moonvs.services;
 
 import luan.moonvs.models.builders.UserBuilder;
 import luan.moonvs.models.entities.User;
-import luan.moonvs.models.requests.AuthRequestDTO;
-import luan.moonvs.models.requests.RegisterRequestDTO;
-import luan.moonvs.models.responses.AuthResponseDTO;
-import luan.moonvs.models.responses.RegisterResponseDTO;
+import luan.moonvs.models.requests.AuthRequest;
+import luan.moonvs.models.requests.RegisterRequest;
+import luan.moonvs.models.responses.AuthResponse;
+import luan.moonvs.models.responses.RegisterResponse;
 import luan.moonvs.repositories.UserRepository;
 import luan.moonvs.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,24 +30,24 @@ public class AuthService {
         this.userBuilder = userBuilder;
     }
 
-    public ResponseEntity<AuthResponseDTO> login(AuthRequestDTO authDTO) {
+    public ResponseEntity<AuthResponse> login(AuthRequest authDTO) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.username(), authDTO.password());
         var auth = authManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
-        return ResponseEntity.ok(new AuthResponseDTO(token));
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 
-    public ResponseEntity<RegisterResponseDTO> register(RegisterRequestDTO registerDTO) {
+    public ResponseEntity<RegisterResponse> register(RegisterRequest registerDTO) {
         try {
             User user = userBuilder
                     .withRegisterDto(registerDTO)
                     .build();
 
             repository.save(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponseDTO("Usuário cadastrado com sucesso!"));
+            return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse("Usuário cadastrado com sucesso!"));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponseDTO(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponse(e.getMessage()));
         }
     }
 }

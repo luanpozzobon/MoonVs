@@ -1,9 +1,9 @@
 <h1 align="center">🎞️ MoonVs</h1>
 <p align="center">Catálogo e recomendação de filmes e séries</p>
 
-![Static Badge](https://img.shields.io/badge/versão-0.1.2-blue)
+![Static Badge](https://img.shields.io/badge/versão-0.2.0-blue)
 [![Static Badge](https://img.shields.io/badge/licença-MIT-blue)](./LICENSE)
-![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-08%2F11%2F2023-blue)
+![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-05%2F12%2F2023-blue)
 
 <p align="center">
     <a href="#🗣️-idiomas">Idiomas</a> • 
@@ -24,8 +24,8 @@
 
 ## ⚙️ Funcionalidades
 - [X] Cadastro e autenticação de usuários
-- [ ] Pesquisa de filmes e séries
-- [ ] Visualização de informações completas sobre filmes e séries
+- [X] Pesquisa de filmes e séries
+- [X] Visualização de informações completas sobre filmes e séries
 - [ ] Avaliação e comentários de filmes e séries
 - [ ] Criação de listas, e inserção de títulos as listas
 - [ ] Recomendação baseada nos filmes e séries assistidos anteriormente
@@ -34,7 +34,7 @@
 Imagens, links, informações...
 
 ## 🚀 Rodando o Projeto
-Atual mente, o projeto não está disponível para uso.
+Atualmente, o projeto não está disponível para uso.
 
 ## 🛠️ Ferramentas
 <ul style="list-style:none">

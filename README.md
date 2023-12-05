@@ -1,9 +1,9 @@
 <h1 align="center">🎞️ MoonVs</h1>
 <p align="center">Movies and TV Shows catalog and recommendation</p>
 
-![Static Badge](https://img.shields.io/badge/version-0.1.2-blue)
+![Static Badge](https://img.shields.io/badge/version-0.2.0-blue)
 [![Static Badge](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
-![Static Badge](https://img.shields.io/badge/last%20update-2023--11--08-blue)
+![Static Badge](https://img.shields.io/badge/last%20update-2023--12--05-blue)
 
 <p align="center">
     <a href="#🗣️-languages">Languages</a> • 
@@ -24,8 +24,8 @@
 
 ## ⚙️ Features
 - [X] User registration and authentication
-- [ ] Movies and TV Shows search
-- [ ] View of complete information about Movies and TV Shows
+- [X] Movies and TV Shows search
+- [X] View of complete information about Movies and TV Shows
 - [ ] Rate and comment Movies and TV Shows
 - [ ] Create lists and add titles to the lists
 - [ ] Recommendation based on previous watched Movies and TV Shows
