@@ -1,4 +1,4 @@
-package luan.moonvs.deserializers;
+package luan.moonvs.utils.deserializers;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -25,9 +25,9 @@ public class TmdbSearchDeserializer extends StdDeserializer<TmdbSearch> {
             int id = node.get("id").asInt();
             String originalTitle = node.has("original_title") ? node.get("original_title").asText() : node.get("original_name").asText();
             String overview = node.get("overview").asText();
-            double voteAverage = node.get("vote_average").asDouble();
+            double voteAvg = node.get("vote_average").asDouble();
 
-            return new TmdbSearch(id, originalTitle, overview, contentType, voteAverage);
+            return new TmdbSearch(id, originalTitle, overview, contentType, voteAvg);
         } catch (IllegalArgumentException e) {
             return null;
         }

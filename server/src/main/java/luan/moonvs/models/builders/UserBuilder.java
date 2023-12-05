@@ -1,8 +1,8 @@
 package luan.moonvs.models.builders;
 
 import luan.moonvs.models.entities.User;
-import luan.moonvs.models.requests.PasswordRequestDTO;
-import luan.moonvs.models.requests.RegisterRequestDTO;
+import luan.moonvs.models.requests.PasswordRequest;
+import luan.moonvs.models.requests.RegisterRequest;
 import luan.moonvs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,9 +42,9 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder withPassword(PasswordRequestDTO passwordRequestDTO) throws IllegalArgumentException {
-        isPasswordValid(passwordRequestDTO.password(), passwordRequestDTO.confirmedPassword());
-        String encryptedPassword = encryptPassword(passwordRequestDTO.password());
+    public UserBuilder withPassword(PasswordRequest passwordRequest) throws IllegalArgumentException {
+        isPasswordValid(passwordRequest.password(), passwordRequest.confirmedPassword());
+        String encryptedPassword = encryptPassword(passwordRequest.password());
         this.user.setPassword(encryptedPassword);
         return this;
     }
@@ -55,19 +55,19 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder withRegisterDto(RegisterRequestDTO registerRequestDTO) throws IllegalArgumentException {
-        isUsernameValid(registerRequestDTO.username());
-        this.user.setUsername(registerRequestDTO.username());
+    public UserBuilder withRegisterDto(RegisterRequest registerRequest) throws IllegalArgumentException {
+        isUsernameValid(registerRequest.username());
+        this.user.setUsername(registerRequest.username());
 
-        isEmailValid(registerRequestDTO.email());
-        this.user.setEmail(registerRequestDTO.email());
+        isEmailValid(registerRequest.email());
+        this.user.setEmail(registerRequest.email());
 
-        isPasswordValid(registerRequestDTO.password(), registerRequestDTO.confirmedPassword());
-        String encryptedPassword = encryptPassword(registerRequestDTO.password());
+        isPasswordValid(registerRequest.password(), registerRequest.confirmedPassword());
+        String encryptedPassword = encryptPassword(registerRequest.password());
         this.user.setPassword(encryptedPassword);
 
-        isBirthDateValid(registerRequestDTO.birthDate());
-        this.user.setBirthDate(registerRequestDTO.birthDate());
+        isBirthDateValid(registerRequest.birthDate());
+        this.user.setBirthDate(registerRequest.birthDate());
 
         return this;
     }

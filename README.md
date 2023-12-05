@@ -3,7 +3,7 @@
 
 ![Static Badge](https://img.shields.io/badge/version-0.2.0-blue)
 [![Static Badge](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
-![Static Badge](https://img.shields.io/badge/last%20update-2023--12--01-blue)
+![Static Badge](https://img.shields.io/badge/last%20update-2023--12--05-blue)
 
 <p align="center">
     <a href="#🗣️-languages">Languages</a> • 
@@ -25,7 +25,7 @@
 ## ⚙️ Features
 - [X] User registration and authentication
 - [X] Movies and TV Shows search
-- [ ] View of complete information about Movies and TV Shows
+- [X] View of complete information about Movies and TV Shows
 - [ ] Rate and comment Movies and TV Shows
 - [ ] Create lists and add titles to the lists
 - [ ] Recommendation based on previous watched Movies and TV Shows

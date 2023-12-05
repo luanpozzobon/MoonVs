@@ -3,7 +3,7 @@
 
 ![Static Badge](https://img.shields.io/badge/versão-0.2.0-blue)
 [![Static Badge](https://img.shields.io/badge/licença-MIT-blue)](./LICENSE)
-![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-01%2F12%2F2023-blue)
+![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-05%2F12%2F2023-blue)
 
 <p align="center">
     <a href="#🗣️-idiomas">Idiomas</a> • 
@@ -25,7 +25,7 @@
 ## ⚙️ Funcionalidades
 - [X] Cadastro e autenticação de usuários
 - [X] Pesquisa de filmes e séries
-- [ ] Visualização de informações completas sobre filmes e séries
+- [X] Visualização de informações completas sobre filmes e séries
 - [ ] Avaliação e comentários de filmes e séries
 - [ ] Criação de listas, e inserção de títulos as listas
 - [ ] Recomendação baseada nos filmes e séries assistidos anteriormente

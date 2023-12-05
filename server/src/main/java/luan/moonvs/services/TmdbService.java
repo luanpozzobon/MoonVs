@@ -1,20 +1,24 @@
 package luan.moonvs.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import luan.moonvs.config.TmdbModule;
+import jakarta.annotation.PostConstruct;
 import luan.moonvs.models.builders.ContentBuilder;
 import luan.moonvs.models.entities.Content;
+import luan.moonvs.models.enums.ContentType;
+import luan.moonvs.models.tmdb_responses.TmdbMovie;
 import luan.moonvs.models.tmdb_responses.TmdbResults;
+import luan.moonvs.models.tmdb_responses.TmdbSearch;
+import luan.moonvs.models.tmdb_responses.TmdbTv;
+import luan.moonvs.models.tmdb_responses.providers.Provider;
+import luan.moonvs.models.tmdb_responses.providers.ProviderResults;
+import luan.moonvs.utils.HttpRequestEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 class TmdbService {
@@ -24,7 +28,7 @@ class TmdbService {
     @Value("${tmdb.token}")
     private String token;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private HttpHeaders HEADERS;
 
     private ContentBuilder contentBuilder;
 
@@ -33,25 +37,25 @@ class TmdbService {
         this.contentBuilder = contentBuilder;
     }
 
-    public List<Content> search(String title) {
-        final String QUERY = "search/multi?query=";
-        final String URL = String.format(baseUrl, QUERY, title);
-
-        final HttpHeaders HEADERS = new HttpHeaders() {{
+    @PostConstruct
+    private void init() {
+        this.HEADERS = new HttpHeaders() {{
             setContentType(MediaType.APPLICATION_JSON);
             setBearerAuth(token);
         }};
-        final HttpEntity ENTITY = new HttpEntity(HEADERS);
+    }
 
-        ObjectMapper mapper = TmdbModule.createConfiguredObjectMapper();
+    public List<TmdbSearch> search(String title) {
+        final String QUERY = "search/multi?query=";
+        final String URL = String.format(baseUrl, QUERY, title);
 
-        TmdbResults searchResults = restTemplate.exchange(
-                URL,
-                HttpMethod.GET,
-                ENTITY,
-                new ParameterizedTypeReference<TmdbResults>() {}
-        ).getBody();
+        final HttpRequestEntity<TmdbResults> request = new HttpRequestEntity<>(URL, HttpMethod.GET, HEADERS);
+        ResponseEntity<TmdbResults> searchResults = request.exchange();
 
+
+        return searchResults.getBody().results();
+
+        /*
         List<Content> searchedContents = new ArrayList<>();
         searchResults.results().forEach( content -> {
             if (content != null) {
@@ -63,5 +67,56 @@ class TmdbService {
         });
 
         return searchedContents;
+        */
+    }
+
+    public Content viewMovie(int id) {
+        final String QUERY = "movie/";
+        final String URL = String.format(baseUrl, QUERY, id);
+
+        HttpRequestEntity<TmdbMovie> request = new HttpRequestEntity<>(URL, HttpMethod.GET, HEADERS);
+        ResponseEntity<TmdbMovie> movie = request.exchange();
+
+        if (!movie.getStatusCode().is2xxSuccessful())
+            return null;
+
+        ProviderResults providers = getWatchProviders(QUERY, id);
+        var brProviders = providers.results().get("BR");
+
+        return contentBuilder
+                .fromTmdbMovie(movie.getBody())
+                .withProviders(brProviders)
+                .build();
+    }
+
+    public Content viewSeries(int id) {
+        final String QUERY = "tv/";
+        final String URL = String.format(baseUrl, QUERY, id);
+
+        HttpRequestEntity<TmdbTv> request = new HttpRequestEntity<>(URL, HttpMethod.GET, HEADERS);
+        ResponseEntity<TmdbTv> series = request.exchange();
+
+        if (!series.getStatusCode().is2xxSuccessful())
+            return null;
+
+        ProviderResults providers = getWatchProviders(QUERY, id);
+        var brProviders = providers.results().get("BR");
+
+        return contentBuilder
+                .fromTmdbTv(series.getBody())
+                .withProviders(brProviders)
+                .build();
+    }
+
+    private ProviderResults getWatchProviders(final String QUERY, int id) {
+        final String URL = String.format(baseUrl, QUERY, id + "/watch/providers");
+
+        final HttpRequestEntity<ProviderResults> request = new HttpRequestEntity<>(URL, HttpMethod.GET, HEADERS);
+        ResponseEntity<ProviderResults> providers = request.exchange();
+
+        if (!providers.getStatusCode().is2xxSuccessful())
+            return null;
+
+        return providers.getBody();
     }
 }

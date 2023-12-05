@@ -2,10 +2,10 @@ package luan.moonvs.services;
 
 import luan.moonvs.models.builders.UserBuilder;
 import luan.moonvs.models.entities.User;
-import luan.moonvs.models.requests.AccountRequestDTO;
-import luan.moonvs.models.requests.DeleteRequestDto;
-import luan.moonvs.models.requests.PasswordRequestDTO;
-import luan.moonvs.models.responses.AccountResponseDTO;
+import luan.moonvs.models.requests.AccountRequest;
+import luan.moonvs.models.requests.AuthRequest;
+import luan.moonvs.models.requests.PasswordRequest;
+import luan.moonvs.models.responses.AccountResponse;
 import luan.moonvs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,29 +27,26 @@ public class AccountService {
         this.builder = builder;
     }
 
-    public ResponseEntity<AccountResponseDTO> account() {
+    public ResponseEntity<AccountResponse> account() {
         User authUser = getAuthenticatedUser();
-        AccountResponseDTO accountDto = new AccountResponseDTO(authUser);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(accountDto);
+        AccountResponse account = new AccountResponse(authUser);
+        return ResponseEntity.ok(account);
     }
 
-    public ResponseEntity<AccountResponseDTO> updateAccount(AccountRequestDTO accountRequestDTO) {
+    public ResponseEntity<AccountResponse> updateAccount(AccountRequest accountRequest) {
         final String SUCCESS = "Usuário alterado com sucesso!";
         final User authUser = getAuthenticatedUser();
         String username, email;
-        if (accountRequestDTO.username().isPresent()) {
-            username = accountRequestDTO.username().get();
-        } else {
-            username = authUser.getUsername();
-        }
 
-        if (accountRequestDTO.email().isPresent()) {
-            email = accountRequestDTO.email().get();
-        } else {
+        if (accountRequest.username() != null && !accountRequest.username().isBlank())
+            username = accountRequest.username();
+        else
+            username = authUser.getUsername();
+
+        if (accountRequest.email() != null && !accountRequest.email().isBlank())
+            email = accountRequest.email();
+        else
             email = authUser.getEmail();
-        }
 
         try {
             User user = builder
@@ -59,72 +56,54 @@ public class AccountService {
                     .build();
 
             repository.save(user);
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(new AccountResponseDTO(authUser, SUCCESS));
+            return ResponseEntity.status(HttpStatus.OK).body(new AccountResponse(authUser, SUCCESS));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new AccountResponseDTO(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AccountResponse(e.getMessage()));
         }
     }
 
-    public ResponseEntity<String> updatePassword(PasswordRequestDTO passwordRequestDTO) {
+    public ResponseEntity<String> updatePassword(PasswordRequest passwordRequest) {
         final String SUCCESS = "Senha atualizada com sucesso!",
-                     EMPTY_PASSWORD = "Digite uma senha para continuar!";
+                EMPTY_PASSWORD = "Digite uma senha para continuar!";
         final User authUser = getAuthenticatedUser();
 
-        if (passwordRequestDTO.password().isEmpty())
+        if (passwordRequest.password().isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(EMPTY_PASSWORD);
 
         try {
             User user = builder
-                    .withPassword(passwordRequestDTO)
+                    .withPassword(passwordRequest)
                     .build();
 
             repository.save(user);
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(SUCCESS);
+            return ResponseEntity.status(HttpStatus.OK).body(SUCCESS);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    public ResponseEntity<String> deleteAccount(DeleteRequestDto deleteRequestDto) {
+    public ResponseEntity<String> deleteAccount(AuthRequest authRequest) {
         final String EMPTY_STRING = "Forneça %s para prosseguir com a solicitação!";
         User authUser = getAuthenticatedUser();
-        if (deleteRequestDto.username().isEmpty())
-            return ResponseEntity.
-                    status(HttpStatus.BAD_REQUEST)
-                    .body(String.format(EMPTY_STRING, "o 'Username'"));
+        if (authRequest.username().isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format(EMPTY_STRING, "o 'Username'"));
 
-        if (deleteRequestDto.password().isEmpty())
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(String.format(EMPTY_STRING, "a 'Senha'"));
+        if (authRequest.password().isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format(EMPTY_STRING, "a 'Senha'"));
 
-        if (!deleteRequestDto.username().equals(authUser.getUsername()))
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("'Username' inválido");
+        if (!authRequest.username().equals(authUser.getUsername()))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("'Username' inválido");
 
-        if (!new BCryptPasswordEncoder().matches(deleteRequestDto.password(), authUser.getPassword()))
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("'Senha' inválida");
+        if (!new BCryptPasswordEncoder().matches(authRequest.password(), authUser.getPassword()))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("'Senha' inválida");
 
         repository.delete(authUser);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("Conta deletada com sucesso!");
+        return ResponseEntity.status(HttpStatus.OK).body("Conta deletada com sucesso!");
     }
 
     private User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        return repository.findUserByUsername(userDetails.getUsername());
+        return repository.getUserByUsername(userDetails.getUsername());
     }
 }
