@@ -38,7 +38,6 @@ public class AccountService {
         final User authUser = getAuthenticatedUser();
         String username, email;
 
-<<<<<<< HEAD
         if (accountRequest.username() != null && !accountRequest.username().isBlank())
             username = accountRequest.username();
         else
@@ -46,15 +45,6 @@ public class AccountService {
 
         if (accountRequest.email() != null && !accountRequest.email().isBlank())
             email = accountRequest.email();
-=======
-        if (accountRequestDTO.username() != null && !accountRequestDTO.username().isBlank())
-            username = accountRequestDTO.username();
-        else
-            username = authUser.getUsername();
-
-        if (accountRequestDTO.email() != null && !accountRequestDTO.email().isBlank())
-            email = accountRequestDTO.email();
->>>>>>> main
         else
             email = authUser.getEmail();
 
