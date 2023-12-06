@@ -34,7 +34,11 @@
 Imagens, links, informações...
 
 ## 🚀 Rodando o Projeto
-Atualmente, o projeto não está disponível para uso.
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/26741263-22d40602-521d-4d9b-8ac5-529c63367e5b?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D26741263-22d40602-521d-4d9b-8ac5-529c63367e5b%26entityType%3Dcollection%26workspaceId%3Dbd562a18-5f8a-4d7f-88cb-a180ad74a2a5)<br>
+<p>Para usar a aplicação é necessário registrar e autenticar, é possível também autenticar com o usuário já existente, o qual está preenchido no endpoint 'Login'.</p>
+<p>Após a autenticação, é ncessário copiar o token exibido na resposta, e colar no campo 'Token' na coleção MoonVs na aba 'Autorização'.</p>
+<p>A partir disso, é possível acessar todos os endpoints existentes, para testá-los é necessário apenas completar os campos vazios.</p>
+<p><b>A primeira requisição, pode levar um tempo mais longo, considerando que está sendo usado um plano de hospedagem gratuito.</b></p>
 
 ## 🛠️ Ferramentas
 <ul style="list-style:none">
@@ -42,6 +46,9 @@ Atualmente, o projeto não está disponível para uso.
     <li><img src="./assets/icons/Spring.png" width=15> <a href="https://spring.io/">Spring Framework</a></li>
     <li><img src="./assets/icons/Postgresql.png" width=15> <a href="https://www.postgresql.org/">PostgreSQL 16</a></li>
     <li><img src="./assets/icons/IntelliJ.png" width=15> <a href="https://www.jetbrains.com/pt-br/idea/">IntelliJ Idea</a></li>
+    <hr>
+    <li><img src="./assets/icons/Render.png" width=15> <a href="https://render.com/" target="_blank">Render</a></li>
+    <li><img src="./assets/icons/Aiven.jpeg" width=15> <a href="https://aiven.io/" target="_blank">Aiven</a></li>
 </ul>
 
 ## 👨‍💻 Autor
