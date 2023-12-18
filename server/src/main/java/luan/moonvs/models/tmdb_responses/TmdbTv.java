@@ -11,6 +11,8 @@ public record TmdbTv(int id,
                      boolean adult,
                      @JsonProperty("original_name")
                      String originalTitle,
+                     @JsonProperty("name")
+                     String ptTitle,
                      String overview,
                      @JsonProperty("vote_average")
                      double voteAvg,

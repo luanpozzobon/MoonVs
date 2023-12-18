@@ -33,13 +33,6 @@ public class User implements UserDetails, Cloneable{
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public User(String username, String email, String password, LocalDate birthDate) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.birthDate = birthDate;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -68,8 +61,7 @@ public class User implements UserDetails, Cloneable{
     @Override
     public User clone() {
         try {
-            User clone = (User) super.clone();
-            return clone;
+            return (User) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }

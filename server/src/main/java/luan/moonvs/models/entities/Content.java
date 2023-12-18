@@ -1,5 +1,7 @@
 package luan.moonvs.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,22 +17,42 @@ import java.util.Map;
 
 @Entity(name = "content")
 @Table(name = "content_catalog")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Content {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_content", nullable = false, unique = true)
+    @Column(
+            name = "id_content",
+            nullable = false,
+            unique = true
+    )
     private int idContent;
-    @Column(name = "id_tmdb", nullable = false, unique = true)
+    @Column(
+            name = "id_tmdb",
+            nullable = false,
+            unique = true
+    )
     private int idTmdb;
-    @Column(name = "original_title", nullable = false)
+    @Column(
+            name = "original_title",
+            nullable = false
+    )
     private String originalTitle;
-    @Column(name = "pt_title", nullable = false)
+    @Column(
+            name = "pt_title",
+            nullable = false
+    )
     private String ptTitle;
     @Column(name = "overview")
     private String overview;
     @Column(name = "is_adult")
     private boolean isAdult;
-    @Column(name = "genres")
+
+    @Type(ListArrayType.class)
+    @Column(
+            name = "genres",
+            columnDefinition = "character_varying[]"
+    )
     private List<String> genres;
     @Column(name = "tmdb_vote_avg")
     private double tmdbVoteAvg;
@@ -38,9 +60,13 @@ public class Content {
     private int tmdbVoteCount;
 
     @Type(JsonType.class)
-    @Column(name = "watch_provider", columnDefinition = "jsonb")
+    @Column(
+            name = "watch_provider",
+            columnDefinition = "jsonb"
+    )
     private Map<String, List<String>> watchProvider; // { rent : [ Apple TV, Amazon ], buy : [ Apple TV, Google Play ], flatrate : [ HBO Max, NOW ] }
-    // private List<String> watchProvider;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "content_type", nullable = false)
     private ContentType contentType;
 }

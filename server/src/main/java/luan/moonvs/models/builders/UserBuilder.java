@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class UserBuilder {
     private User user;
 
-    private UserRepository repository;
+    private final UserRepository repository;
 
     @Autowired
     public UserBuilder(UserRepository repository) {
@@ -31,12 +31,18 @@ public class UserBuilder {
     }
 
     public UserBuilder withUsername(String username) throws IllegalArgumentException {
+        if (username == null || username.isBlank())
+            return this;
+
         isUsernameValid(username);
         this.user.setUsername(username);
         return this;
     }
 
     public UserBuilder withEmail(String email) throws IllegalArgumentException {
+        if (email == null || email.isBlank())
+            return this;
+
         isEmailValid(email);
         this.user.setEmail(email);
         return this;

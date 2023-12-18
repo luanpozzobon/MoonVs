@@ -22,13 +22,13 @@ public class AccountService {
     private final UserBuilder builder;
 
     @Autowired
-    public AccountService(UserRepository repository, UserBuilder builder) {
+    private AccountService(UserRepository repository, UserBuilder builder) {
         this.repository = repository;
         this.builder = builder;
     }
 
     public ResponseEntity<AccountResponse> account() {
-        User authUser = getAuthenticatedUser();
+        final User authUser = getAuthenticatedUser();
         AccountResponse account = new AccountResponse(authUser);
         return ResponseEntity.ok(account);
     }
@@ -36,29 +36,22 @@ public class AccountService {
     public ResponseEntity<AccountResponse> updateAccount(AccountRequest accountRequest) {
         final String SUCCESS = "Usuário alterado com sucesso!";
         final User authUser = getAuthenticatedUser();
-        String username, email;
-
-        if (accountRequest.username() != null && !accountRequest.username().isBlank())
-            username = accountRequest.username();
-        else
-            username = authUser.getUsername();
-
-        if (accountRequest.email() != null && !accountRequest.email().isBlank())
-            email = accountRequest.email();
-        else
-            email = authUser.getEmail();
 
         try {
             User user = builder
                     .fromAuthUser(authUser)
-                    .withUsername(username)
-                    .withEmail(email)
+                    .withUsername(accountRequest.username())
+                    .withEmail(accountRequest.email())
                     .build();
 
             repository.save(user);
-            return ResponseEntity.status(HttpStatus.OK).body(new AccountResponse(authUser, SUCCESS));
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new AccountResponse(authUser, SUCCESS));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AccountResponse(e.getMessage()));
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new AccountResponse(e.getMessage()));
         }
     }
 
@@ -67,35 +60,50 @@ public class AccountService {
                 EMPTY_PASSWORD = "Digite uma senha para continuar!";
         final User authUser = getAuthenticatedUser();
 
-        if (passwordRequest.password().isEmpty())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(EMPTY_PASSWORD);
+        if (passwordRequest.password() == null || passwordRequest.password().isBlank())
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(EMPTY_PASSWORD);
 
         try {
             User user = builder
+                    .fromAuthUser(authUser)
                     .withPassword(passwordRequest)
                     .build();
 
             repository.save(user);
-            return ResponseEntity.status(HttpStatus.OK).body(SUCCESS);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(SUCCESS);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
         }
     }
 
     public ResponseEntity<String> deleteAccount(AuthRequest authRequest) {
         final String EMPTY_STRING = "Forneça %s para prosseguir com a solicitação!";
         User authUser = getAuthenticatedUser();
-        if (authRequest.username().isEmpty())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format(EMPTY_STRING, "o 'Username'"));
+        if (authRequest.username() == null || authRequest.username().isBlank())
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(String.format(EMPTY_STRING, "o 'Username'"));
 
-        if (authRequest.password().isEmpty())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format(EMPTY_STRING, "a 'Senha'"));
+        if (authRequest.password() == null || authRequest.password().isBlank())
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(String.format(EMPTY_STRING, "a 'Senha'"));
 
         if (!authRequest.username().equals(authUser.getUsername()))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("'Username' inválido");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("'Username' inválido");
 
         if (!new BCryptPasswordEncoder().matches(authRequest.password(), authUser.getPassword()))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("'Senha' inválida");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("'Senha' inválida");
 
         repository.delete(authUser);
         return ResponseEntity.status(HttpStatus.OK).body("Conta deletada com sucesso!");

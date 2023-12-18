@@ -23,7 +23,7 @@ public class AuthService {
     private final UserBuilder userBuilder;
 
     @Autowired
-    public AuthService(AuthenticationManager authManager, TokenService tokenService, UserRepository repository, UserBuilder userBuilder) {
+    private AuthService(AuthenticationManager authManager, TokenService tokenService, UserRepository repository, UserBuilder userBuilder) {
         this.authManager = authManager;
         this.tokenService = tokenService;
         this.repository = repository;
@@ -31,11 +31,19 @@ public class AuthService {
     }
 
     public ResponseEntity<AuthResponse> login(AuthRequest authDTO) {
+        if ((authDTO.username() == null || authDTO.username().isBlank())
+        ||  (authDTO.password() == null || authDTO.password().isBlank()))
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
+
         var usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.username(), authDTO.password());
         var auth = authManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
-        return ResponseEntity.ok(new AuthResponse(token));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new AuthResponse(token));
     }
 
     public ResponseEntity<RegisterResponse> register(RegisterRequest registerDTO) {
@@ -45,9 +53,13 @@ public class AuthService {
                     .build();
 
             repository.save(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse("Usuário cadastrado com sucesso!"));
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(new RegisterResponse("Usuário cadastrado com sucesso!"));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponse(e.getMessage()));
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new RegisterResponse(e.getMessage()));
         }
     }
 }

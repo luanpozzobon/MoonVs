@@ -31,7 +31,5 @@ public class TmdbSearchDeserializer extends StdDeserializer<TmdbSearch> {
         } catch (IllegalArgumentException e) {
             return null;
         }
-
-
     }
 }

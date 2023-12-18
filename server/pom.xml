@@ -11,7 +11,7 @@
     </parent>
     <groupId>luan</groupId>
     <artifactId>moonvs</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
 
     <properties>
         <maven.compiler.source>19</maven.compiler.source>
@@ -23,6 +23,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>3.1.5</version>
         </dependency>
 
         <dependency>
@@ -41,6 +42,7 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+            <version>42.6.0</version>
         </dependency>
 
         <dependency>
@@ -53,11 +55,13 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+            <version>1.18.30</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+            <version>3.1.5</version>
         </dependency>
 
         <dependency>

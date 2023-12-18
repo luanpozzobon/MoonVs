@@ -1,9 +1,9 @@
 <h1 align="center">🎞️ MoonVs</h1>
 <p align="center">Movies and TV Shows catalog and recommendation</p>
 
-![Static Badge](https://img.shields.io/badge/version-0.2.0-blue)
+![Static Badge](https://img.shields.io/badge/version-0.2.1-blue)
 [![Static Badge](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
-![Static Badge](https://img.shields.io/badge/last%20update-2023--12--05-blue)
+![Static Badge](https://img.shields.io/badge/last%20update-2023--12--18-blue)
 
 <p align="center">
     <a href="#🗣️-languages">Languages</a> • 

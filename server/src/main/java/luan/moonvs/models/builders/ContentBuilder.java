@@ -1,10 +1,9 @@
 package luan.moonvs.models.builders;
 
-import luan.moonvs.models.tmdb_responses.TmdbGenres;
 import luan.moonvs.models.entities.Content;
 import luan.moonvs.models.enums.ContentType;
+import luan.moonvs.models.tmdb_responses.TmdbGenres;
 import luan.moonvs.models.tmdb_responses.TmdbMovie;
-import luan.moonvs.models.tmdb_responses.TmdbSearch;
 import luan.moonvs.models.tmdb_responses.TmdbTv;
 import luan.moonvs.models.tmdb_responses.providers.Provider;
 import luan.moonvs.models.tmdb_responses.providers.ProviderType;
@@ -12,28 +11,14 @@ import luan.moonvs.repositories.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 public class ContentBuilder {
     private Content content;
-    private ContentRepository contentRepository;
-
-    @Autowired
-    public ContentBuilder(ContentRepository contentRepository) {
-        this.contentRepository = contentRepository;
-    }
-
-    public ContentBuilder fromTmdbSearch(TmdbSearch tmdbSearch) {
-        this.content = new Content();
-        this.content.setIdTmdb(tmdbSearch.id());
-        this.content.setOriginalTitle(tmdbSearch.originalTitle());
-        this.content.setOverview(tmdbSearch.overview());
-        this.content.setContentType(tmdbSearch.contentType());
-        this.content.setTmdbVoteAvg(tmdbSearch.voteAvg());
-        return this;
-    }
 
     public ContentBuilder fromTmdbMovie(TmdbMovie tmdbMovie) {
         this.content = new Content();
@@ -58,6 +43,7 @@ public class ContentBuilder {
         this.content.setIdTmdb(tmdbTv.id());
         this.content.setAdult(tmdbTv.adult());
         this.content.setOriginalTitle(tmdbTv.originalTitle());
+        this.content.setPtTitle(tmdbTv.ptTitle());
         this.content.setOverview(tmdbTv.overview());
         this.content.setGenres(tmdbTv.genres().stream()
                 .map(TmdbGenres::genre)

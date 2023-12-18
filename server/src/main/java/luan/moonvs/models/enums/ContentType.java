@@ -7,9 +7,9 @@ public enum ContentType {
     MOVIE("Movies"),
     TV("Series");
 
-    private String contentType;
+    private final String contentType;
 
-    private ContentType(String contentType) {
+    ContentType(String contentType) {
         this.contentType = contentType;
     }
 }

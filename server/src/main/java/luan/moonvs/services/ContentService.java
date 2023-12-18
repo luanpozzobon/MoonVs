@@ -2,8 +2,8 @@ package luan.moonvs.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import luan.moonvs.models.entities.Content;
-import luan.moonvs.models.responses.ContentSearch;
 import luan.moonvs.models.requests.ExternalContentRequest;
+import luan.moonvs.models.responses.ContentSearch;
 import luan.moonvs.models.tmdb_responses.TmdbSearch;
 import luan.moonvs.repositories.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +16,11 @@ import java.util.List;
 
 @Service
 public class ContentService {
-    private ContentRepository repository;
-    private TmdbService tmdbService;
+    private final ContentRepository repository;
+    private final TmdbService tmdbService;
 
     @Autowired
-    public ContentService(ContentRepository repository, TmdbService tmdbService) {
+    private ContentService(ContentRepository repository, TmdbService tmdbService) {
         this.repository = repository;
         this.tmdbService = tmdbService;
     }
@@ -64,11 +64,6 @@ public class ContentService {
     }
 
     public ResponseEntity<Content> internalContent(int id) {
-        if (id == 0)
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .build();
-
         try {
             Content content = repository.getReferenceById(id);
             return ResponseEntity
@@ -81,42 +76,27 @@ public class ContentService {
         }
     }
 
-    public ResponseEntity<?> externalContent(ExternalContentRequest contentView) {
-        if (contentView.id() == 0)
+    public ResponseEntity<Content> externalContent(ExternalContentRequest contentView) {
+        if (repository.existsByIdTmdb(contentView.id()))
             return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .build();
+                    .status(HttpStatus.OK)
+                    .body(repository.getReferenceByIdTmdb(contentView.id()));
+
+        Content content = null;
 
         switch (contentView.contentType()){
-            case MOVIE -> {
-                var movie = tmdbService.viewMovie(contentView.id());
-                if (movie == null)
-                    return ResponseEntity
-                            .status(HttpStatus.NOT_FOUND)
-                            .build();
-
-                repository.save(movie);
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .body(movie);
-            }
-            case TV -> {
-                var series = tmdbService.viewSeries(contentView.id());
-                if (series == null)
-                    return ResponseEntity
-                            .status(HttpStatus.NOT_FOUND)
-                            .build();
-
-                repository.save(series);
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .body(series);
-            }
-            default -> {
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body("No such Content Type exists");
-            }
+            case MOVIE -> content = tmdbService.viewMovie(contentView.id());
+            case TV -> content = tmdbService.viewSeries(contentView.id());
         }
+
+        if (content == null)
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+
+        repository.save(content);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(content);
     }
 }
