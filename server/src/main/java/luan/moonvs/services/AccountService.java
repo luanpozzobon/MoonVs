@@ -109,7 +109,7 @@ public class AccountService {
         return ResponseEntity.status(HttpStatus.OK).body("Conta deletada com sucesso!");
     }
 
-    private User getAuthenticatedUser() {
+    protected User getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         return repository.getUserByUsername(userDetails.getUsername());

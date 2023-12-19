@@ -21,50 +21,45 @@ import java.util.Map;
 public class Content {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(
-            name = "id_content",
+    @Column(name = "id_content",
             nullable = false,
-            unique = true
-    )
+            unique = true)
     private int idContent;
-    @Column(
-            name = "id_tmdb",
+
+    @Column(name = "id_tmdb",
             nullable = false,
-            unique = true
-    )
+            unique = true)
     private int idTmdb;
-    @Column(
-            name = "original_title",
-            nullable = false
-    )
+
+    @Column(name = "original_title",
+            nullable = false)
     private String originalTitle;
-    @Column(
-            name = "pt_title",
-            nullable = false
-    )
+
+    @Column(name = "pt_title",
+            nullable = false)
     private String ptTitle;
+
     @Column(name = "overview")
     private String overview;
+
     @Column(name = "is_adult")
     private boolean isAdult;
 
     @Type(ListArrayType.class)
-    @Column(
-            name = "genres",
-            columnDefinition = "character_varying[]"
-    )
+    @Column(name = "genres",
+            columnDefinition = "character_varying[]")
     private List<String> genres;
+
     @Column(name = "tmdb_vote_avg")
     private double tmdbVoteAvg;
+
     @Column(name = "tmdb_vote_count")
     private int tmdbVoteCount;
 
     @Type(JsonType.class)
-    @Column(
-            name = "watch_provider",
-            columnDefinition = "jsonb"
-    )
-    private Map<String, List<String>> watchProvider; // { rent : [ Apple TV, Amazon ], buy : [ Apple TV, Google Play ], flatrate : [ HBO Max, NOW ] }
+    @Column(name = "watch_provider",
+            columnDefinition = "jsonb")
+    private Map<String, List<String>> watchProvider;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "content_type", nullable = false)

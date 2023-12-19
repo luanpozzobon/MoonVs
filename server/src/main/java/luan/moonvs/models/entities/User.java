@@ -21,17 +21,34 @@ public class User implements UserDetails, Cloneable{
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_user")
     private UUID idUser;
-    @Column(name = "username", unique = true, nullable = false)
+
+    @Column(name = "username",
+            unique = true,
+            nullable = false)
     private String username;
-    @Column(name = "email", unique = true, nullable = false)
+
+    @Column(name = "email",
+            unique = true,
+            nullable = false)
     private String email;
-    @Column(name = "password_hash", nullable = false)
+
+    @Column(name = "password_hash",
+            nullable = false)
     private String password;
-    @Column(name = "birth_date", nullable = false)
+
+    @Column(name = "birth_date",
+            nullable = false)
     private LocalDate birthDate;
+
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at",
+            nullable = false)
     private LocalDateTime createdAt;
+
+    @OneToOne(mappedBy = "user",
+            cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Profile profile;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
