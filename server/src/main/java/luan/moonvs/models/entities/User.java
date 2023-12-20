@@ -46,7 +46,7 @@ public class User implements UserDetails, Cloneable{
     private LocalDateTime createdAt;
 
     @OneToOne(mappedBy = "user",
-            cascade = CascadeType.ALL)
+              cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Profile profile;
 

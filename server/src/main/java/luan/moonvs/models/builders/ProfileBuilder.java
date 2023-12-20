@@ -11,17 +11,33 @@ import org.springframework.stereotype.Component;
 public class ProfileBuilder {
     private Profile profile;
 
+    public ProfileBuilder() {
+        profile = new Profile();
+    }
+
     public ProfileBuilder fromAuthUser(User authUser) {
         this.profile.setUser(authUser);
         return this;
     }
 
-    public ProfileBuilder createOrEditProfile(ProfileRequest profileRequest) {
+    public ProfileBuilder createProfile(ProfileRequest profileRequest) {
+        this.profile = new Profile();
         return this
                 .withBio(profileRequest.biography())
-                .privacy(profileRequest.isPrivate())
-                .withFavoriteMovie(profileRequest.favoriteMovie())
-                .withFavoriteSeries(profileRequest.favoriteSeries());
+                .privacy(profileRequest.isPrivate());
+        // TODO - Alterar tipo de favMovie e favSeries
+                // .withFavoriteMovie(profileRequest.favoriteMovie())
+                // .withFavoriteSeries(profileRequest.favoriteSeries());
+    }
+
+    public ProfileBuilder editProfile(Profile profile, ProfileRequest profileRequest) {
+        this.profile = profile;
+        return this
+                .withBio(profileRequest.biography())
+                .privacy(profileRequest.isPrivate());
+        // TODO - Alterar tipo de favMovie e favSeries
+            // .withFavoriteMovie(profileRequest.favoriteMovie())
+            // .withFavoriteSeries(profileRequest.favoriteSeries());
     }
 
     public ProfileBuilder withBio(String biography) {
@@ -53,14 +69,14 @@ public class ProfileBuilder {
     }
 
     public ProfileBuilder withFavoriteMovie(Content favoriteMovie) {
-        if (favoriteMovie != null)
+        if (favoriteMovie != null && favoriteMovie.getIdContent() > 0)
             this.profile.setFavoriteMovie(favoriteMovie);
 
         return this;
     }
 
     public ProfileBuilder withFavoriteSeries(Content favoriteSeries) {
-        if (favoriteSeries != null)
+        if (favoriteSeries != null && favoriteSeries.getIdContent() > 0)
             this.profile.setFavoriteSeries(favoriteSeries);
 
         return this;

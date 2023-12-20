@@ -1,9 +1,10 @@
 package luan.moonvs.models.requests;
 
-import luan.moonvs.models.entities.Content;
-import luan.moonvs.models.enums.Privacy;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record ProfileRequest(String biography,
                              boolean isPrivate,
-                             Content favoriteMovie,
-                             Content favoriteSeries) { }
+                             int favoriteMovie, // TODO - Change to 'Content'
+                             int favoriteSeries) // TODO - Change to 'Content'
+{ }

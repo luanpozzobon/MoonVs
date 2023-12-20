@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import luan.moonvs.models.enums.Privacy;
+import luan.moonvs.utils.converters.PrivacyConverter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -29,7 +30,7 @@ public class Profile {
     private String biography;
 
     @Column(name = "privacy")
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = PrivacyConverter.class)
     private Privacy privacy;
 
     @CreationTimestamp

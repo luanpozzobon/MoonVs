@@ -1,8 +1,5 @@
 package luan.moonvs.models.enums;
 
-import lombok.Getter;
-
-@Getter
 public enum Privacy {
     PRIVATE(true),
     PUBLIC (false);
@@ -12,4 +9,9 @@ public enum Privacy {
     Privacy(boolean privacy) {
         this.privacy = privacy;
     }
+
+    public Boolean getValue() {
+        return this.privacy;
+    }
+
 }
