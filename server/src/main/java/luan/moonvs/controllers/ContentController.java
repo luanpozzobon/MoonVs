@@ -25,13 +25,14 @@ public class ContentController {
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
 
-        title = title.replace("%20", " ");
+        title = title.replace("+", " ");
         System.out.println(title);
         return service.internalSearch(title);
     }
 
     @GetMapping("/external-search")
     public ResponseEntity<List<ContentSearch>> externalSearch(@RequestParam String title) {
+        title = title.replace(" ", "+");
         if (title == null || title.isBlank())
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

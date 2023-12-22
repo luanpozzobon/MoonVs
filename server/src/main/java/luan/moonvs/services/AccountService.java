@@ -4,7 +4,6 @@ import luan.moonvs.models.builders.UserBuilder;
 import luan.moonvs.models.entities.User;
 import luan.moonvs.models.requests.AccountRequest;
 import luan.moonvs.models.requests.AuthRequest;
-import luan.moonvs.models.requests.PasswordRequest;
 import luan.moonvs.models.responses.AccountResponse;
 import luan.moonvs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,12 +54,12 @@ public class AccountService {
         }
     }
 
-    public ResponseEntity<String> updatePassword(PasswordRequest passwordRequest) {
+    public ResponseEntity<String> updatePassword(String password) {
         final String SUCCESS = "Senha atualizada com sucesso!",
                 EMPTY_PASSWORD = "Digite uma senha para continuar!";
         final User authUser = getAuthenticatedUser();
 
-        if (passwordRequest.password() == null || passwordRequest.password().isBlank())
+        if (password == null || password.isBlank())
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(EMPTY_PASSWORD);
@@ -68,7 +67,7 @@ public class AccountService {
         try {
             User user = builder
                     .fromAuthUser(authUser)
-                    .withPassword(passwordRequest)
+                    .withPassword(password)
                     .build();
 
             repository.save(user);

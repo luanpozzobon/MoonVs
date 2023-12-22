@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ProfileResponse(UUID idUser,
+                              String username,
                               String biography,
                               Privacy privacy,
                               LocalDateTime createdAt,
@@ -18,6 +19,7 @@ public record ProfileResponse(UUID idUser,
 
     public ProfileResponse(Profile profile) {
         this(profile.getIdUser(),
+             profile.getUser().getUsername(),
              profile.getBiography(),
              profile.getPrivacy(),
              profile.getCreatedAt(),

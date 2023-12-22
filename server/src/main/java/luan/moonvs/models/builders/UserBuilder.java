@@ -1,7 +1,6 @@
 package luan.moonvs.models.builders;
 
 import luan.moonvs.models.entities.User;
-import luan.moonvs.models.requests.PasswordRequest;
 import luan.moonvs.models.requests.RegisterRequest;
 import luan.moonvs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +47,9 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder withPassword(PasswordRequest passwordRequest) throws IllegalArgumentException {
-        isPasswordValid(passwordRequest.password(), passwordRequest.confirmedPassword());
-        String encryptedPassword = encryptPassword(passwordRequest.password());
+    public UserBuilder withPassword(String password) throws IllegalArgumentException {
+        isPasswordValid(password);
+        String encryptedPassword = encryptPassword(password);
         this.user.setPassword(encryptedPassword);
         return this;
     }
@@ -62,18 +61,10 @@ public class UserBuilder {
     }
 
     public UserBuilder withRegisterDto(RegisterRequest registerRequest) throws IllegalArgumentException {
-        isUsernameValid(registerRequest.username());
-        this.user.setUsername(registerRequest.username());
-
-        isEmailValid(registerRequest.email());
-        this.user.setEmail(registerRequest.email());
-
-        isPasswordValid(registerRequest.password(), registerRequest.confirmedPassword());
-        String encryptedPassword = encryptPassword(registerRequest.password());
-        this.user.setPassword(encryptedPassword);
-
-        isBirthDateValid(registerRequest.birthDate());
-        this.user.setBirthDate(registerRequest.birthDate());
+        this.withUsername(registerRequest.username());
+        this.withEmail(registerRequest.email());
+        this.withPassword(registerRequest.password());
+        this.withBirthDate(registerRequest.birthDate());
 
         return this;
     }
@@ -104,7 +95,7 @@ public class UserBuilder {
         }
     }
 
-    private void isPasswordValid(String password, String confirmedPassword) {
+    private void isPasswordValid(String password) {
         final int MINIMUM_PASSWORD_LENGTH = 8;
         final Pattern UPPERCASE_LETTERS = Pattern.compile("[A-Z]"),
                       LOWERCASE_LETTERS = Pattern.compile("[a-z]"),
@@ -125,9 +116,6 @@ public class UserBuilder {
 
         if (!SPECIAL_CHARS.matcher(password).find())
             throw new IllegalArgumentException(String.format("%s um caractere especial!", ERROR_MESSAGE));
-
-        if (!password.equals(confirmedPassword))
-            throw new IllegalArgumentException("As senhas fornecidas não são iguais!");
     }
 
     private void isBirthDateValid(LocalDate birthDate) {

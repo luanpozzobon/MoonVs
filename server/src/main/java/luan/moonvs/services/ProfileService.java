@@ -31,21 +31,11 @@ public class ProfileService {
 
     public ResponseEntity<String> createProfile(ProfileRequest profileRequest) {
         User authUser = accountService.getAuthenticatedUser();
-        Content movie = null, series = null;
-        ResponseEntity<Content> responseEntity = contentService.internalContent(profileRequest.favoriteMovie());
-        if (responseEntity.getStatusCode().is2xxSuccessful())
-            movie = responseEntity.getBody();
-
-        responseEntity = contentService.internalContent(profileRequest.favoriteSeries());
-        if (responseEntity.getStatusCode().is2xxSuccessful())
-            series = responseEntity.getBody();
 
         try {
             Profile profile = builder
                     .createProfile(profileRequest)
                     .fromAuthUser(authUser)
-                    .withFavoriteMovie(movie)
-                    .withFavoriteSeries(series)
                     .build();
 
             repository.save(profile);
@@ -79,23 +69,12 @@ public class ProfileService {
 
     public ResponseEntity<String> editProfile(ProfileRequest profileRequest) {
         User authUser = accountService.getAuthenticatedUser();
-        Content movie = null, series = null;
-        ResponseEntity<Content> responseEntity = contentService.internalContent(profileRequest.favoriteMovie());
-        if (responseEntity.getStatusCode().is2xxSuccessful())
-            movie = responseEntity.getBody();
-
-        responseEntity = contentService.internalContent(profileRequest.favoriteSeries());
-        if (responseEntity.getStatusCode().is2xxSuccessful())
-            series = responseEntity.getBody();
-
         Profile profile = repository.getReferenceById(authUser.getIdUser());
 
         try {
             profile = builder
                     .editProfile(profile, profileRequest)
                     .fromAuthUser(authUser)
-                    .withFavoriteMovie(movie)
-                    .withFavoriteSeries(series)
                     .build();
 
             repository.save(profile);

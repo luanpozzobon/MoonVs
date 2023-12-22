@@ -42,7 +42,7 @@ public class ProfileBuilder {
 
     public ProfileBuilder withBio(String biography) {
         if (biography == null)
-            return this;
+            this.profile.setBiography("");
 
         if (biography.length() > 255)
             throw new IllegalArgumentException("O campo 'bio' deve conter no máximo 255 caracteres!");

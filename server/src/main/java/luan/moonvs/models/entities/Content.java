@@ -50,6 +50,9 @@ public class Content {
             columnDefinition = "character_varying[]")
     private List<String> genres;
 
+    @Column(name = "poster_path")
+    private String posterPath;
+
     @Column(name = "tmdb_vote_avg")
     private double tmdbVoteAvg;
 

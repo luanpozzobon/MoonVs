@@ -31,6 +31,7 @@ public class ContentBuilder {
         this.content.setGenres(tmdbMovie.genres().stream()
                 .map(TmdbGenres::genre)
                 .collect(Collectors.toList()));
+        this.content.setPosterPath(tmdbMovie.posterPath());
         this.content.setTmdbVoteAvg(tmdbMovie.voteAvg());
         this.content.setTmdbVoteCount(tmdbMovie.voteCount());
         this.content.setContentType(ContentType.MOVIE);
@@ -48,6 +49,7 @@ public class ContentBuilder {
         this.content.setGenres(tmdbTv.genres().stream()
                 .map(TmdbGenres::genre)
                 .collect(Collectors.toList()));
+        this.content.setPosterPath(tmdbTv.posterPath());
         this.content.setTmdbVoteAvg(tmdbTv.voteAvg());
         this.content.setTmdbVoteCount(tmdbTv.voteCount());
         this.content.setContentType(ContentType.MOVIE);

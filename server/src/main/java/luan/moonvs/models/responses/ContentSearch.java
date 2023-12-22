@@ -8,12 +8,14 @@ public record ContentSearch(int id,
                             String originalTitle,
                             String overview,
                             ContentType contentType,
+                            String posterPath,
                             double voteAverage) {
     public ContentSearch(Content content) {
         this(content.getIdContent(),
              content.getOriginalTitle(),
              content.getOverview(),
              content.getContentType(),
+             content.getPosterPath(),
              content.getTmdbVoteAvg());
     }
 
@@ -22,6 +24,7 @@ public record ContentSearch(int id,
              tmdbSearch.originalTitle(),
              tmdbSearch.overview(),
              tmdbSearch.contentType(),
+             tmdbSearch.posterPath(),
              tmdbSearch.voteAvg());
     }
 }

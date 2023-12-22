@@ -14,6 +14,8 @@ public record TmdbTv(int id,
                      @JsonProperty("name")
                      String ptTitle,
                      String overview,
+                     @JsonProperty("poster_path")
+                     String posterPath,
                      @JsonProperty("vote_average")
                      double voteAvg,
                      @JsonProperty("vote_count")

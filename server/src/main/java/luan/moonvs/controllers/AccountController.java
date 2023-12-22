@@ -2,7 +2,6 @@ package luan.moonvs.controllers;
 
 import luan.moonvs.models.requests.AccountRequest;
 import luan.moonvs.models.requests.AuthRequest;
-import luan.moonvs.models.requests.PasswordRequest;
 import luan.moonvs.models.responses.AccountResponse;
 import luan.moonvs.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,8 @@ public class AccountController {
     }
 
     @PatchMapping("/update-password")
-    public ResponseEntity<String> updatePassword(@RequestBody PasswordRequest passwordRequest) {
-        return accountService.updatePassword(passwordRequest);
+    public ResponseEntity<String> updatePassword(@RequestBody String password) {
+        return accountService.updatePassword(password);
     }
 
     @DeleteMapping("/delete")
