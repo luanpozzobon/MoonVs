@@ -3,7 +3,7 @@
 
 ![Static Badge](https://img.shields.io/badge/versão-0.3.0.2-blue)
 [![Static Badge](https://img.shields.io/badge/licença-MIT-blue)](./LICENSE)
-![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-22%2F12%2F2023-blue)
+![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-23%2F12%2F2023-blue)
 
 <p align="center">
     <a href="#🗣️-idiomas">Idiomas</a> • 
