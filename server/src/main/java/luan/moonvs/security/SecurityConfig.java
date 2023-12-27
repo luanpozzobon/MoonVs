@@ -51,14 +51,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Value("cors.origins.localhost.url")
-    private String LOCALHOST;
-
     @Bean
     public CorsConfigurationSource configurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList(LOCALHOST));
+
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
         return new UrlBasedCorsConfigurationSource() {{

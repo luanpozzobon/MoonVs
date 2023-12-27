@@ -14,11 +14,6 @@ tmdb:
   url: https://api.themoviedb.org/3/%s%s
   token: ${TMDB_TOKEN}
 
-cors:
-  origins:
-    localhost:
-      url: http://127.0.0.1:5500
-
 logging:
   level:
     org.springframework.security: DEBUG
