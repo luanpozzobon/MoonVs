@@ -1,26 +1,21 @@
+<div align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/logos/Logo-Black.png">
-  <img alt="MoonVs Logo" src="./assets/logos/Logo-White.png">
+<source media="(prefers-color-scheme: dark)" srcset="./assets/logos/Logo-Black.png">
+<img alt="MoonVs Logo" src="./assets/logos/Logo-White.png">
 </picture>
 
 ![Static Badge](https://img.shields.io/badge/version-0.1.0-white?style=for-the-badge&labelColor=black)
 ![Static Badge](https://img.shields.io/badge/beta-2024--01-white?style=for-the-badge&labelColor=black)
 ![Static Badge](https://img.shields.io/badge/last%20update-2024--01--01-white?style=for-the-badge&labelColor=black)
 [![Static Badge](https://img.shields.io/badge/license-MIT-white?style=for-the-badge&labelColor=black)](./LICENSE)
+![Static Badge](https://img.shields.io/badge/status-developing-white?style=for-the-badge&labelColor=black)
+<p>A web application, using TMDB's API, to search and access information about lots of movies and series. In the future, will be possible to also create lists to group the contents, rate them, and add the contents to watchlists, making it able to track the movies and series to watch, and those you already watched!</p>
+</div>
 
-<p>
-    <a href="#🗣️-languages">Languages</a> • 
-    <a href="#🎯-project-status">Status</a> • 
-    <a href="#⚙️-features">Features</a> • 
-    <a href="#🛠️-tools">Tools</a> •
-    <a href="#👨‍💻-author">Author</a>
-</p>
 
 ## 🗣️ Languages
-[![Static Badge](https://img.shields.io/badge/lang-pt--BR-white?style=for-the-badge&labelColor=black)](./README.pt-BR.md)
 
-## 🎯 Project Status
-🚧 Developing 🚧
+[![Static Badge](https://img.shields.io/badge/lang-pt--BR-white?style=for-the-badge&labelColor=black)](./README.pt-BR.md)
 
 ## ⚙️ Features
 - [X] User registration and authentication
@@ -29,6 +24,11 @@
 - [ ] Rate and comment on Movies and TV Shows
 - [ ] Create lists and add titles to the lists
 - [ ] Recommendations based on previously watched Movies and TV Shows
+
+## 🚀 Access the Project
+You can access the project and check all of the features, by accessing the [project page](https://moonvs.netlify.app/).<br>
+You can also check more information about it, such as the changelog, or development information, by entering the [About page](https://luanpozzobon.github.io/luanpozzobon_site/pages/projects/moonvs/moonvs.html).
+
 
 ## 🛠️ Tools
 <ul style="list-style:none">
@@ -55,3 +55,4 @@
         </td>
     </tr>
 </table>
+

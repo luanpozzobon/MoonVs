@@ -53,9 +53,8 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource configurationSource() {
-
         CorsConfiguration config = new CorsConfiguration();
-
+        config.setAllowedOrigins(Collections.singletonList("https://moonvs.netlify.app"));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
         return new UrlBasedCorsConfigurationSource() {{

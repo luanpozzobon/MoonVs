@@ -1,0 +1,60 @@
+@import url(./style.css);
+
+main {
+    width: 70%;
+    margin: auto;
+}
+
+section {
+    margin: 20px 0px;
+    border-radius: 25px;
+    border: 1px solid var(--gray);
+    box-shadow: inset 0px 0px 50px var(--gray);
+    padding: 25px;
+}
+
+#content {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+}
+
+#content img {
+    grid-column: 1;
+    grid-row: 1 / span 5;
+    border-radius: 10px;
+}
+
+#content h1,
+#content p {
+    grid-column: 2;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+#watch {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#watch h2 {
+    flex-basis: 100%;
+    font-size: 24px;
+}
+
+#watch div {
+    padding: 10px;
+    margin: 10px;
+    width: 30%;
+    float: left;
+}
+
+#watch h3 {
+    font-size: 20px;
+}
+
+#watch p {
+    padding: 5px 0px;
+}

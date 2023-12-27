@@ -1,3 +1,4 @@
+<div align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/logos/Logo-Black.png">
   <img alt="MoonVs Logo" src="./assets/logos/Logo-White.png">
@@ -7,20 +8,13 @@
 ![Static Badge](https://img.shields.io/badge/beta-2024--01-white?style=for-the-badge&labelColor=black)
 ![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-01%2F01%2F2024-white?style=for-the-badge&labelColor=black)
 [![Static Badge](https://img.shields.io/badge/licença-MIT-white?style=for-the-badge&labelColor=black)](./LICENSE)
+![Static Badge](https://img.shields.io/badge/status-em_desenvolvimento-white?style=for-the-badge&labelColor=black)
+<p>Uma aplicação web, que utiliza da API do TMDB, é possível buscar e acessar informações sobre muitos filmes e séries. No futuro será possível também, criar listas para agrupar conteúdos, avaliá-los, e adicionar os conteúdos em uma lista à assistir, permitindo rastrear filmes e séries a assistir, e àqueles já assistidos.</p>
+</div>
 
-<p>
-    <a href="#🗣️-idiomas">Idiomas</a> • 
-    <a href="#🎯-status-do-projeto">Status</a> • 
-    <a href="#⚙️-funcionalidades">Funcionalidades</a> • 
-    <a href="#🛠️-ferramentas">Ferramentas</a> •
-    <a href="#👨‍💻-autor">Autor</a>
-</p>
 
 ## 🗣️ Idiomas
 [![Static Badge](https://img.shields.io/badge/lang-en-white?style=for-the-badge&labelColor=black)](./README.md)
-
-## 🎯 Status do Projeto
-🚧 Em Desenvolvimento 🚧
 
 ## ⚙️ Funcionalidades
 - [X] Cadastro e autenticação de usuários
@@ -29,6 +23,10 @@
 - [ ] Avaliação e comentários de filmes e séries
 - [ ] Criação de listas, e inserção de títulos as listas
 - [ ] Recomendação baseada nos filmes e séries assistidos anteriormente
+
+## 🚀 Access the Project
+Você pode acessar o projeto e usar todas as funções, acessando a [página do projeto](https://moonvs.netlify.app/).<br>
+Você também pode ver mais informações sobre, como o changelog, ou informações sobre o desenvolvimento, entrando na [página Sobre](https://luanpozzobon.github.io/luanpozzobon_site/pages/projects/moonvs/moonvs.html).
 
 ## 🛠️ Ferramentas
 <ul style="list-style:none">

@@ -1,0 +1,104 @@
+:root {
+    --font-color: rgba(255, 255, 255, 0.75);
+    --bg-color: rgba(0, 0, 0, 0.8);
+    --gray: #2d2d2dff;
+}
+
+* {
+    font-family: Bell-MT;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+html,
+body {
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    position: relative;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+#logo {
+    height: 90px;
+}
+
+nav {
+    flex-basis: 70%;
+}
+
+header nav a {
+    display: inline-flex;
+    color: var(--font-color);
+    text-decoration: none;
+    padding: 18px;
+    margin: 10px;
+    border: 1px solid var(--gray);
+    border-radius: 10px;
+    transition: 0.7s;
+}
+
+header nav a:hover {
+    box-shadow: inset 0px 0px 10px var(--font-color);
+}
+
+footer {
+    background-color: black;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: safe center;
+}
+
+footer div {
+    margin: 0px 20px;
+}
+
+#attribution {
+    flex-basis: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: left;
+}
+
+#attribution p {
+    flex-basis: 45%;
+    margin: 10px;
+    font-size: 16px;
+}
+
+#attribution img {
+    height: 35px;
+    margin: 5px;
+    margin-right: 20px;
+}
+
+footer h3 {
+    margin-bottom: 5px;
+}
+
+ul {
+    list-style: none;
+}
+
+li {
+    padding-bottom: 2px;
+}
+
+a {
+    color: var(--font-color);
+    text-decoration: none;
+}
