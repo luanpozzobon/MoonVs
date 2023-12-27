@@ -1,12 +1,14 @@
-<h1 align="center">🎞️ MoonVs</h1>
-<p align="center">Movies and TV Shows catalog and recommendation</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/logos/Logo-Black.png">
+  <img alt="MoonVs Logo" src="./assets/logos/Logo-White.png">
+</picture>
 
 ![Static Badge](https://img.shields.io/badge/version-0.1.0-white?style=for-the-badge&labelColor=black)
 ![Static Badge](https://img.shields.io/badge/beta-2024--01-white?style=for-the-badge&labelColor=black)
 ![Static Badge](https://img.shields.io/badge/last%20update-2024--01--01-white?style=for-the-badge&labelColor=black)
 [![Static Badge](https://img.shields.io/badge/license-MIT-white?style=for-the-badge&labelColor=black)](./LICENSE)
 
-<p align="center">
+<p>
     <a href="#🗣️-languages">Languages</a> • 
     <a href="#🎯-project-status">Status</a> • 
     <a href="#⚙️-features">Features</a> • 
