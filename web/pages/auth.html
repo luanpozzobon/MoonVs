@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoonVs: Auth</title>
+    <link rel="stylesheet" href="../styles/auth.css">
+    <link rel="shortcut icon" href="../assets/images/logos/Logo-W-Symbol.svg" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <img src="../assets/images/logos/Logo-B-Small.svg">
+    </header>
+    <main>
+        <div id="labels">
+            <span class="selected" id="login" onclick="authForms(this)">Login</span>
+            <span id="register" onclick="authForms(this)">Register</span>
+        </div>
+        <div class="forms selected" id="login-form">
+            <form onsubmit="login(); return false">
+                <input type="text" name="username" id="username-login" placeholder="Username">
+                <input type="password" name="password" id="password-login" placeholder="Password">
+                <input type="submit" value="Sign-In">
+            </form>
+        </div>
+        <div class="forms" id="register-form">
+            <form onsubmit="register(); return false">
+                <input type="text" name="username" id="username-register" placeholder="Username">
+                <input type="email" name="email" id="email-register" placeholder="example@example.com">
+                <input type="date" name="birthdate" id="birthdate-register">
+                <input type="password" name="password" id="password-register" placeholder="Password">
+                <input type="password" name="confirmPassword" id="confirmPassword-register" placeholder="Confirm Password">
+                <input type="submit" value="Register">
+            </form>
+        </div>
+    </main>
+</body>
+<script src="../scripts/auth.js"></script>
+</html>

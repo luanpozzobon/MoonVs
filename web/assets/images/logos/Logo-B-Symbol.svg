@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="80px"
+   height="100px"
+   viewBox="0 0 19.758404 25.135393"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="MoonVs-Final.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.5340488"
+     inkscape:cx="273.45935"
+     inkscape:cy="274.11122"
+     inkscape:window-width="2560"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Blur"
+       id="filter106-5"
+       x="-0.52593702"
+       y="-0.31999744"
+       width="2.051874"
+       height="1.6399949">
+      <feGaussianBlur
+         stdDeviation="2 2"
+         result="blur"
+         id="feGaussianBlur106-31" />
+    </filter>
+    <linearGradient
+       id="linearGradient106"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop106" />
+      <stop
+         style="stop-color:#2e2e2e;stop-opacity:1;"
+         offset="1"
+         id="stop107" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient106"
+       id="linearGradient3"
+       gradientUnits="userSpaceOnUse"
+       x1="92.648781"
+       y1="141.49344"
+       x2="101.77535"
+       y2="141.49344" />
+  </defs>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-146.33193,-80.962629)">
+    <g
+       id="g225"
+       inkscape:export-filename="Codes\MoonVs\web\assets\images\logos\Logo-Black.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       transform="matrix(1.0009471,0,0,1.0217589,48.274126,-15.252534)"
+       inkscape:label="MoonVs-B-Symbol">
+      <title
+         id="title220">MoonVs-Black</title>
+      <g
+         id="g224"
+         transform="translate(10.116235,-35.027168)"
+         inkscape:label="Lua"
+         inkscape:export-filename="Codes\MoonVs\web\assets\images\logos\Logo-B-Symbol.svg"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96">
+        <title
+           id="title221">Lua</title>
+        <path
+           id="path222"
+           style="mix-blend-mode:normal;fill:#262626;fill-opacity:0.5;fill-rule:nonzero;stroke:none;stroke-width:0.142548;stroke-opacity:1"
+           inkscape:label="Lua"
+           d="m 101.58497,134.64177 c 2.25295,1.37599 3.77783,3.88451 3.85702,6.53523 0.13823,2.75651 -1.30043,5.51032 -3.61843,7.00356 -0.76357,0.44348 0.56224,0.0256 0.87261,-0.0522 2.77782,-0.81029 4.82344,-3.53215 4.8801,-6.42011 0.22399,-3.50681 -2.66299,-6.81241 -6.14755,-7.14458 l 0.0894,0.0447 z">
+          <title
+             id="title222">Lua</title>
+        </path>
+        <path
+           id="path223"
+           style="fill:#ffffff;fill-opacity:0.801676;fill-rule:nonzero;stroke:none;stroke-width:0.142548;stroke-opacity:1;filter:url(#filter106-5)"
+           d="m 100.14858,133.99338 a 7.5,7.5 0 0 0 -7.499798,7.50032 7.5,7.5 0 0 0 7.499798,7.4998 7.5,7.5 0 0 0 1.5875,-0.18913 7.5,7.5 0 0 1 -5.912298,-7.31067 7.5,7.5 0 0 1 5.951568,-7.31945 7.5,7.5 0 0 0 -1.62677,-0.18087 z"
+           inkscape:label="Brilho">
+          <title
+             id="title223">Brilho</title>
+        </path>
+        <path
+           id="path224"
+           style="mix-blend-mode:normal;fill:url(#linearGradient3);fill-rule:nonzero;stroke:none;stroke-width:0.142548;stroke-opacity:1"
+           inkscape:label="Lua"
+           d="m 98.9375,134.625 c -2.528888,0.45991 -4.748829,2.37775 -5.445419,4.86681 -0.945535,2.91576 0.363821,6.34303 2.98926,7.91564 0.848866,0.51794 1.812579,0.87621 2.803815,0.98513 -2.352148,-1.357 -3.908825,-3.96717 -3.967901,-6.68575 -0.08588,-2.73124 1.343041,-5.4422 3.647701,-6.91426 0.225147,-0.2014 0.507365,-0.23078 -0.02746,-0.16757 z">
+          <title
+             id="title224">Lua</title>
+        </path>
+      </g>
+    </g>
+  </g>
+</svg>

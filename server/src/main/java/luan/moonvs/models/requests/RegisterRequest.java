@@ -4,6 +4,5 @@ import java.time.LocalDate;
 
 public record RegisterRequest(String username,
                               String email,
-                              String password,
-                              String confirmedPassword,
-                              LocalDate birthDate) { }
+                              LocalDate birthDate,
+                              String password) { }

@@ -25,9 +25,10 @@ public class TmdbSearchDeserializer extends StdDeserializer<TmdbSearch> {
             int id = node.get("id").asInt();
             String originalTitle = node.has("original_title") ? node.get("original_title").asText() : node.get("original_name").asText();
             String overview = node.get("overview").asText();
+            String posterPath = node.get("poster_path").asText();
             double voteAvg = node.get("vote_average").asDouble();
 
-            return new TmdbSearch(id, originalTitle, overview, contentType, voteAvg);
+            return new TmdbSearch(id, originalTitle, overview, contentType, posterPath, voteAvg);
         } catch (IllegalArgumentException e) {
             return null;
         }

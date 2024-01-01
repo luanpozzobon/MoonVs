@@ -16,5 +16,7 @@ public record TmdbMovie(int id,
                         String overview,
                         @JsonProperty("vote_average")
                         double voteAvg,
+                        @JsonProperty("poster_path")
+                        String posterPath,
                         @JsonProperty("vote_count")
                         int voteCount) { }

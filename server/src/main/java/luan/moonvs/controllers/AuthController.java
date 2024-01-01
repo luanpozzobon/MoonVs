@@ -16,14 +16,12 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping( { "/", "/login" } )
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authDTO) {
         return authService.login(authDTO);
     }
 
     @PostMapping("/register")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerDTO) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerDTO) {
         return authService.register(registerDTO);
     }
 }

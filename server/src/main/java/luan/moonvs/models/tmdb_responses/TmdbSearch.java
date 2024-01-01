@@ -14,6 +14,8 @@ public record TmdbSearch(int id,
                          String overview,
                          @JsonProperty("media_type")
                          ContentType contentType,
+                         @JsonProperty("poster_path")
+                         String posterPath,
                          @JsonProperty("vote_average")
                          double voteAvg) { }
 

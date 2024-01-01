@@ -1,6 +1,7 @@
 package luan.moonvs.controllers;
 
 import luan.moonvs.models.entities.Content;
+import luan.moonvs.models.enums.ContentType;
 import luan.moonvs.models.responses.ContentSearch;
 import luan.moonvs.models.requests.ExternalContentRequest;
 import luan.moonvs.services.ContentService;
@@ -26,12 +27,12 @@ public class ContentController {
                     .build();
 
         title = title.replace("%20", " ");
-        System.out.println(title);
         return service.internalSearch(title);
     }
 
     @GetMapping("/external-search")
     public ResponseEntity<List<ContentSearch>> externalSearch(@RequestParam String title) {
+        title = title.replace(" ", "%20");
         if (title == null || title.isBlank())
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -51,12 +52,12 @@ public class ContentController {
     }
 
     @GetMapping("/external")
-    public ResponseEntity<?> viewExternalContent(@RequestBody ExternalContentRequest contentView) {
-        if (contentView.id() < 1)
+    public ResponseEntity<?> viewExternalContent(@RequestParam int id, @RequestParam ContentType contentType) {
+        if (id < 1)
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
 
-        return service.externalContent(contentView);
+        return service.externalContent(id, contentType);
     }
 }

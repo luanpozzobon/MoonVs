@@ -2,6 +2,7 @@ package luan.moonvs.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import luan.moonvs.models.entities.Content;
+import luan.moonvs.models.enums.ContentType;
 import luan.moonvs.models.requests.ExternalContentRequest;
 import luan.moonvs.models.responses.ContentSearch;
 import luan.moonvs.models.tmdb_responses.TmdbSearch;
@@ -76,17 +77,17 @@ public class ContentService {
         }
     }
 
-    public ResponseEntity<Content> externalContent(ExternalContentRequest contentView) {
-        if (repository.existsByIdTmdb(contentView.id()))
+    public ResponseEntity<Content> externalContent(int id, ContentType contentType) {
+        if (repository.existsByIdTmdb(id))
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(repository.getReferenceByIdTmdb(contentView.id()));
+                    .body(repository.getReferenceByIdTmdb(id));
 
         Content content = null;
 
-        switch (contentView.contentType()){
-            case MOVIE -> content = tmdbService.viewMovie(contentView.id());
-            case TV -> content = tmdbService.viewSeries(contentView.id());
+        switch (contentType){
+            case MOVIE -> content = tmdbService.viewMovie(id);
+            case TV -> content = tmdbService.viewSeries(id);
         }
 
         if (content == null)

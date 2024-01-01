@@ -46,16 +46,14 @@ public class AuthService {
                 .body(new AuthResponse(token));
     }
 
-    public ResponseEntity<RegisterResponse> register(RegisterRequest registerDTO) {
+    public ResponseEntity<?> register(RegisterRequest registerDTO) {
         try {
             User user = userBuilder
                     .withRegisterDto(registerDTO)
                     .build();
 
             repository.save(user);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(new RegisterResponse("Usuário cadastrado com sucesso!"));
+            return login(new AuthRequest(registerDTO.username(), registerDTO.password()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

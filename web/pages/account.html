@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoonVs: Profile</title>
+    <link rel="stylesheet" href="../styles/account.css">
+    <link rel="shortcut icon" href="../assets/images/logos/Logo-W-Symbol.svg" type="image/x-icon">
+</head>
+<script>
+    const session = JSON.parse(sessionStorage.getItem('session'));
+    const now = new Date().getTime();
+
+    if (!session || now > session.expiration) {
+        window.location.href = './auth.html';
+    }
+</script>
+<body>
+    <header>
+        <a href="../index.html"><img src="../assets/images/logos/Logo-Black.svg" id="logo"></a>
+        <nav>
+            <a href="./account.html">Account</a>
+        </nav>
+    </header>
+    <main>
+        <h2 id="username"></h2>
+        <div id="profile">
+            <form onsubmit="saveProfile(); return false;">
+                <textarea name="biography" id="biography" cols="30" rows="3" placeholder="Write down a cool bio!" maxlength="255"></textarea>
+                <button type="submit" style="flex-basis: 100%;">Save</button>
+            </form>
+        </div>
+        <div>
+            <form onsubmit="editAccount(); return false">
+                <input type="text" name="username" id="editUsername" placeholder="New Username">
+                <input type="email" name="email" id="editEmail" placeholder="New E-Mail">
+                <button type="submit">Save</button>
+                <button type="reset" class="cancel">Cancel</button>
+            </form>
+        </div>
+        <div>
+            <form onsubmit="changePassword(); return false">
+                <input type="password" name="password" id="editPassword" placeholder="New Password">
+                <input type="password" name="password" id="confirmPassword" placeholder="Confirm Password">
+                <button type="submit">Save</button>
+                <button type="reset" class="cancel">Cancel</button>
+            </form>
+        </div>
+        <div>
+            <form onsubmit="deleteAccount(); return false">
+                <input type="text" name="deleteUsername" id="deleteUsername" placeholder="Username">
+                <input type="password" name="deletePassword" id="deletePassword" placeholder="Password">
+                <button id="delete">Delete Account</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div id="attribution">
+            <p>This website uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</p>
+            <img src="../assets/images/attribution/tmdb.svg" alt="">
+
+            <p>You can discover where to watch movies and series thanks to JustWatch</p>
+            <img src="../assets/images/attribution/JustWatch.webp" alt="">
+        </div>
+        <div id="project">
+            <h3>The Project</h3>
+            <ul>
+                <a href=""><li>About MoonVs</li></a>
+                <a href="mailto:luanpozzobon@gmail.com"><li>Have any Suggestions?</li></a>
+            </ul>
+        </div>
+        <div id="author">
+            <h3>The Author</h3>
+            <ul>
+                <a href="https://luanpozzobon.github.io/luanpozzobon_site/pages/about.html" target="_blank" rel="author"><li>About the Author</li></a>
+                <a href="https://github.com/luanpozzobon"><li>Github</li></a>
+                <a href="https://www.linkedin.com/in/luanpozzobon/"><li>LinkedIn</li></a>
+            </ul>
+        </div>
+    </footer>
+</body>
+<script src="../scripts/account.js"></script>
+</html>
