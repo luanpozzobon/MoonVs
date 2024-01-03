@@ -5,6 +5,44 @@ main {
     margin: auto;
 }
 
+.hidden {
+    visibility: hidden;
+    display: none;
+}
+
+#rating {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+#rating form {
+    flex-basis: 20%;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--gray);
+    border-radius: 10px;
+}
+
+#rating form input,
+#rating form textarea {
+    flex-basis: 100%;
+    padding: 5px;
+    margin: 20px;
+    background-color: var(--gray);
+    color: var(--font-color);
+    border-radius: 5px;
+}
+
 section {
     margin: 20px 0px;
     border-radius: 25px;
@@ -28,6 +66,20 @@ section {
 #content h1,
 #content p {
     grid-column: 2;
+}
+
+#content div {
+    display: flex;
+    flex-direction: row;
+}
+
+#content div p {
+    padding-right: 20px;
+}
+
+#userRating:hover {
+    cursor: pointer;
+    text-decoration: underline solid var(--font-color);
 }
 
 h1 {

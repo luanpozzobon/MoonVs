@@ -19,10 +19,17 @@
     <header>
         <a href="../index.html"><img src="../assets/images/logos/Logo-Black.svg" id="logo"></a>
         <nav>
-            <a href="../account.html">Account</a>
+            <a href="./account.html">Account</a>
         </nav>
     </header>
     <main>
+        <div class="hidden" id="rating">
+            <form onsubmit="doRate(); return false;">
+                <input type="number" name="ratingValue" id="ratingValue" min="0" max="10" step="0.1" placeholder="Rating">
+                <textarea name="commentary" id="commentary" cols="30" rows="3" maxlength="255" placeholder="Comment"></textarea>
+                <input type="submit" value="Rate!">
+            </form>
+        </div>
         <section id="content">
         </section>
         <section id="watch">
@@ -40,7 +47,7 @@
         <div id="project">
             <h3>The Project</h3>
             <ul>
-                <a href=""><li>About MoonVs</li></a>
+                <a href="https://luanpozzobon.github.io/luanpozzobon_site/pages/projects/moonvs/moonvs.html" target="_blank" rel="external"><li>About MoonVs</li></a>
                 <a href="mailto:luanpozzobon@gmail.com"><li>Have any Suggestions?</li></a>
             </ul>
         </div>

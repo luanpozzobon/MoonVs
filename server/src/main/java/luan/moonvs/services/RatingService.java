@@ -5,6 +5,7 @@ import luan.moonvs.models.builders.RatingBuilder;
 import luan.moonvs.models.entities.ContentAndUserId;
 import luan.moonvs.models.entities.Rating;
 import luan.moonvs.models.entities.User;
+import luan.moonvs.models.requests.RateRequest;
 import luan.moonvs.models.requests.RatingRequest;
 import luan.moonvs.repositories.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class RatingService {
         this.accountService = accountService;
     }
 
+    @Deprecated
     public ResponseEntity<Rating> newRating(RatingRequest ratingRequest) {
         User authUser = accountService.getAuthenticatedUser();
         Rating rating = null;
@@ -42,7 +44,32 @@ public class RatingService {
                 .body(rating);
     }
 
-    public ResponseEntity<Rating> getRating(int idContent) {
+    public ResponseEntity<Rating> addOrEditRating(int idContent, RateRequest rateRequest) {
+        User authUser = accountService.getAuthenticatedUser();
+        Rating rating;
+        try {
+            rating = repository.getReferenceById(new ContentAndUserId(authUser.getIdUser(), idContent));
+
+            rating = RatingBuilder.create(rating)
+                    .addRating(rateRequest.ratingValue())
+                    .addCommentary(rateRequest.commentary())
+                    .build();
+        } catch (EntityNotFoundException e) {
+            rating = RatingBuilder.create()
+                    .withId(authUser.getIdUser(), idContent)
+                    .addRating(rateRequest.ratingValue())
+                    .addCommentary(rateRequest.commentary())
+                    .build();
+        }
+
+        repository.save(rating);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(rating);
+    }
+
+    public ResponseEntity<Rating> getUserRating(int idContent) {
         User authUser = accountService.getAuthenticatedUser();
         ContentAndUserId idRating = new ContentAndUserId(authUser.getIdUser(), idContent);
 
@@ -51,6 +78,18 @@ public class RatingService {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(rating);
+    }
+
+    public ResponseEntity<Float> getAvgRating(int idContent) {
+        Float avgRating = repository.getAverageRatingByContent(idContent);
+        if (avgRating == null)
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(avgRating);
     }
 
     public ResponseEntity<?> getAllUserRatings() {

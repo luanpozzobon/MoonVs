@@ -1,6 +1,6 @@
 package luan.moonvs.controllers;
 
-import luan.moonvs.models.entities.Rating;
+import luan.moonvs.models.requests.RateRequest;
 import luan.moonvs.models.requests.RatingRequest;
 import luan.moonvs.services.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/rating")
 public class RatingController {
     @Autowired
     private RatingService service;
 
+    @Deprecated
     @PostMapping("/rate")
     public ResponseEntity<?> newRating(@RequestBody RatingRequest rating) {
         if (rating.idContent() < 1)
@@ -31,14 +30,35 @@ public class RatingController {
         return service.newRating(rating);
     }
 
+    @PostMapping("/rate/{idContent}")
+    public ResponseEntity<?> addOrEditRating(@PathVariable int idContent, @RequestBody RateRequest rateRequest) {
+        if (idContent < 1)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Content doesn't exist!");
+
+        return service.addOrEditRating(idContent, rateRequest);
+    }
+
+
     @GetMapping("/{idContent}")
-    public ResponseEntity<?> getRating(@PathVariable int idContent) {
+    public ResponseEntity<?> getUserRating(@PathVariable int idContent) {
         if (idContent < 1)
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("Conteúdo não existe");
 
-        return service.getRating(idContent);
+        return service.getUserRating(idContent);
+    }
+
+    @GetMapping("/avg-rating/{idContent}")
+    public ResponseEntity<?> getAvgRating(@PathVariable int idContent) {
+        if (idContent < 1)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Conteúdo não existe");
+
+        return service.getAvgRating(idContent);
     }
 
     @GetMapping("/")

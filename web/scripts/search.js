@@ -35,7 +35,7 @@ async function externalSearch() {
 }
 
 async function doSearch(URL) {
-    const value = input.value.replace(' ', '%20');
+    const value = input.value.replace(/ /g, '%20');
     const options = {
         method: "GET",
         headers: {
