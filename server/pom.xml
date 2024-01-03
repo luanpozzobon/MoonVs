@@ -11,7 +11,7 @@
     </parent>
     <groupId>luan</groupId>
     <artifactId>moonvs</artifactId>
-    <version>0.1.0-beta.2024-01</version>
+    <version>0.2.0-beta.2024-02</version>
 
     <properties>
         <maven.compiler.source>19</maven.compiler.source>

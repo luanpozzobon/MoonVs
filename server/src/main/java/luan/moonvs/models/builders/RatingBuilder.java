@@ -17,6 +17,12 @@ public class RatingBuilder {
         return ratingBuilder;
     }
 
+    public static RatingBuilder create(Rating rating) {
+        RatingBuilder ratingBuilder = new RatingBuilder();
+        ratingBuilder.rating = rating;
+        return ratingBuilder;
+    }
+
     public RatingBuilder withId(UUID idUser, int idContent) {
         ContentAndUserId idRating = new ContentAndUserId(idUser, idContent);
         this.rating.setIdRating(idRating);
