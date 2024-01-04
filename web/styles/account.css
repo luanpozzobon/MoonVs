@@ -5,7 +5,7 @@
 }
 
 main {
-    width: 50%;
+    max-width: 1200px;
     margin: auto;
     margin-bottom: 150px;
 }
@@ -31,26 +31,26 @@ textarea {
     display: block;
     flex-basis: 100%;
     margin: auto;
-    background-color: var(--gray);
+    background-color: black;
     padding: 10px;
     border-radius: 25px;
+    border: 1px solid var(--font-color);
 }
 
-#profile input {
-    background-color: var(--gray);
-}
 
 input {
     flex-basis: 100%;
-    background-color: var(--gray);
+    background-color: black;
     padding: 10px;
     margin: 10px auto;
     border-radius: 25px;
+    border: 1px solid var(--font-color);
 }
 
 button {
     flex-basis: 45%;
     background-color: rgba(172, 255, 47, 0.5);
+    border: 1px solid var(--font-color);
     padding: 10px 20px;
     margin: 10px;
     border-radius: 25px;
