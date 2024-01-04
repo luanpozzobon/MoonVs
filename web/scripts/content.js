@@ -60,8 +60,8 @@ Array.from(BUY).forEach(p => {
 
 var rentContainer = document.createElement('div');
 var rentTitle = document.createElement('h3');
-buyTitle.innerText = "Rent";
-buyContainer.appendChild(rentTitle);
+rentTitle.innerText = "Rent";
+rentContainer.appendChild(rentTitle);
 
 Array.from(RENT).forEach(p => {
     var rent = document.createElement('p');
@@ -80,9 +80,10 @@ Array.from(STREAMING).forEach(p => {
     streamingContainer.appendChild(streaming)
 })
 
-WATCH_SECTION.appendChild(buyContainer);
-WATCH_SECTION.appendChild(rentContainer);
-WATCH_SECTION.appendChild(streamingContainer);
+WATCH_SECTION.lastElementChild.before(buyContainer);
+WATCH_SECTION.lastElementChild.before(rentContainer);
+WATCH_SECTION.lastElementChild.before(streamingContainer);
+
 
 function getRating(idContent) {
     const URL = BASE_URL + "rating/";

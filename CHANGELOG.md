@@ -7,6 +7,16 @@
 - Backend method 'addOrEditRating()' on RatingController and RatingService.
 - Backend DTO 'RateRequest'.
 
+## Changed
+
+- Logo moved to the form area on the Auth screen.
+- Changed forms background color on Auth screen.
+- Changed input fields color on Auth screen.
+- Changed effect on selected tab at Auth screen.
+- Changed input fields color on Account screen.
+- Changed input fields border.
+- Moved 'JustWatch' attribution only to 'Where to Watch?' section.
+
 ## Deprecated
 
 - Backend method 'newRating()' from RatingController and RatingService.
@@ -16,5 +26,7 @@
 
 - Fixed the URL to 'About MoonVs'.
 - Fixed replacement of blank spaces on the search methods!
+- External links now open on a blank tab.
+- Fixed bug of titles in list of watch providers.
 
 [You can also access the full changelog](https://luanpozzobon.github.io/luanpozzobon_site/pages/projects/moonvs/moonvs.html)
