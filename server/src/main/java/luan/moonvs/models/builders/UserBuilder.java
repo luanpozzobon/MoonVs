@@ -1,9 +1,9 @@
 package luan.moonvs.models.builders;
 
+import lombok.NoArgsConstructor;
 import luan.moonvs.models.entities.User;
 import luan.moonvs.models.requests.RegisterRequest;
 import luan.moonvs.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -11,22 +11,38 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.regex.Pattern;
 
+@NoArgsConstructor
 @Component
 public class UserBuilder {
     private User user;
+    private UserRepository repository;
 
-    private final UserRepository repository;
-
-    @Autowired
+    @Deprecated
     public UserBuilder(UserRepository repository) {
         this.repository = repository;
         this.user = new User();
     }
 
-
+    @Deprecated
     public UserBuilder fromAuthUser(User authUser) {
         user = authUser.clone();
         return this;
+    }
+
+    public static UserBuilder create(UserRepository repository) {
+        UserBuilder userBuilder = new UserBuilder();
+        userBuilder.repository = repository;
+        userBuilder.user = new User();
+
+        return userBuilder;
+    }
+
+    public static UserBuilder create(UserRepository repository, User authUser) {
+        UserBuilder userBuilder = new UserBuilder();
+        userBuilder.repository = repository;
+        userBuilder.user = new User(authUser);
+
+        return userBuilder;
     }
 
     public UserBuilder withUsername(String username) throws IllegalArgumentException {

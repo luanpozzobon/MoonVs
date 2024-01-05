@@ -2,7 +2,6 @@ package luan.moonvs.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import luan.moonvs.models.builders.ProfileBuilder;
-import luan.moonvs.models.entities.Content;
 import luan.moonvs.models.entities.Profile;
 import luan.moonvs.models.entities.User;
 import luan.moonvs.models.requests.ProfileRequest;
@@ -30,7 +29,7 @@ public class ProfileService {
     }
 
     public ResponseEntity<String> createProfile(ProfileRequest profileRequest) {
-        User authUser = accountService.getAuthenticatedUser();
+        User authUser = accountService.getAccount();
 
         try {
             Profile profile = builder
@@ -51,7 +50,7 @@ public class ProfileService {
     }
 
     public ResponseEntity<ProfileResponse> profileInfo() {
-        User authUser = accountService.getAuthenticatedUser();
+        User authUser = accountService.getAccount();
         try {
             Profile profile = repository.getReferenceById(authUser.getIdUser());
             ProfileResponse response = new ProfileResponse(profile);
@@ -68,7 +67,7 @@ public class ProfileService {
     }
 
     public ResponseEntity<String> editProfile(ProfileRequest profileRequest) {
-        User authUser = accountService.getAuthenticatedUser();
+        User authUser = accountService.getAccount();
         Profile profile = repository.getReferenceById(authUser.getIdUser());
 
         try {

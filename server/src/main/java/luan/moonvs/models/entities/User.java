@@ -50,6 +50,16 @@ public class User implements UserDetails, Cloneable{
     @PrimaryKeyJoinColumn
     private Profile profile;
 
+    public User(User user) {
+        this.idUser = user.getIdUser();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.birthDate = user.getBirthDate();
+        this.createdAt = user.getCreatedAt();
+        this.profile = user.getProfile();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -76,6 +86,7 @@ public class User implements UserDetails, Cloneable{
     }
 
     @Override
+    @Deprecated
     public User clone() {
         try {
             return (User) super.clone();

@@ -28,7 +28,7 @@ public class RatingService {
 
     @Deprecated
     public ResponseEntity<Rating> newRating(RatingRequest ratingRequest) {
-        User authUser = accountService.getAuthenticatedUser();
+        User authUser = accountService.getAccount();
         Rating rating = null;
 
         rating = RatingBuilder.create()
@@ -45,7 +45,7 @@ public class RatingService {
     }
 
     public ResponseEntity<Rating> addOrEditRating(int idContent, RateRequest rateRequest) {
-        User authUser = accountService.getAuthenticatedUser();
+        User authUser = accountService.getAccount();
         Rating rating;
         try {
             rating = repository.getReferenceById(new ContentAndUserId(authUser.getIdUser(), idContent));
@@ -70,7 +70,7 @@ public class RatingService {
     }
 
     public ResponseEntity<Rating> getUserRating(int idContent) {
-        User authUser = accountService.getAuthenticatedUser();
+        User authUser = accountService.getAccount();
         ContentAndUserId idRating = new ContentAndUserId(authUser.getIdUser(), idContent);
 
         Rating rating = repository.getReferenceById(idRating);
@@ -93,7 +93,7 @@ public class RatingService {
     }
 
     public ResponseEntity<?> getAllUserRatings() {
-        User authUser = accountService.getAuthenticatedUser();
+        User authUser = accountService.getAccount();
         try {
             List<Rating> ratingList = repository.getByIdRatingIdUser(authUser.getIdUser());
 

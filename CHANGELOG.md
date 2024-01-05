@@ -6,6 +6,10 @@
 - View of user's rating and average rating for each content.
 - Backend method 'addOrEditRating()' on RatingController and RatingService.
 - Backend DTO 'RateRequest'.
+- Backend DTOs 'UserAccountRequest' and 'UserAccountResponse'.
+- Backend exception 'IllegalIdException'.
+- Backend Account methods 'getAccount' and 'updateUsernameAndOrEmail'.
+- 'create()' methods on UserBuilder
 
 ## Changed
 
@@ -16,11 +20,15 @@
 - Changed input fields color on Account screen.
 - Changed input fields border.
 - Moved 'JustWatch' attribution only to 'Where to Watch?' section.
+- AccountController now performs basic validations.
+- Backend Account methods 'updatePassword' and 'deleteAccount'.
 
 ## Deprecated
 
 - Backend method 'newRating()' from RatingController and RatingService.
 - Backend DTO 'RatingRequest'.
+- Backend DTO 'AccountRequest'.
+- Backend Account methods 'account', 'updateAccount', 'updatePassword', and 'deleteAccount'.
 
 ## Fixed
 
