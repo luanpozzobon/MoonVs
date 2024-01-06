@@ -3,8 +3,9 @@ package luan.moonvs.services;
 import jakarta.persistence.EntityNotFoundException;
 import luan.moonvs.models.entities.Content;
 import luan.moonvs.models.enums.ContentType;
-import luan.moonvs.models.requests.ExternalContentRequest;
+import luan.moonvs.models.enums.SearchType;
 import luan.moonvs.models.responses.ContentSearch;
+import luan.moonvs.models.responses.Response;
 import luan.moonvs.models.tmdb_responses.TmdbSearch;
 import luan.moonvs.repositories.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ContentService {
@@ -26,6 +32,7 @@ public class ContentService {
         this.tmdbService = tmdbService;
     }
 
+    @Deprecated
     public ResponseEntity<List<ContentSearch>> internalSearch(String title) {
         List<Content> contents = repository.getByOriginalTitleContaining(title);
         if (contents.isEmpty())
@@ -45,6 +52,7 @@ public class ContentService {
 
     }
 
+    @Deprecated
     public ResponseEntity<List<ContentSearch>> externalSearch(String title) {
         List<TmdbSearch> contents = tmdbService.search(title);
         if (contents.isEmpty())
@@ -64,6 +72,56 @@ public class ContentService {
                 .body(response);
     }
 
+    public Response<List<ContentSearch>> search(SearchType searchType, String title) {
+        final String BAD_SEARCH = "There's no such search type!",
+                     NOT_EXISTING = "The title you've searched, doesn't exist!";
+
+        List<ContentSearch> response;
+
+        switch (searchType) {
+            case INTERNAL:
+                title = URLDecoder.decode(title, StandardCharsets.UTF_8);
+                response = databaseSearch(title);
+
+                break;
+            case EXTERNAL:
+                title = URLEncoder.encode(title, StandardCharsets.UTF_8);
+                response = tmdbSearch(title);
+
+                break;
+            default:
+                return new Response<>(HttpStatus.BAD_REQUEST, BAD_SEARCH);
+        }
+
+        if (response == null)
+            return new Response<>(HttpStatus.NOT_FOUND, NOT_EXISTING);
+
+        return new Response<>(HttpStatus.OK, response);
+    }
+
+    private List<ContentSearch> databaseSearch(String title) {
+        List<Content> contents = repository.getByOriginalTitleContaining(title);
+        if (contents.isEmpty())
+            return null;
+
+        return contents.stream()
+                .filter(Objects::nonNull)
+                .map(ContentSearch::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<ContentSearch> tmdbSearch(String title) {
+        List<TmdbSearch> contents = tmdbService.search(title);
+        if (contents.isEmpty())
+            return null;
+
+        return contents.stream()
+                .filter(Objects::nonNull)
+                .map(ContentSearch::new)
+                .collect(Collectors.toList());
+    }
+
+    @Deprecated
     public ResponseEntity<Content> internalContent(int id) {
         try {
             Content content = repository.getReferenceById(id);
@@ -77,6 +135,7 @@ public class ContentService {
         }
     }
 
+    @Deprecated
     public ResponseEntity<Content> externalContent(int id, ContentType contentType) {
         if (repository.existsByIdTmdb(id))
             return ResponseEntity
@@ -99,5 +158,57 @@ public class ContentService {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(content);
+    }
+
+    public Response<Content> viewContent(int id, SearchType searchType, ContentType contentType) {
+        final String BAD_SEARCH = "There's no such search type!",
+                     NOT_EXISTING = "The requested content, couldn't be found!";
+
+        if (searchType == null)
+            searchType = SearchType.INTERNAL;
+
+        Content content;
+        switch (searchType) {
+            case INTERNAL:
+                content = viewDatabaseContent(id);
+
+                break;
+            case EXTERNAL:
+                content = viewTmdbContent(id, contentType);
+
+                break;
+            default:
+                return new Response<>(HttpStatus.BAD_REQUEST, BAD_SEARCH);
+        }
+
+        if (content == null)
+            return new Response<>(HttpStatus.NOT_FOUND, NOT_EXISTING);
+
+        return new Response<>(HttpStatus.OK, content);
+    }
+
+    private Content viewDatabaseContent(int id) {
+        try {
+            return repository.getReferenceById(id);
+        } catch (EntityNotFoundException e) {
+            return null;
+        }
+    }
+
+    private Content viewTmdbContent(int id, ContentType contentType) {
+        if (repository.existsByIdTmdb(id))
+            return repository.getReferenceByIdTmdb(id);
+
+        Content content = null;
+
+        switch (contentType){
+            case MOVIE -> content = tmdbService.viewMovie(id);
+            case TV -> content = tmdbService.viewSeries(id);
+        }
+
+        if (content != null)
+            repository.save(content);
+
+        return content;
     }
 }

@@ -9,7 +9,11 @@
 - Backend DTOs 'UserAccountRequest' and 'UserAccountResponse'.
 - Backend exception 'IllegalIdException'.
 - Backend Account methods 'getAccount' and 'updateUsernameAndOrEmail'.
-- 'create()' methods on UserBuilder
+- 'create()' methods on UserBuilder.
+- 'create()' methods on ContentBuilder.
+- Backend Content methods 'search', 'databaseSearch', 'tmdbSearch', 'viewContent', 'viewDatabaseContent' and 'viewTmdbContent'.
+- SearchType enum.
+- Response DTO.
 
 ## Changed
 
@@ -33,6 +37,7 @@
 - Backend DTO 'RegisterRequest' and 'RegisterResponse'.
 - UserBuilder method 'withRegisterDto'.
 - Backend Auth methods: 'login' and 'register'.
+- Backend Content methods 'internalSearch', 'externalSearch', 'internalContent' and 'externalContent'
 
 ## Fixed
 

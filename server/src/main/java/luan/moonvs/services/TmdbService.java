@@ -30,13 +30,6 @@ class TmdbService {
 
     private HttpHeaders HEADERS;
 
-    private final ContentBuilder contentBuilder;
-
-    @Autowired
-    private TmdbService(ContentBuilder contentBuilder) {
-        this.contentBuilder = contentBuilder;
-    }
-
     @PostConstruct
     private void init() {
         this.HEADERS = new HttpHeaders() {{
@@ -52,6 +45,12 @@ class TmdbService {
         final HttpRequestEntity<?, TmdbResults> request = new HttpRequestEntity<>(URL, HttpMethod.GET, HEADERS, TmdbResults.class);
         ResponseEntity<TmdbResults> searchResults = request.exchange();
 
+        if (!searchResults.getStatusCode().is2xxSuccessful())
+            return null;
+
+        if (searchResults.getBody() == null)
+            return null;
+
         return searchResults.getBody().results();
     }
 
@@ -65,13 +64,15 @@ class TmdbService {
         if (!movie.getStatusCode().is2xxSuccessful())
             return null;
 
+        if (movie.getBody() == null)
+            return null;
+
         ProviderResults providers = getWatchProviders(QUERY, id);
         ProviderType brProviders = null;
         if (providers != null)
             brProviders = providers.results().get("BR");
 
-        return contentBuilder
-                .fromTmdbMovie(movie.getBody())
+        return ContentBuilder.create(movie.getBody())
                 .withProviders(brProviders)
                 .build();
     }
@@ -86,13 +87,15 @@ class TmdbService {
         if (!series.getStatusCode().is2xxSuccessful())
             return null;
 
+        if (series.getBody() == null)
+            return null;
+
         ProviderResults providers = getWatchProviders(QUERY, id);
         ProviderType brProviders = null;
         if (providers != null)
             brProviders = providers.results().get("BR");
 
-        return contentBuilder
-                .fromTmdbTv(series.getBody())
+        return ContentBuilder.create(series.getBody())
                 .withProviders(brProviders)
                 .build();
     }
