@@ -22,6 +22,7 @@
 - Moved 'JustWatch' attribution only to 'Where to Watch?' section.
 - AccountController now performs basic validations.
 - Backend Account methods 'updatePassword' and 'deleteAccount'.
+- Backend Auth methods: 'login' and 'register'.
 
 ## Deprecated
 
@@ -29,6 +30,9 @@
 - Backend DTO 'RatingRequest'.
 - Backend DTO 'AccountRequest'.
 - Backend Account methods 'account', 'updateAccount', 'updatePassword', and 'deleteAccount'.
+- Backend DTO 'RegisterRequest' and 'RegisterResponse'.
+- UserBuilder method 'withRegisterDto'.
+- Backend Auth methods: 'login' and 'register'.
 
 ## Fixed
 

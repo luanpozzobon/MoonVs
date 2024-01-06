@@ -4,8 +4,10 @@ import luan.moonvs.models.builders.UserBuilder;
 import luan.moonvs.models.entities.User;
 import luan.moonvs.models.requests.AuthRequest;
 import luan.moonvs.models.requests.RegisterRequest;
+import luan.moonvs.models.requests.UserAccountRequest;
 import luan.moonvs.models.responses.AuthResponse;
 import luan.moonvs.models.responses.RegisterResponse;
+import luan.moonvs.models.responses.UserAccountResponse;
 import luan.moonvs.repositories.UserRepository;
 import luan.moonvs.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,11 @@ public class AuthService {
     private final AuthenticationManager authManager;
     private final TokenService tokenService;
     private final UserRepository repository;
+
+    @Deprecated
     private final UserBuilder userBuilder;
 
+    @Deprecated
     @Autowired
     private AuthService(AuthenticationManager authManager, TokenService tokenService, UserRepository repository, UserBuilder userBuilder) {
         this.authManager = authManager;
@@ -30,6 +35,7 @@ public class AuthService {
         this.userBuilder = userBuilder;
     }
 
+    @Deprecated
     public ResponseEntity<AuthResponse> login(AuthRequest authDTO) {
         if ((authDTO.username() == null || authDTO.username().isBlank())
         ||  (authDTO.password() == null || authDTO.password().isBlank()))
@@ -46,6 +52,15 @@ public class AuthService {
                 .body(new AuthResponse(token));
     }
 
+    public String login(String username, String password) {
+        var usernameAndPassword = new UsernamePasswordAuthenticationToken(username, password);
+        var auth = authManager.authenticate(usernameAndPassword);
+        var user = (User) auth.getPrincipal();
+
+        return tokenService.generateToken(user);
+    }
+
+    @Deprecated
     public ResponseEntity<?> register(RegisterRequest registerDTO) {
         try {
             User user = userBuilder
@@ -58,6 +73,19 @@ public class AuthService {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new RegisterResponse(e.getMessage()));
+        }
+    }
+
+    public UserAccountResponse register(UserAccountRequest userAccount) {
+        try {
+            User user = UserBuilder.create(repository, userAccount).build();
+
+            repository.save(user);
+            String token = login(userAccount.username(), userAccount.password());
+
+            return new UserAccountResponse(HttpStatus.OK, token);
+        } catch (IllegalArgumentException e) {
+            return new UserAccountResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 }
