@@ -151,7 +151,7 @@ public class AccountController {
             throw new IllegalIdException(MISSING_ID);
 
         User user = service.getAccount();
-        if (id != user.getIdUser())
+        if (!id.equals(user.getIdUser()))
             throw new IllegalIdException(NOT_MATCHING_ID);
 
         return user;

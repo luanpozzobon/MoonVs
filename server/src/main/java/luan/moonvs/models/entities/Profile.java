@@ -46,4 +46,14 @@ public class Profile {
     @JoinColumn(name = "fav_series",
                 referencedColumnName = "id_content")
     private Content favoriteSeries;
+
+    public Profile(Profile profile) {
+        this.idUser = profile.getIdUser();
+        this.user = new User(profile.getUser());
+        this.biography = profile.getBiography();
+        this.privacy = profile.getPrivacy();
+        this.createdAt = profile.getCreatedAt();
+        this.favoriteMovie = profile.getFavoriteMovie();
+        this.favoriteSeries = profile.getFavoriteSeries();
+    }
 }

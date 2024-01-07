@@ -11,15 +11,18 @@ import org.springframework.stereotype.Component;
 public class ProfileBuilder {
     private Profile profile;
 
+    @Deprecated
     public ProfileBuilder() {
         profile = new Profile();
     }
 
+    @Deprecated
     public ProfileBuilder fromAuthUser(User authUser) {
         this.profile.setUser(authUser);
         return this;
     }
 
+    @Deprecated
     public ProfileBuilder createProfile(ProfileRequest profileRequest) {
         this.profile = new Profile();
         return this
@@ -30,6 +33,7 @@ public class ProfileBuilder {
                 // .withFavoriteSeries(profileRequest.favoriteSeries());
     }
 
+    @Deprecated
     public ProfileBuilder editProfile(Profile profile, ProfileRequest profileRequest) {
         this.profile = profile;
         return this
@@ -40,12 +44,38 @@ public class ProfileBuilder {
             // .withFavoriteSeries(profileRequest.favoriteSeries());
     }
 
+    public static ProfileBuilder create() {
+        ProfileBuilder profileBuilder = new ProfileBuilder();
+        profileBuilder.profile = new Profile();
+
+        return profileBuilder;
+    }
+
+    public static ProfileBuilder create(User user) {
+        ProfileBuilder profileBuilder = new ProfileBuilder();
+        profileBuilder.profile = new Profile();
+        profileBuilder.profile.setUser(new User(user));
+
+        return profileBuilder;
+    }
+
+    public static ProfileBuilder create(Profile profile) {
+        ProfileBuilder profileBuilder = new ProfileBuilder();
+        profileBuilder.profile = new Profile(profile);
+
+        return profileBuilder;
+    }
+
     public ProfileBuilder withBio(String biography) {
-        if (biography == null)
+        final String TOO_LONG = "The 'bio' must contain at most 255 characters!";
+
+        if (biography == null) {
             this.profile.setBiography("");
+            return this;
+        }
 
         if (biography.length() > 255)
-            throw new IllegalArgumentException("O campo 'bio' deve conter no máximo 255 caracteres!");
+            throw new IllegalArgumentException(TOO_LONG);
 
         this.profile.setBiography(biography);
         return this;
