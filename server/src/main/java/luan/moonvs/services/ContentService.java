@@ -78,6 +78,9 @@ public class ContentService {
 
         List<ContentSearch> response;
 
+        if (searchType == null)
+            searchType = SearchType.INTERNAL;
+
         switch (searchType) {
             case INTERNAL:
                 title = URLDecoder.decode(title, StandardCharsets.UTF_8);
@@ -85,7 +88,7 @@ public class ContentService {
 
                 break;
             case EXTERNAL:
-                title = URLEncoder.encode(title, StandardCharsets.UTF_8);
+//                title = URLEncoder.encode(title, StandardCharsets.UTF_8);
                 response = tmdbSearch(title);
 
                 break;

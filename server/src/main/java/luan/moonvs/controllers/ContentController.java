@@ -10,6 +10,7 @@ import luan.moonvs.services.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -87,7 +88,7 @@ public class ContentController {
     }
 
     @GetMapping("/view/{id}")
-    public ResponseEntity<Content> viewContent(@PathVariable int id, @RequestParam SearchType searchType, @RequestParam ContentType contentType) {
+    public ResponseEntity<Content> viewContent(@PathVariable int id, @RequestParam SearchType searchType, @Nullable @RequestParam ContentType contentType) {
         final String ZERO_OR_NEGATIVE_ID = "The requested content is out of range!";
         if (id < 1)
             return ResponseEntity

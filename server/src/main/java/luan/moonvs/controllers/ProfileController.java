@@ -30,7 +30,7 @@ public class ProfileController {
         if (idUser == null)
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .header("message", MISSING_ID)
+                    .header(HEADER_NAME, MISSING_ID)
                     .build();
 
         var response = service.createProfile(idUser, profileRequest);

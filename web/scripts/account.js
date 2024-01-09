@@ -1,5 +1,6 @@
-const SESSION = JSON.parse(sessionStorage.getItem('session'));
-const TOKEN = SESSION.token;
+const AUTH = JSON.parse(sessionStorage.getItem('auth'));
+const TOKEN = AUTH.session.token;
+const ID_USER = AUTH.id;
 const BASE_URL = "https://moonvs.fly.dev/";
 
 const biographyField = document.getElementById('biography');
@@ -9,6 +10,7 @@ let profile;
 getProfile();
 
 function getProfile() {
+    const URL = BASE_URL + 'profile/' + ID_USER;
     const options = {
         method: 'GET',
         headers: {
@@ -17,7 +19,7 @@ function getProfile() {
         }
     };
 
-    fetch(BASE_URL + 'profile/', options)
+    fetch(URL, options)
         .then(response => response.json())
         .then(data => {
             username.innerHTML = `@ ${data.username}`;
@@ -35,7 +37,8 @@ function saveProfile() {
     const biography = biographyField.value;
 
     const body = {
-        'biography': biography,
+        'idUser': ID_USER,
+        'biography': biography
     };
 
     var options = {
@@ -48,10 +51,10 @@ function saveProfile() {
 
     if (profile == true) {
         options.method = 'PUT';
-        url += 'profile/edit';
+        url += 'profile/edit/' + ID_USER;
     } else {
         options.method = 'POST';
-        url += 'profile/new';
+        url += 'profile/create/'  + ID_USER;
     }
 
     fetch(url, options)
@@ -67,10 +70,12 @@ const usernameField = document.getElementById('editUsername');
 const emailField = document.getElementById('editEmail');
 
 function editAccount() {
+    const URL = BASE_URL + 'account/update/username-and-email';
     const editUsername = usernameField.value;
     const editEmail = emailField.value;
 
     const body = {
+        "idUser": ID_USER,
         "username": editUsername,
         "email": editEmail
     };
@@ -84,11 +89,10 @@ function editAccount() {
         body: JSON.stringify(body)
     };
 
-    fetch(BASE_URL + "account/update", options)
+    fetch(URL, options)
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
-            sessionStorage.removeItem('session');
+            sessionStorage.removeItem('auth');
             window.location.href = './account.html';
         })
 
@@ -97,6 +101,7 @@ const passwordField = document.getElementById('editPassword');
 const confirmPasswordField = document.getElementById('confirmPassword');
 
 function changePassword() {
+    const URL = BASE_URL + 'account/update/password'
     const password = passwordField.value;
     const confirmPassword = confirmPasswordField.value;
 
@@ -106,6 +111,7 @@ function changePassword() {
     }
 
     const body = {
+        "idUser": ID_USER,
         "password": password
     };
 
@@ -118,11 +124,10 @@ function changePassword() {
         body: JSON.stringify(body)
     };
 
-    fetch(BASE_URL + "account/update-password", options)
-        .then(response => response.text())
+    fetch(URL, options)
+        .then(response => response.json())
         .then(data => {
-            alert(data);
-            sessionStorage.removeItem('session');
+            sessionStorage.removeItem('auth');
             window.location.href = './account.html';
         })
 
@@ -132,10 +137,12 @@ const deleteUsernameField = document.getElementById('deleteUsername');
 const deletePasswordField = document.getElementById('deletePassword');
 
 function deleteAccount() {
+    const URL = BASE_URL + 'account/delete-account'
     const deleteUsername = deleteUsernameField.value;
     const deletePassword = deletePasswordField.value;
 
     const body = {
+        "idUser": ID_USER,
         "username": deleteUsername,
         "password": deletePassword
     };
@@ -149,11 +156,10 @@ function deleteAccount() {
         body: JSON.stringify(body)
     };
 
-    fetch(BASE_URL + 'account/delete', options)
-        .then(response => response.text())
+    fetch(URL, options)
+        .then(response => response.json())
         .then(data => {
-            alert(data.message);
-            sessionStorage.removeItem('session');
+            sessionStorage.removeItem('auth');
             window.location.href = './account.html';
         })
 }

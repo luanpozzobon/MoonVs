@@ -19,6 +19,7 @@ import java.util.UUID;
 @RequestMapping("/account")
 public class AccountController {
     private final AccountService service;
+    private final String HEADER_NAME = "message";
 
     @Autowired
     public AccountController(AccountService service) {
@@ -66,15 +67,17 @@ public class AccountController {
                         .body(new AccountResponse(EMPTY_REQUEST));
             }
 
-            UserAccountResponse response = service.updateUsernameAndOrEmail(userAccount.username(), userAccount.email(), user);
+            var response = service.updateUsernameAndOrEmail(userAccount.username(), userAccount.email(), user);
             return ResponseEntity
                     .status(response.status())
-                    .body(new AccountResponse(response));
+                    .header(HEADER_NAME, response.message())
+                    .body(new AccountResponse(response.entity()));
 
         } catch (IllegalIdException e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new AccountResponse(e.message));
+                    .header(HEADER_NAME, e.message)
+                    .build();
         }
     }
 
@@ -96,15 +99,17 @@ public class AccountController {
                         .status(HttpStatus.BAD_REQUEST)
                         .body(new AccountResponse(EMPTY_REQUEST));
 
-            UserAccountResponse response = service.updatePassword(userAccount.password(), user);
+            var response = service.updatePassword(userAccount.password(), user);
             return ResponseEntity
                     .status(response.status())
-                    .body(new AccountResponse(response));
+                    .header(HEADER_NAME, response.message())
+                    .body(new AccountResponse(response.entity()));
 
         } catch (IllegalIdException e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new AccountResponse(e.message));
+                    .header(HEADER_NAME, e.getMessage())
+                    .build();
         }
     }
 
@@ -124,22 +129,26 @@ public class AccountController {
             if (userAccount.username() == null || userAccount.username().isBlank())
                 return ResponseEntity
                         .status(HttpStatus.BAD_REQUEST)
-                        .body(new AccountResponse(String.format(EMPTY_REQUEST, "username")));
+                        .header(HEADER_NAME, String.format(EMPTY_REQUEST, "username"))
+                        .build();
 
             if (userAccount.password() == null || userAccount.password().isBlank())
                 return ResponseEntity
                         .status(HttpStatus.BAD_REQUEST)
-                        .body(new AccountResponse(String.format(EMPTY_REQUEST, "password")));
+                        .header(HEADER_NAME, String.format(EMPTY_REQUEST, "password"))
+                        .build();
 
-            UserAccountResponse response = service.deleteAccount(userAccount.username(), userAccount.password(), user);
+            var response = service.deleteAccount(userAccount.username(), userAccount.password(), user);
             return ResponseEntity
                     .status(response.status())
-                    .body(new AccountResponse(response));
+                    .header(HEADER_NAME, response.message())
+                    .body(new AccountResponse(response.entity()));
 
         } catch (IllegalIdException e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new AccountResponse(e.message));
+                    .header(HEADER_NAME, e.message)
+                    .build();
         }
     }
 

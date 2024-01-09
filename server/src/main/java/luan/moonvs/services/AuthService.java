@@ -5,9 +5,7 @@ import luan.moonvs.models.entities.User;
 import luan.moonvs.models.requests.AuthRequest;
 import luan.moonvs.models.requests.RegisterRequest;
 import luan.moonvs.models.requests.UserAccountRequest;
-import luan.moonvs.models.responses.AuthResponse;
-import luan.moonvs.models.responses.RegisterResponse;
-import luan.moonvs.models.responses.UserAccountResponse;
+import luan.moonvs.models.responses.*;
 import luan.moonvs.repositories.UserRepository;
 import luan.moonvs.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +50,14 @@ public class AuthService {
                 .body(new AuthResponse(token));
     }
 
-    public String login(String username, String password) {
+    public Response<UserAuthData> login(String username, String password) {
         var usernameAndPassword = new UsernamePasswordAuthenticationToken(username, password);
         var auth = authManager.authenticate(usernameAndPassword);
         var user = (User) auth.getPrincipal();
+        var token = tokenService.generateToken(user);
 
-        return tokenService.generateToken(user);
+        var authData = new UserAuthData(user.getIdUser(), token);
+        return new Response<>(HttpStatus.OK, authData);
     }
 
     @Deprecated
@@ -76,16 +76,16 @@ public class AuthService {
         }
     }
 
-    public UserAccountResponse register(UserAccountRequest userAccount) {
+    public Response<UserAuthData> register(UserAccountRequest userAccount) {
         try {
             User user = UserBuilder.create(repository, userAccount).build();
 
             repository.save(user);
-            String token = login(userAccount.username(), userAccount.password());
+            var response = login(userAccount.username(), userAccount.password());
 
-            return new UserAccountResponse(HttpStatus.OK, token);
+            return new Response<>(HttpStatus.OK, response.entity());
         } catch (IllegalArgumentException e) {
-            return new UserAccountResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+            return new Response<>(HttpStatus.BAD_REQUEST, new UserAuthData(), e.getMessage());
         }
     }
 }

@@ -1,7 +1,7 @@
 const BASE_URL = 'https://moonvs.fly.dev/'
 const POSTER_URL = 'https://image.tmdb.org/t/p/w185'
-const SESSION = JSON.parse(sessionStorage.getItem('session'));
-const TOKEN = SESSION.token;
+const AUTH = JSON.parse(sessionStorage.getItem('auth'));
+const TOKEN = AUTH.session.token;
 
 const CONTENT_SECTION = document.getElementById("content");
 const CONTENT = JSON.parse(sessionStorage.getItem("content"));
@@ -178,7 +178,6 @@ function doRate() {
     }
 
     const body = {
-        "idContent": CONTENT.idContent,
         "ratingValue": ratingValue,
         "commentary": commentary
     };
@@ -192,7 +191,7 @@ function doRate() {
         body: JSON.stringify(body)
     };
 
-    fetch(URL + "rate", options)
+    fetch(URL + `rate/${CONTENT.idContent}`, options)
         .then(() => {
             window.location.href = "./content.html";
         })

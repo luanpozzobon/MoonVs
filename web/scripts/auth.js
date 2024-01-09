@@ -63,11 +63,15 @@ function register() {
         body: JSON.stringify(body)
     }
 
-    fetch(BASE_URL + "/register", options)
+    fetch(BASE_URL + "/sign-up", options)
         .then(response => response.json())
         .then(data => {
-            session = generateToken(data.token);
-            sessionStorage.setItem('session', JSON.stringify(session));
+            var session = generateToken(data.token);
+            var auth = {
+                "session": session,
+                "id": data.idUser
+            };
+            sessionStorage.setItem('auth', JSON.stringify(auth));
             window.location.href = './account.html';
         })
         .catch(error => {
@@ -93,11 +97,15 @@ function login() {
         body: JSON.stringify(body)
     };
 
-    fetch(BASE_URL + "/login", options)
+    fetch(BASE_URL + "/sign-in", options)
         .then(response => response.json())
         .then(data => {
-            session = generateToken(data.token);
-            sessionStorage.setItem('session', JSON.stringify(session));
+            var session = generateToken(data.token);
+            var auth = {
+                "session": session,
+                "id": data.idUser
+            };
+            sessionStorage.setItem('auth', JSON.stringify(auth));
             window.location.href = '../index.html';
         })
         .catch(error => {

@@ -54,7 +54,7 @@ public class ProfileBuilder {
     public static ProfileBuilder create(User user) {
         ProfileBuilder profileBuilder = new ProfileBuilder();
         profileBuilder.profile = new Profile();
-        profileBuilder.profile.setUser(new User(user));
+        profileBuilder.profile.setUser(user);
 
         return profileBuilder;
     }

@@ -5,6 +5,7 @@ import luan.moonvs.models.entities.User;
 import luan.moonvs.models.requests.AccountRequest;
 import luan.moonvs.models.requests.AuthRequest;
 import luan.moonvs.models.responses.AccountResponse;
+import luan.moonvs.models.responses.Response;
 import luan.moonvs.models.responses.UserAccountResponse;
 import luan.moonvs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,7 @@ public class AccountService {
         }
     }
 
-    public UserAccountResponse updateUsernameAndOrEmail(String username, String email, User user) {
+    public Response<User> updateUsernameAndOrEmail(String username, String email, User user) {
         try {
             user = UserBuilder.create(repository, user)
                     .withUsername(username)
@@ -75,9 +76,9 @@ public class AccountService {
                     .build();
 
             repository.save(user);
-            return new UserAccountResponse(HttpStatus.OK, user, SUCCESS_MESSAGE);
+            return new Response<>(HttpStatus.OK, user, SUCCESS_MESSAGE);
         } catch (IllegalArgumentException e) {
-            return new UserAccountResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+            return new Response<>(HttpStatus.BAD_REQUEST, new User(), e.getMessage());
         }
     }
 
@@ -109,16 +110,16 @@ public class AccountService {
         }
     }
 
-    public UserAccountResponse updatePassword(String password, User user) {
+    public Response<User> updatePassword(String password, User user) {
         try {
             user = UserBuilder.create(repository, user)
                     .withPassword(password)
                     .build();
 
             repository.save(user);
-            return new UserAccountResponse(HttpStatus.OK, SUCCESS_MESSAGE);
+            return new Response<>(HttpStatus.OK, new User(), SUCCESS_MESSAGE);
         } catch (IllegalArgumentException e) {
-            return new UserAccountResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+            return new Response<>(HttpStatus.BAD_REQUEST, new User(), e.getMessage());
         }
     }
 
@@ -150,17 +151,18 @@ public class AccountService {
         return ResponseEntity.status(HttpStatus.OK).body("Conta deletada com sucesso!");
     }
 
-    public UserAccountResponse deleteAccount(String username, String password, User user) {
+    public Response<User> deleteAccount(String username, String password, User user) {
         final String INVALID_FIELD = "The filled %s doesn't match!",
                      DELETE_SUCCESS = "The account was successfully deleted!";
 
         if (!username.equals(user.getUsername()))
-            return new UserAccountResponse(HttpStatus.BAD_REQUEST, String.format(INVALID_FIELD, "username"));
+            return new Response<>(HttpStatus.BAD_REQUEST, new User(), String.format(INVALID_FIELD, "username"));
+
 
         if (!(new BCryptPasswordEncoder().matches(password, user.getPassword())))
-            return new UserAccountResponse(HttpStatus.BAD_REQUEST, String.format(INVALID_FIELD, "password"));
+            return new Response<>(HttpStatus.BAD_REQUEST, String.format(INVALID_FIELD, password));
 
         repository.delete(user);
-        return new UserAccountResponse(HttpStatus.OK, DELETE_SUCCESS);
+        return new Response<>(HttpStatus.OK, new User(), DELETE_SUCCESS);
     }
 }
