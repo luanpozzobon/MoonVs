@@ -8,7 +8,8 @@
     <link rel="shortcut icon" href="../assets/images/logos/Logo-W-Symbol.svg" type="image/x-icon">
 </head>
 <script>
-    const session = JSON.parse(sessionStorage.getItem('session'));
+    const auth = JSON.parse(sessionStorage.getItem('auth')) || "";
+    const session = auth.session;
     const now = new Date().getTime();
 
     if (!session || now > session.expiration) {

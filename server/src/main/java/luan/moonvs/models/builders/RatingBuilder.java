@@ -10,10 +10,19 @@ import java.util.UUID;
 public class RatingBuilder {
     private Rating rating;
 
+    @Deprecated
     public static RatingBuilder create() {
         RatingBuilder ratingBuilder = new RatingBuilder();
         ratingBuilder.rating = new Rating();
         ratingBuilder.rating.setIdRating(new ContentAndUserId());
+        return ratingBuilder;
+    }
+
+    public static RatingBuilder create(ContentAndUserId contentAndUserId) {
+        RatingBuilder ratingBuilder = new RatingBuilder();
+        ratingBuilder.rating = new Rating();
+        ratingBuilder.rating.setIdRating(contentAndUserId);
+
         return ratingBuilder;
     }
 
@@ -23,6 +32,7 @@ public class RatingBuilder {
         return ratingBuilder;
     }
 
+    @Deprecated
     public RatingBuilder withId(UUID idUser, int idContent) {
         ContentAndUserId idRating = new ContentAndUserId(idUser, idContent);
         this.rating.setIdRating(idRating);

@@ -7,8 +7,6 @@ import luan.moonvs.models.tmdb_responses.TmdbMovie;
 import luan.moonvs.models.tmdb_responses.TmdbTv;
 import luan.moonvs.models.tmdb_responses.providers.Provider;
 import luan.moonvs.models.tmdb_responses.providers.ProviderType;
-import luan.moonvs.repositories.ContentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -20,43 +18,57 @@ import java.util.stream.Collectors;
 public class ContentBuilder {
     private Content content;
 
-    public ContentBuilder fromTmdbMovie(TmdbMovie tmdbMovie) {
-        this.content = new Content();
+    public static ContentBuilder create() {
+        ContentBuilder contentBuilder = new ContentBuilder();
+        contentBuilder.content = new Content();
 
-        this.content.setIdTmdb(tmdbMovie.id());
-        this.content.setAdult(tmdbMovie.adult());
-        this.content.setOriginalTitle(tmdbMovie.originalTitle());
-        this.content.setPtTitle(tmdbMovie.ptTitle());
-        this.content.setOverview(tmdbMovie.overview());
-        this.content.setGenres(tmdbMovie.genres().stream()
-                .map(TmdbGenres::genre)
-                .collect(Collectors.toList()));
-        this.content.setPosterPath(tmdbMovie.posterPath());
-        this.content.setTmdbVoteAvg(tmdbMovie.voteAvg());
-        this.content.setTmdbVoteCount(tmdbMovie.voteCount());
-        this.content.setContentType(ContentType.MOVIE);
-        return this;
+        return contentBuilder;
     }
 
-    public ContentBuilder fromTmdbTv(TmdbTv tmdbTv) {
-        this.content = new Content();
+    public static ContentBuilder create(TmdbMovie tmdbMovie) {
+        ContentBuilder contentBuilder = new ContentBuilder();
+        contentBuilder.content = new Content();
 
-        this.content.setIdTmdb(tmdbTv.id());
-        this.content.setAdult(tmdbTv.adult());
-        this.content.setOriginalTitle(tmdbTv.originalTitle());
-        this.content.setPtTitle(tmdbTv.ptTitle());
-        this.content.setOverview(tmdbTv.overview());
-        this.content.setGenres(tmdbTv.genres().stream()
+        contentBuilder.content.setIdTmdb(tmdbMovie.id());
+        contentBuilder.content.setAdult(tmdbMovie.adult());
+        contentBuilder.content.setOriginalTitle(tmdbMovie.originalTitle());
+        contentBuilder.content.setPtTitle(tmdbMovie.ptTitle());
+        contentBuilder.content.setOverview(tmdbMovie.overview());
+        contentBuilder.content.setGenres(tmdbMovie.genres().stream()
                 .map(TmdbGenres::genre)
                 .collect(Collectors.toList()));
-        this.content.setPosterPath(tmdbTv.posterPath());
-        this.content.setTmdbVoteAvg(tmdbTv.voteAvg());
-        this.content.setTmdbVoteCount(tmdbTv.voteCount());
-        this.content.setContentType(ContentType.MOVIE);
-        return this;
+        contentBuilder.content.setPosterPath(tmdbMovie.posterPath());
+        contentBuilder.content.setTmdbVoteAvg(tmdbMovie.voteAvg());
+        contentBuilder.content.setTmdbVoteCount(tmdbMovie.voteCount());
+        contentBuilder.content.setContentType(ContentType.MOVIE);
+
+        return contentBuilder;
+    }
+
+    public static ContentBuilder create(TmdbTv tmdbTv) {
+        ContentBuilder contentBuilder = new ContentBuilder();
+        contentBuilder.content = new Content();
+
+        contentBuilder.content.setIdTmdb(tmdbTv.id());
+        contentBuilder.content.setAdult(tmdbTv.adult());
+        contentBuilder.content.setOriginalTitle(tmdbTv.originalTitle());
+        contentBuilder.content.setPtTitle(tmdbTv.ptTitle());
+        contentBuilder.content.setOverview(tmdbTv.overview());
+        contentBuilder.content.setGenres(tmdbTv.genres().stream()
+                .map(TmdbGenres::genre)
+                .collect(Collectors.toList()));
+        contentBuilder.content.setPosterPath(tmdbTv.posterPath());
+        contentBuilder.content.setTmdbVoteAvg(tmdbTv.voteAvg());
+        contentBuilder.content.setTmdbVoteCount(tmdbTv.voteCount());
+        contentBuilder.content.setContentType(ContentType.MOVIE);
+
+        return contentBuilder;
     }
 
     public ContentBuilder withProviders(ProviderType providerType) {
+        if (providerType == null)
+            return this;
+
         List<String> flatrate = providerType.flatrate() != null ?
                 providerType.flatrate().stream()
                         .map(Provider::providerName)
