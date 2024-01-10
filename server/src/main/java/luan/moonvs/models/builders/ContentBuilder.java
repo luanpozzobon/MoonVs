@@ -7,9 +7,6 @@ import luan.moonvs.models.tmdb_responses.TmdbMovie;
 import luan.moonvs.models.tmdb_responses.TmdbTv;
 import luan.moonvs.models.tmdb_responses.providers.Provider;
 import luan.moonvs.models.tmdb_responses.providers.ProviderType;
-import luan.moonvs.repositories.ContentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

@@ -6,7 +6,7 @@
 - View of user's rating and average rating for each content.
 - Backend method 'addOrEditRating()' on RatingController and RatingService.
 - Backend DTO 'RateRequest'.
-- Backend DTOs 'UserAccountRequest' and 'UserAccountResponse'.
+- Backend DTO 'UserAccountRequest'.
 - Backend exception 'IllegalIdException'.
 - Backend Account methods 'getAccount' and 'updateUsernameAndOrEmail'.
 - 'create()' methods on UserBuilder.

@@ -4,8 +4,6 @@ import luan.moonvs.models.entities.Content;
 import luan.moonvs.models.enums.ContentType;
 import luan.moonvs.models.enums.SearchType;
 import luan.moonvs.models.responses.ContentSearch;
-import luan.moonvs.models.requests.ExternalContentRequest;
-import luan.moonvs.models.responses.Response;
 import luan.moonvs.services.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

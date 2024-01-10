@@ -6,7 +6,6 @@ import luan.moonvs.models.requests.AccountRequest;
 import luan.moonvs.models.requests.AuthRequest;
 import luan.moonvs.models.requests.UserAccountRequest;
 import luan.moonvs.models.responses.AccountResponse;
-import luan.moonvs.models.responses.UserAccountResponse;
 import luan.moonvs.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

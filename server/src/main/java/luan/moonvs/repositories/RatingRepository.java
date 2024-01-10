@@ -1,7 +1,6 @@
 package luan.moonvs.repositories;
 
 import luan.moonvs.models.entities.ContentAndUserId;
-import luan.moonvs.models.entities.Profile;
 import luan.moonvs.models.entities.Rating;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

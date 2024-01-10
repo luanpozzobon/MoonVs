@@ -16,8 +16,4 @@ public record AccountResponse(String username,
     public AccountResponse(User user, String message) {
         this(user.getUsername(), user.getEmail(), message);
     }
-
-    public AccountResponse(UserAccountResponse userAccountResponse) {
-        this(userAccountResponse.username(), userAccountResponse.email(), userAccountResponse.message());
-    }
 }

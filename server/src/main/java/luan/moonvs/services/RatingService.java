@@ -63,8 +63,7 @@ public class RatingService {
                     .addCommentary(rateRequest.commentary())
                     .build();
         } catch (NoSuchElementException e) {
-            rating = RatingBuilder.create()
-                    .withId(user.getIdUser(), idContent)
+            rating = RatingBuilder.create(idRating)
                     .addRating(rateRequest.ratingValue())
                     .addCommentary(rateRequest.commentary())
                     .build();

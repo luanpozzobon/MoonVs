@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +87,6 @@ public class ContentService {
 
                 break;
             case EXTERNAL:
-//                title = URLEncoder.encode(title, StandardCharsets.UTF_8);
                 response = tmdbSearch(title);
 
                 break;

@@ -4,8 +4,6 @@ import luan.moonvs.models.requests.AuthRequest;
 import luan.moonvs.models.requests.UserAccountRequest;
 import luan.moonvs.models.responses.AuthResponse;
 import luan.moonvs.models.requests.RegisterRequest;
-import luan.moonvs.models.responses.Response;
-import luan.moonvs.models.responses.UserAccountResponse;
 import luan.moonvs.models.responses.UserAuthData;
 import luan.moonvs.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;

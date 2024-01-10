@@ -10,7 +10,6 @@ import luan.moonvs.models.tmdb_responses.TmdbTv;
 import luan.moonvs.models.tmdb_responses.providers.ProviderResults;
 import luan.moonvs.models.tmdb_responses.providers.ProviderType;
 import luan.moonvs.utils.HttpRequestEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
