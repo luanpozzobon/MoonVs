@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -55,13 +56,13 @@ public class RatingService {
         ContentAndUserId idRating = new ContentAndUserId(user.getIdUser(), idContent);
         Rating rating;
         try {
-            rating = repository.getReferenceById(idRating);
+            rating = repository.findById(idRating).orElseThrow();
 
             rating = RatingBuilder.create(rating)
                     .addRating(rateRequest.ratingValue())
                     .addCommentary(rateRequest.commentary())
                     .build();
-        } catch (EntityNotFoundException e) {
+        } catch (NoSuchElementException e) {
             rating = RatingBuilder.create()
                     .withId(user.getIdUser(), idContent)
                     .addRating(rateRequest.ratingValue())

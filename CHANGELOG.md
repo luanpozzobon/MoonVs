@@ -56,5 +56,7 @@
 - External links now open on a blank tab.
 - Fixed bug of titles in list of watch providers.
 - Fixed NullPointerException on ProfileBuilder method 'withBio'.
+- Fixed bug that didn't allow to delete account with existing ratings.
+- Fixed bug that wouldn't allow to create new ratings.
 
 [You can also access the full changelog](https://luanpozzobon.github.io/luanpozzobon_site/pages/projects/moonvs/moonvs.html)

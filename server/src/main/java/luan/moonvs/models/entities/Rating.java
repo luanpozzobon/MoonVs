@@ -1,5 +1,6 @@
 package luan.moonvs.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,14 @@ public class Rating {
                 updatable = false,
                 referencedColumnName = "id_content")
     private Content content;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id_user",
+                insertable = false,
+                updatable = false,
+                referencedColumnName = "id_user")
+    private Profile profile;
 
     @Column(name = "rating_value",
             nullable = false)
