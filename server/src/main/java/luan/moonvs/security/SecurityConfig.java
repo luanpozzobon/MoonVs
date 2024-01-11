@@ -1,6 +1,8 @@
 package luan.moonvs.security;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,10 +51,14 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
+    @Value("${front.url}")
+    private String ORIGIN;
+
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Collections.singletonList("https://moonvs.netlify.app"));
+        config.setAllowedOrigins(Collections.singletonList(ORIGIN));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
         return new UrlBasedCorsConfigurationSource() {{

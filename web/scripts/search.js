@@ -1,14 +1,12 @@
-const BASE_URL = 'https://moonvs.fly.dev/content'
+const BASE_URL = `${config.BASE_URL}/content`;
+
 const POSTER_URL = 'https://image.tmdb.org/t/p/w92'
-const AUTH = JSON.parse(sessionStorage.getItem('auth'));
-const TOKEN = AUTH.session.token;
 
 const input = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
 const main = document.querySelector('main');
 
 async function internalSearch() {
-//    const URL = BASE_URL + '/internal-search?title=';
     const PARAMS = new URLSearchParams({
         searchType: 'INTERNAL',
         title: encodeURIComponent(input.value)
@@ -30,7 +28,6 @@ async function internalSearch() {
 }
 
 async function externalSearch() {
-//    const URL = BASE_URL + '/external-search?title=';
     const PARAMS = new URLSearchParams({
         searchType: 'EXTERNAL',
         title: encodeURIComponent(input.value)
@@ -46,12 +43,11 @@ async function externalSearch() {
 }
 
 async function doSearch(URL) {
-    // const value = input.value.replace(/ /g, '%20');
     const options = {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${TOKEN}`
+            "Authorization": config.TOKEN
         }
     };
 
@@ -90,7 +86,7 @@ function internalInfo(element) {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + TOKEN
+            "Authorization": config.TOKEN
         }
     }
 
@@ -117,7 +113,7 @@ function externalInfo(element) {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${TOKEN}`
+            "Authorization": config.TOKEN
         }
     };
 
