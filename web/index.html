@@ -6,16 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/index.css">
     <link rel="shortcut icon" href="./assets/images/logos/Logo-W-Symbol.svg" type="image/x-icon">
+    <script src="./scripts/config.js"></script>
     <title>MoonVs</title>
 </head>
 <script>
-    const auth = JSON.parse(sessionStorage.getItem('auth')) || "";
-    const session = auth.session;
-    const now = new Date().getTime();
-
-    if (!session || now > session.expiration) {
-        window.location.href = './pages/auth.html';
-    }
+    checkAuth();
 </script>
 <body>
     <header>

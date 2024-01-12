@@ -1,7 +1,6 @@
-const BASE_URL = 'https://moonvs.fly.dev/'
+const BASE_URL = `${config.BASE_URL}`;
+
 const POSTER_URL = 'https://image.tmdb.org/t/p/w185'
-const AUTH = JSON.parse(sessionStorage.getItem('auth'));
-const TOKEN = AUTH.session.token;
 
 const CONTENT_SECTION = document.getElementById("content");
 const CONTENT = JSON.parse(sessionStorage.getItem("content"));
@@ -86,17 +85,17 @@ WATCH_SECTION.lastElementChild.before(streamingContainer);
 
 
 function getRating(idContent) {
-    const URL = BASE_URL + "rating/";
+    const URL = `${BASE_URL}/rating`;
 
     const options = {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${TOKEN}`
+            "Authorization": config.TOKEN
         }
     };
 
-    fetch(URL + idContent, options)
+    fetch(`${URL}/${idContent}`, options)
         .then(response => {
             if (response.ok) {
                 return response.json()
@@ -113,7 +112,7 @@ function getRating(idContent) {
             console.error(error);
         });
 
-    fetch(URL + `avg-rating/${idContent}`, options)
+    fetch(`${URL}/avg-rating/${idContent}`, options)
         .then(response => {
             if (response.ok) {
                 return response.text();
@@ -142,18 +141,19 @@ const RATING_VALUE = document.getElementById('ratingValue');
 const COMMENTARY = document.getElementById('commentary');
 
 function rating() {
-    const URL = BASE_URL + 'rating/';
+    const URL = `${BASE_URL}/rating/${CONTENT.idContent}`;
+
     const USER_RATING = JSON.parse(sessionStorage.getItem('userRating'));
     if (USER_RATING !== -1) {
         const options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${TOKEN}`
+                "Authorization": config.TOKEN
             }
         };
 
-        fetch(URL + CONTENT.idContent, options)
+        fetch(URL, options)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -168,7 +168,8 @@ function rating() {
 }
 
 function doRate() {
-    const URL = BASE_URL + 'rating/'
+    const URL = `${BASE_URL}/rating/rate/${CONTENT.idContent}`;
+
     var ratingValue = RATING_VALUE.value;
     var commentary = COMMENTARY.value;
 
@@ -186,12 +187,12 @@ function doRate() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${TOKEN}`
+            "Authorization": config.TOKEN
         },
         body: JSON.stringify(body)
     };
 
-    fetch(URL + `rate/${CONTENT.idContent}`, options)
+    fetch(URL, options)
         .then(() => {
             window.location.href = "./content.html";
         })

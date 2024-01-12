@@ -3,18 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoonVs: Profile</title>
+    <script src="../scripts/config.js"></script>
     <link rel="stylesheet" href="../styles/account.css">
     <link rel="shortcut icon" href="../assets/images/logos/Logo-W-Symbol.svg" type="image/x-icon">
+    <title>MoonVs: Profile</title>
 </head>
 <script>
-    const auth = JSON.parse(sessionStorage.getItem('auth')) || "";
-    const session = auth.session;
-    const now = new Date().getTime();
-
-    if (!session || now > session.expiration) {
-        window.location.href = './auth.html';
-    }
+    checkAuth();
 </script>
 <body>
     <header>
