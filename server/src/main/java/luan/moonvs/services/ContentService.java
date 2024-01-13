@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -24,11 +25,15 @@ import java.util.stream.Collectors;
 public class ContentService {
     private final ContentRepository repository;
     private final TmdbService tmdbService;
+    private final AccountService accountService;
 
     @Autowired
-    private ContentService(ContentRepository repository, TmdbService tmdbService) {
+    private ContentService(ContentRepository repository,
+                           TmdbService tmdbService,
+                           AccountService accountService) {
         this.repository = repository;
         this.tmdbService = tmdbService;
+        this.accountService = accountService;
     }
 
     @Deprecated
@@ -80,14 +85,19 @@ public class ContentService {
         if (searchType == null)
             searchType = SearchType.INTERNAL;
 
+        title = URLDecoder.decode(title, StandardCharsets.UTF_8);
+
         switch (searchType) {
             case INTERNAL:
-                title = URLDecoder.decode(title, StandardCharsets.UTF_8);
                 response = databaseSearch(title);
 
                 break;
             case EXTERNAL:
-                response = tmdbSearch(title);
+                try {
+                    response = tmdbSearch(title);
+                } catch (URISyntaxException e) {
+                    return new Response<>(HttpStatus.INTERNAL_SERVER_ERROR, new ArrayList<>());
+                }
 
                 break;
             default:
@@ -111,8 +121,10 @@ public class ContentService {
                 .collect(Collectors.toList());
     }
 
-    private List<ContentSearch> tmdbSearch(String title) {
-        List<TmdbSearch> contents = tmdbService.search(title);
+    private List<ContentSearch> tmdbSearch(String title) throws URISyntaxException {
+        boolean includeAdult = accountService.getAccount().isOfLegalAge();
+
+        List<TmdbSearch> contents = tmdbService.search(title, includeAdult);
         if (contents.isEmpty())
             return null;
 

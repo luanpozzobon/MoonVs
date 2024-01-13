@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -93,5 +94,11 @@ public class User implements UserDetails, Cloneable{
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    public boolean isOfLegalAge() {
+        final int LEGAL_AGE = 18;
+
+        return Period.between(this.birthDate, LocalDate.now()).getYears() > LEGAL_AGE;
     }
 }

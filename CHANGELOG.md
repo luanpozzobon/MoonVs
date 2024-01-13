@@ -19,6 +19,7 @@
 - Backend Rating method 'getUserRatingList'.
 - Copy Constructor on Profile entity.
 - 'create()' methods on Profilebuilder.
+- RequestEntity.
 
 ## Changed
 
@@ -34,6 +35,9 @@
 - Backend Auth methods: 'login' and 'register'.
 - Backend Profile methods 'createProfile' and 'editProfile'.
 - Backend Rating methods 'addOrEditRating', 'getUserRating' and 'getAvgRating'.
+- Included 'page' and 'totalPages' field in TmdbResults.
+- The Tmdb Search now uses the user age, and includes results of more than one page.
+- Added method 'isOfLegalAge' in User entity.
 
 ## Deprecated
 
@@ -48,6 +52,8 @@
 - Backend Profile methods 'createProfile', 'seeProfile' and 'editProfile'.
 - Backend Rating method 'getAllUserRatings'.
 - ProfileBuilder constructors and methods 'createProfile' and 'editProfile'.
+- 'search' method of TmdbService.
+- HttpRequestEntity.
 
 ## Fixed
 

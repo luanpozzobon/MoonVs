@@ -10,6 +10,8 @@ import luan.moonvs.models.tmdb_responses.TmdbTv;
 import luan.moonvs.models.tmdb_responses.providers.ProviderResults;
 import luan.moonvs.models.tmdb_responses.providers.ProviderType;
 import luan.moonvs.utils.HttpRequestEntity;
+import luan.moonvs.utils.RequestEntity;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,17 +19,23 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.net.URISyntaxException;
+import java.util.*;
 
 @Service
 class TmdbService {
     @Value("${tmdb.url}")
     private String baseUrl;
 
+    @Value("${tmdb.new-url}")
+    private String newUrl;
+
     @Value("${tmdb.token}")
     private String token;
 
     private HttpHeaders HEADERS;
+
+    private final int MAX_PAGES = 50;
 
     @PostConstruct
     private void init() {
@@ -37,6 +45,7 @@ class TmdbService {
         }};
     }
 
+    @Deprecated
     public List<TmdbSearch> search(String title) {
         final String QUERY = "search/multi?query=";
         final String URL = String.format(baseUrl, QUERY, title);
@@ -44,13 +53,45 @@ class TmdbService {
         final HttpRequestEntity<?, TmdbResults> request = new HttpRequestEntity<>(URL, HttpMethod.GET, HEADERS, TmdbResults.class);
         ResponseEntity<TmdbResults> searchResults = request.exchange();
 
-        if (!searchResults.getStatusCode().is2xxSuccessful())
-            return null;
-
-        if (searchResults.getBody() == null)
-            return null;
-
         return searchResults.getBody().results();
+    }
+
+    public List<TmdbSearch> search(String title, boolean includeAdult) throws URISyntaxException {
+        final String URL = String.format(newUrl, "search/multi");
+
+        final String language = "en-US";
+        int page = 1;
+        Map<String, String> parameters = new LinkedHashMap<>() {{
+            put("query", String.valueOf(title));
+            put("include_adult", String.valueOf(includeAdult));
+            put("language", String.valueOf(language));
+        }};
+        List<TmdbSearch> results = new ArrayList<>();
+
+        while(true) {
+            parameters.put("page", String.valueOf(page));
+            RequestEntity<?, TmdbResults> request = new RequestEntity<>(
+                    URL,
+                    HttpMethod.GET,
+                    HEADERS,
+                    TmdbResults.class
+            );
+            request.addParameters(parameters);
+            ResponseEntity<TmdbResults> searchResults = request.exchange();
+
+            if (!searchResults.getStatusCode().is2xxSuccessful()
+            ||  !searchResults.hasBody())
+                return results;
+
+            TmdbResults response = searchResults.getBody();
+            if (response.results() == null)
+                return results;
+
+            results.addAll(response.results());
+
+            if (page == response.totalPages() || page++ == MAX_PAGES)
+                return results;
+        }
     }
 
     public Content viewMovie(int id) {
