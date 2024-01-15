@@ -17,7 +17,7 @@ api:
 
 tmdb:
   url: https://api.themoviedb.org/3/%s%s
-  new-url: https://api.themoviedb.org/3/%s
+  new-url: https://api.themoviedb.org
   token: ${TMDB_TOKEN}
 
 logging:

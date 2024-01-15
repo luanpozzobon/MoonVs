@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Getter
 public class RequestEntity<T, R> {
-    private URIBuilder uriBuilder;
+    private final URIBuilder uriBuilder;
     private URI uri;
     private final HttpMethod method;
     private final HttpEntity<T> entity;
@@ -25,7 +25,6 @@ public class RequestEntity<T, R> {
                          HttpEntity<T> entity,
                          Class<R> responseType) throws URISyntaxException {
         this.uriBuilder = new URIBuilder(url);
-
         this.method = method;
         this.entity = entity;
         this.responseType = responseType;
@@ -36,6 +35,12 @@ public class RequestEntity<T, R> {
                          HttpHeaders headers,
                          Class<R> responseType) throws URISyntaxException {
         this(url, method, new HttpEntity<>(headers), responseType);
+    }
+
+    public RequestEntity<T, R> setPath(String... path) {
+        this.uriBuilder.setPathSegments(path);
+
+        return this;
     }
 
     public RequestEntity<T, R> addParameter(String parameterName, String parameterValue) {

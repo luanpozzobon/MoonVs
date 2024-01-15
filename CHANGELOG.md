@@ -20,6 +20,9 @@
 - Copy Constructor on Profile entity.
 - 'create()' methods on Profilebuilder.
 - RequestEntity.
+- TmdbContent which replaces both TmdbMovie and TmdbTv.
+- TmdbContentDeserializer.
+- Added method getContent which replaces both viewMovie and viewSeries.
 
 ## Changed
 
@@ -54,6 +57,8 @@
 - ProfileBuilder constructors and methods 'createProfile' and 'editProfile'.
 - 'search' method of TmdbService.
 - HttpRequestEntity.
+- TmdbMovie and TmdbTv
+- viewMovie and viewSeries methods from TmdbService
 
 ## Fixed
 

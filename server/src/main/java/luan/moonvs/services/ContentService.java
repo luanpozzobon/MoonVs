@@ -187,7 +187,11 @@ public class ContentService {
 
                 break;
             case EXTERNAL:
-                content = viewTmdbContent(id, contentType);
+                try {
+                    content = viewTmdbContent(id, contentType);
+                } catch (URISyntaxException e) {
+                    return new Response<>(HttpStatus.INTERNAL_SERVER_ERROR, new Content());
+                }
 
                 break;
             default:
@@ -208,16 +212,13 @@ public class ContentService {
         }
     }
 
-    private Content viewTmdbContent(int id, ContentType contentType) {
+    private Content viewTmdbContent(int id, ContentType contentType) throws URISyntaxException {
         if (repository.existsByIdTmdb(id))
             return repository.getReferenceByIdTmdb(id);
 
         Content content = null;
 
-        switch (contentType){
-            case MOVIE -> content = tmdbService.viewMovie(id);
-            case TV -> content = tmdbService.viewSeries(id);
-        }
+        content = tmdbService.getContent(id, contentType);
 
         if (content != null)
             repository.save(content);
