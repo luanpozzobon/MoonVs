@@ -1,7 +1,5 @@
 package luan.moonvs.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import jakarta.annotation.PostConstruct;
 import luan.moonvs.models.builders.ContentBuilder;
 import luan.moonvs.models.entities.Content;
@@ -11,8 +9,6 @@ import luan.moonvs.models.tmdb_responses.providers.ProviderResults;
 import luan.moonvs.models.tmdb_responses.providers.ProviderType;
 import luan.moonvs.utils.HttpRequestEntity;
 import luan.moonvs.utils.RequestEntity;
-import luan.moonvs.utils.deserializers.TmdbContentDeserializer;
-import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,10 +17,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 class TmdbService {
+    @Deprecated
     @Value("${tmdb.url}")
     private String baseUrl;
 

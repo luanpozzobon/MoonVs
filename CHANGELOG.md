@@ -23,6 +23,7 @@
 - TmdbContent which replaces both TmdbMovie and TmdbTv.
 - TmdbContentDeserializer.
 - Added method getContent which replaces both viewMovie and viewSeries.
+- Added logout option.
 
 ## Changed
 
