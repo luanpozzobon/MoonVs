@@ -35,11 +35,13 @@ header {
 }
 
 nav {
+    display: flex;
     flex-basis: 70%;
+    justify-content: space-around;
 }
 
 header nav a {
-    display: inline-flex;
+    display: flex;
     color: var(--font-color);
     text-decoration: none;
     padding: 18px;
@@ -47,6 +49,7 @@ header nav a {
     border: 1px solid var(--gray);
     border-radius: 10px;
     transition: 0.7s;
+    cursor: pointer;
 }
 
 header nav a:hover {

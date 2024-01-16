@@ -14,7 +14,11 @@ function checkAuth() {
     const NOW = new Date().getTime();
 
     if (config.TOKEN == null || config.EXPIRATION < NOW) {
-        sessionStorage.removeItem("config");
-        window.location.href = "/pages/auth.html";
+        logout()
     };
 };
+
+function logout() {
+    sessionStorage.clear();
+    window.location.href = "/pages/auth.html";
+}
