@@ -3,10 +3,8 @@ package luan.moonvs.utils.deserializers;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import luan.moonvs.models.tmdb_responses.TmdbContent;
-import luan.moonvs.models.tmdb_responses.TmdbGenres;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,10 +22,10 @@ public class TmdbContentDeserializer extends StdDeserializer<TmdbContent> {
         try {
             int id = node.get("id").asInt();
             JsonNode genresNode = node.get("genres");
-            List<TmdbGenres> genres = new ArrayList<>();
-            if (genresNode != null
-            &&  genresNode.isArray())
-                genresNode.forEach(genre -> genres.add(new TmdbGenres(genre.get("name").asText())));
+            List<String> genres = new ArrayList<>();
+            if (genresNode != null &&  genresNode.isArray())
+                genresNode.forEach(genre -> genres.add(genre.get("name").asText()));
+
 
             boolean adult = node.get("adult").asBoolean();
             String originalTitle = node.has("original_title") ?
