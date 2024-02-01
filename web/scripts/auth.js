@@ -1,3 +1,5 @@
+const URL = `${config.BASE_URL}/auth`
+
 const labels = document.getElementById('labels');
 const forms = document.getElementsByClassName('forms');
 
@@ -12,9 +14,6 @@ const confirmPasswordRegister = document.getElementById('confirmPassword-registe
 
 const usernameLogin = document.getElementById('username-login');
 const passwordLogin = document.getElementById('password-login');
-
-const BASE_URL = 'https://moonvs.fly.dev/auth'
-
 
 function authForms(element) {
     unselect();
@@ -63,11 +62,15 @@ function register() {
         body: JSON.stringify(body)
     }
 
-    fetch(BASE_URL + "/register", options)
+    fetch(`${URL}/sign-up`, options)
         .then(response => response.json())
         .then(data => {
-            session = generateToken(data.token);
-            sessionStorage.setItem('session', JSON.stringify(session));
+            var session = generateToken(data.token);
+            var auth = {
+                "session": session,
+                "id": data.idUser
+            };
+            setAuth(auth);
             window.location.href = './account.html';
         })
         .catch(error => {
@@ -93,12 +96,16 @@ function login() {
         body: JSON.stringify(body)
     };
 
-    fetch(BASE_URL + "/login", options)
+    fetch(`${URL}/sign-in`, options)
         .then(response => response.json())
         .then(data => {
-            session = generateToken(data.token);
-            sessionStorage.setItem('session', JSON.stringify(session));
-            window.location.href = '../index.html';
+            var session = generateToken(data.token);
+            var auth = {
+                "session": session,
+                "id": data.idUser
+            };
+            setAuth(auth);
+            window.location.href = "../index.html";
         })
         .catch(error => {
             alert(error);

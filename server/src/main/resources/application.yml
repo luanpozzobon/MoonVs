@@ -4,6 +4,11 @@ spring:
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+front:
+  url: ${FRONT_URL}
 
 api:
   security:
@@ -12,6 +17,7 @@ api:
 
 tmdb:
   url: https://api.themoviedb.org/3/%s%s
+  new-url: https://api.themoviedb.org
   token: ${TMDB_TOKEN}
 
 logging:

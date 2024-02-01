@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 
 @Getter
+@Deprecated
 public class HttpRequestEntity<T, R> {
     private final URI uri;
     private final HttpMethod method;

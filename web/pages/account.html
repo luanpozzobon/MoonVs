@@ -3,23 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoonVs: Profile</title>
+    <script src="../scripts/common.js"></script>
     <link rel="stylesheet" href="../styles/account.css">
     <link rel="shortcut icon" href="../assets/images/logos/Logo-W-Symbol.svg" type="image/x-icon">
+    <title>MoonVs: Profile</title>
 </head>
 <script>
-    const session = JSON.parse(sessionStorage.getItem('session'));
-    const now = new Date().getTime();
-
-    if (!session || now > session.expiration) {
-        window.location.href = './auth.html';
-    }
+    checkAuth();
 </script>
 <body>
     <header>
         <a href="../index.html"><img src="../assets/images/logos/Logo-Black.svg" id="logo"></a>
         <nav>
             <a href="./account.html">Account</a>
+            <a onclick="logout()">Log-Out</a>
         </nav>
     </header>
     <main>
@@ -58,14 +55,11 @@
         <div id="attribution">
             <p>This website uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</p>
             <img src="../assets/images/attribution/tmdb.svg" alt="">
-
-            <p>You can discover where to watch movies and series thanks to JustWatch</p>
-            <img src="../assets/images/attribution/JustWatch.webp" alt="">
         </div>
         <div id="project">
             <h3>The Project</h3>
             <ul>
-                <a href=""><li>About MoonVs</li></a>
+                <a href="https://luanpozzobon.github.io/luanpozzobon_site/pages/projects/moonvs/moonvs.html" target="_blank" rel="external"><li>About MoonVs</li></a>
                 <a href="mailto:luanpozzobon@gmail.com"><li>Have any Suggestions?</li></a>
             </ul>
         </div>

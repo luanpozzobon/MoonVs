@@ -9,6 +9,7 @@ import luan.moonvs.utils.converters.PrivacyConverter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -46,4 +47,18 @@ public class Profile {
     @JoinColumn(name = "fav_series",
                 referencedColumnName = "id_content")
     private Content favoriteSeries;
+
+    @OneToMany(mappedBy = "profile",
+               cascade = CascadeType.REMOVE)
+    private List<Rating> ratings;
+
+    public Profile(Profile profile) {
+        this.idUser = profile.getIdUser();
+        this.user = new User(profile.getUser());
+        this.biography = profile.getBiography();
+        this.privacy = profile.getPrivacy();
+        this.createdAt = profile.getCreatedAt();
+        this.favoriteMovie = profile.getFavoriteMovie();
+        this.favoriteSeries = profile.getFavoriteSeries();
+    }
 }

@@ -1,6 +1,5 @@
-const SESSION = JSON.parse(sessionStorage.getItem('session'));
-const TOKEN = SESSION.token;
-const BASE_URL = "https://moonvs.fly.dev/";
+const PROFILE_URL = `${config.BASE_URL}/profile`;
+const ACCOUNT_URL = `${config.BASE_URL}/account`;
 
 const biographyField = document.getElementById('biography');
 const username = document.getElementById('username');
@@ -9,15 +8,17 @@ let profile;
 getProfile();
 
 function getProfile() {
+    const URL = `${PROFILE_URL}/${config.ID_USER}`;
+    
     const options = {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + TOKEN
+            'Authorization': config.TOKEN
         }
     };
 
-    fetch(BASE_URL + 'profile/', options)
+    fetch(URL, options)
         .then(response => response.json())
         .then(data => {
             username.innerHTML = `@ ${data.username}`;
@@ -30,28 +31,29 @@ function getProfile() {
 }
 
 function saveProfile() {
-    var url = BASE_URL;
+    var url = PROFILE_URL;
 
     const biography = biographyField.value;
 
     const body = {
-        'biography': biography,
+        'idUser': config.ID_USER,
+        'biography': biography
     };
 
     var options = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + TOKEN
+            'Authorization': config.TOKEN
         },
         body: JSON.stringify(body)
     };
 
     if (profile == true) {
         options.method = 'PUT';
-        url += 'profile/edit';
+        url += `/edit/${config.ID_USER}`;
     } else {
         options.method = 'POST';
-        url += 'profile/new';
+        url += `/create/${config.ID_USER}`;
     }
 
     fetch(url, options)
@@ -67,10 +69,13 @@ const usernameField = document.getElementById('editUsername');
 const emailField = document.getElementById('editEmail');
 
 function editAccount() {
+    const URL = `${ACCOUNT_URL}/update/username-and-email`;
+    
     const editUsername = usernameField.value;
     const editEmail = emailField.value;
 
     const body = {
+        "idUser": config.ID_USER,
         "username": editUsername,
         "email": editEmail
     };
@@ -79,17 +84,16 @@ function editAccount() {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + TOKEN
+            "Authorization": config.TOKEN
         },
         body: JSON.stringify(body)
     };
 
-    fetch(BASE_URL + "account/update", options)
+    fetch(URL, options)
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
-            sessionStorage.removeItem('session');
-            window.location.href = './account.html';
+            sessionStorage.removeItem('config');
+            window.location.href = './auth.html';
         })
 
 }
@@ -97,6 +101,8 @@ const passwordField = document.getElementById('editPassword');
 const confirmPasswordField = document.getElementById('confirmPassword');
 
 function changePassword() {
+    const URL = `${ACCOUNT_URL}/update/password`;
+    
     const password = passwordField.value;
     const confirmPassword = confirmPasswordField.value;
 
@@ -106,6 +112,7 @@ function changePassword() {
     }
 
     const body = {
+        "idUser": config.ID_USER,
         "password": password
     };
 
@@ -113,17 +120,16 @@ function changePassword() {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + TOKEN
+            "Authorization": config.TOKEN
         },
         body: JSON.stringify(body)
     };
 
-    fetch(BASE_URL + "account/update-password", options)
-        .then(response => response.text())
+    fetch(URL, options)
+        .then(response => response.json())
         .then(data => {
-            alert(data);
-            sessionStorage.removeItem('session');
-            window.location.href = './account.html';
+            sessionStorage.removeItem('config');
+            window.location.href = './auth.html';
         })
 
 }
@@ -132,10 +138,13 @@ const deleteUsernameField = document.getElementById('deleteUsername');
 const deletePasswordField = document.getElementById('deletePassword');
 
 function deleteAccount() {
+    const URL = `${ACCOUNT_URL}/delete-account`;
+
     const deleteUsername = deleteUsernameField.value;
     const deletePassword = deletePasswordField.value;
 
     const body = {
+        "idUser": config.ID_USER,
         "username": deleteUsername,
         "password": deletePassword
     };
@@ -144,16 +153,15 @@ function deleteAccount() {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + TOKEN
+            "Authorization": config.TOKEN
         },
         body: JSON.stringify(body)
     };
 
-    fetch(BASE_URL + 'account/delete', options)
-        .then(response => response.text())
+    fetch(URL, options)
+        .then(response => response.json())
         .then(data => {
-            alert(data.message);
-            sessionStorage.removeItem('session');
-            window.location.href = './account.html';
+            sessionStorage.removeItem('config');
+            window.location.href = './auth.html';
         })
 }

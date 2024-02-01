@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+@Deprecated
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record TmdbMovie(int id,
                         List<TmdbGenres> genres,

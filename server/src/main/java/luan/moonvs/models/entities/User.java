@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -50,6 +51,16 @@ public class User implements UserDetails, Cloneable{
     @PrimaryKeyJoinColumn
     private Profile profile;
 
+    public User(User user) {
+        this.idUser = user.getIdUser();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.birthDate = user.getBirthDate();
+        this.createdAt = user.getCreatedAt();
+        this.profile = user.getProfile();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -76,11 +87,18 @@ public class User implements UserDetails, Cloneable{
     }
 
     @Override
+    @Deprecated
     public User clone() {
         try {
             return (User) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    public boolean isOfLegalAge() {
+        final int LEGAL_AGE = 18;
+
+        return Period.between(this.birthDate, LocalDate.now()).getYears() > LEGAL_AGE;
     }
 }

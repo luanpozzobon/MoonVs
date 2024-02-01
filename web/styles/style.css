@@ -5,7 +5,7 @@
 }
 
 * {
-    font-family: Bell-MT;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 18px;
     padding: 0;
     margin: 0;
@@ -26,6 +26,7 @@ header {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    margin: 10px;
     margin-bottom: 50px;
 }
 
@@ -34,11 +35,13 @@ header {
 }
 
 nav {
+    display: flex;
     flex-basis: 70%;
+    justify-content: space-around;
 }
 
 header nav a {
-    display: inline-flex;
+    display: flex;
     color: var(--font-color);
     text-decoration: none;
     padding: 18px;
@@ -46,6 +49,7 @@ header nav a {
     border: 1px solid var(--gray);
     border-radius: 10px;
     transition: 0.7s;
+    cursor: pointer;
 }
 
 header nav a:hover {
@@ -56,10 +60,12 @@ footer {
     background-color: black;
     width: 100%;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: safe center;
+    border-radius: 50px 50px 0 0;
+    padding-top: 20px;
 }
 
 footer div {

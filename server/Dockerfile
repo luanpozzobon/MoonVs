@@ -12,6 +12,6 @@ FROM openjdk:19-jdk-slim
 
 EXPOSE 8080
 
-COPY --from=build /target/moonvs-0.1.0-beta.2024-01.jar app.jar
+COPY --from=build /target/moonvs-0.2.0-beta.2024-02.jar app.jar
 
 ENTRYPOINT [ "java", "-jar", "app.jar" ]

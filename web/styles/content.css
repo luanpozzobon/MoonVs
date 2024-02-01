@@ -3,6 +3,46 @@
 main {
     width: 70%;
     margin: auto;
+    margin-bottom: 150px;
+}
+
+.hidden {
+    visibility: hidden;
+    display: none;
+}
+
+#rating {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+#rating form {
+    flex-basis: 20%;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--bg-color);
+    border-radius: 10px;
+}
+
+#rating form input,
+#rating form textarea {
+    flex-basis: 100%;
+    padding: 10px;
+    margin: 15px;
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    border-radius: 5px;
+    border: 1px solid var(--font-color);
 }
 
 section {
@@ -30,6 +70,20 @@ section {
     grid-column: 2;
 }
 
+#content div {
+    display: flex;
+    flex-direction: row;
+}
+
+#content div p {
+    padding-right: 20px;
+}
+
+#userRating:hover {
+    cursor: pointer;
+    text-decoration: underline solid var(--font-color);
+}
+
 h1 {
     font-size: 32px;
 }
@@ -47,8 +101,8 @@ h1 {
 #watch div {
     padding: 10px;
     margin: 10px;
-    width: 30%;
-    float: left;
+    width: calc((100% / 3) - 40px);
+
 }
 
 #watch h3 {
@@ -57,4 +111,24 @@ h1 {
 
 #watch p {
     padding: 5px 0px;
+}
+
+#justwatch {
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+#justwatch p {
+    flex-basis: 45%;
+    margin: 10px;
+    font-size: 16px;
+}
+
+#justwatch img {
+    height: 35px;
+    margin: 5px;
+    margin-right: 20px;
 }
