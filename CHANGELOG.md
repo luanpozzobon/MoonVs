@@ -42,6 +42,7 @@
 - Included 'page' and 'totalPages' field in TmdbResults.
 - The Tmdb Search now uses the user age, and includes results of more than one page.
 - Added method 'isOfLegalAge' in User entity.
+- The TMDB Content now receives directly a List of String for genres.
 
 ## Deprecated
 
@@ -60,6 +61,7 @@
 - HttpRequestEntity.
 - TmdbMovie and TmdbTv
 - viewMovie and viewSeries methods from TmdbService
+- TmdbGenres.
 
 ## Fixed
 

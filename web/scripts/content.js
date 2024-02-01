@@ -31,7 +31,7 @@ ratingContainer.appendChild(userRating);
 var genres = document.createElement('p');
 genres.innerText = "Genres: ";
 Array.from(CONTENT.genres).forEach(g => {
-    genres.innerText += `${g}  `;
+    genres.innerText += `${g} | `;
 })
 
 CONTENT_SECTION.appendChild(poster);

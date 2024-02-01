@@ -78,11 +78,11 @@ class TmdbService {
                     .exchange();
 
             if (!searchResults.getStatusCode().is2xxSuccessful()
-                    || !searchResults.hasBody())
+            ||  !searchResults.hasBody())
                 return results;
 
             TmdbResults response = searchResults.getBody();
-            if (response.results() == null)
+            if (response == null || response.results() == null)
                 return results;
 
             results.addAll(response.results());
@@ -150,7 +150,8 @@ class TmdbService {
                 .exchange();
 
         if (!content.getStatusCode().is2xxSuccessful()
-                || !content.hasBody())
+        ||  !content.hasBody()
+        ||   content.getBody() == null)
             return null;
 
         ProviderResults providers = getWatchProviders(contentType, id);
@@ -184,7 +185,7 @@ class TmdbService {
                 .exchange();
 
         if (!providers.getStatusCode().is2xxSuccessful()
-                || !providers.hasBody())
+        || !providers.hasBody())
             return null;
 
         return providers.getBody();

@@ -10,7 +10,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = TmdbContentDeserializer.class)
 public record TmdbContent(int id,
-                          List<TmdbGenres> genres,
+                          List<String> genres,
                           boolean adult,
                           @JsonProperty("original_title")
                           String originalTitle,

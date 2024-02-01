@@ -35,9 +35,7 @@ public class ContentBuilder {
         contentBuilder.content.setOriginalTitle(content.originalTitle());
         contentBuilder.content.setPtTitle(content.ptTitle());
         contentBuilder.content.setOverview(content.overview());
-        contentBuilder.content.setGenres(content.genres().stream()
-                .map(TmdbGenres::genre)
-                .collect(Collectors.toList()));
+        contentBuilder.content.setGenres(content.genres());
         contentBuilder.content.setPosterPath(content.posterPath());
         contentBuilder.content.setTmdbVoteAvg(content.voteAvg());
         contentBuilder.content.setTmdbVoteCount(content.voteCount());
