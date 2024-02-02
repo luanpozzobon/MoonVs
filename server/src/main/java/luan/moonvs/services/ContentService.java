@@ -10,7 +10,6 @@ import luan.moonvs.models.tmdb_responses.TmdbSearch;
 import luan.moonvs.repositories.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URISyntaxException;
@@ -34,46 +33,6 @@ public class ContentService {
         this.repository = repository;
         this.tmdbService = tmdbService;
         this.accountService = accountService;
-    }
-
-    @Deprecated
-    public ResponseEntity<List<ContentSearch>> internalSearch(String title) {
-        List<Content> contents = repository.getByOriginalTitleContaining(title);
-        if (contents.isEmpty())
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .build();
-
-        List<ContentSearch> response = new ArrayList<>(){{
-            contents.forEach(content ->
-                    add(new ContentSearch(content))
-            );
-        }};
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
-
-    }
-
-    @Deprecated
-    public ResponseEntity<List<ContentSearch>> externalSearch(String title) {
-        List<TmdbSearch> contents = tmdbService.search(title);
-        if (contents.isEmpty())
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .build();
-
-        List<ContentSearch> response = new ArrayList<>(){{
-            contents.forEach(content -> {
-                if (content != null)
-                    add(new ContentSearch(content));
-            });
-        }};
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
     }
 
     public Response<List<ContentSearch>> search(SearchType searchType, String title) {
@@ -132,45 +91,6 @@ public class ContentService {
                 .filter(Objects::nonNull)
                 .map(ContentSearch::new)
                 .collect(Collectors.toList());
-    }
-
-    @Deprecated
-    public ResponseEntity<Content> internalContent(int id) {
-        try {
-            Content content = repository.getReferenceById(id);
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(content);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .build();
-        }
-    }
-
-    @Deprecated
-    public ResponseEntity<Content> externalContent(int id, ContentType contentType) {
-        if (repository.existsByIdTmdb(id))
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(repository.getReferenceByIdTmdb(id));
-
-        Content content = null;
-
-        switch (contentType){
-            case MOVIE -> content = tmdbService.viewMovie(id);
-            case TV -> content = tmdbService.viewSeries(id);
-        }
-
-        if (content == null)
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .build();
-
-        repository.save(content);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(content);
     }
 
     public Response<Content> viewContent(int id, SearchType searchType, ContentType contentType) {

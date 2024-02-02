@@ -4,19 +4,9 @@ import luan.moonvs.models.entities.ContentAndUserId;
 import luan.moonvs.models.entities.Rating;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class RatingBuilder {
     private Rating rating;
-
-    @Deprecated
-    public static RatingBuilder create() {
-        RatingBuilder ratingBuilder = new RatingBuilder();
-        ratingBuilder.rating = new Rating();
-        ratingBuilder.rating.setIdRating(new ContentAndUserId());
-        return ratingBuilder;
-    }
 
     public static RatingBuilder create(ContentAndUserId contentAndUserId) {
         RatingBuilder ratingBuilder = new RatingBuilder();
@@ -30,14 +20,6 @@ public class RatingBuilder {
         RatingBuilder ratingBuilder = new RatingBuilder();
         ratingBuilder.rating = rating;
         return ratingBuilder;
-    }
-
-    @Deprecated
-    public RatingBuilder withId(UUID idUser, int idContent) {
-        ContentAndUserId idRating = new ContentAndUserId(idUser, idContent);
-        this.rating.setIdRating(idRating);
-
-        return this;
     }
 
     public RatingBuilder addRating(float ratingValue) throws IllegalArgumentException {
@@ -58,6 +40,4 @@ public class RatingBuilder {
     public Rating build() {
         return rating;
     }
-
-
 }

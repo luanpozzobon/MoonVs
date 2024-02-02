@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RatingRepository extends JpaRepository<Rating, ContentAndUserId> {
-    @Deprecated
-    List<Rating> getByIdRatingIdUser(UUID idUser);
 
     List<Rating> getAllRatingsByIdRatingIdUser(UUID idUser);
 

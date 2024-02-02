@@ -2,7 +2,6 @@ package luan.moonvs.controllers;
 
 import luan.moonvs.models.entities.Rating;
 import luan.moonvs.models.requests.RateRequest;
-import luan.moonvs.models.requests.RatingRequest;
 import luan.moonvs.services.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,22 +19,6 @@ public class RatingController {
 
     private final String HEADER_NAME = "message";
     private final String NOT_EXISTS = "The content doesn't exist";
-
-    @Deprecated
-    @PostMapping("/rate")
-    public ResponseEntity<?> newRating(@RequestBody RatingRequest rating) {
-        if (rating.idContent() < 1)
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Conteúdo não existe!");
-
-        if (rating.ratingValue() < 0.0 || rating.ratingValue() > 10.0)
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("A avaliação deve estar entre 0.0 e 10.0");
-
-        return service.newRating(rating);
-    }
 
     @PostMapping("/rate/{idContent}")
     public ResponseEntity<Rating> addOrEditRating(@PathVariable int idContent, @RequestBody RateRequest rateRequest) {
@@ -81,12 +64,6 @@ public class RatingController {
                 .status(response.status())
                 .header(HEADER_NAME, response.message())
                 .body(response.entity());
-    }
-
-    @Deprecated
-    @GetMapping("/")
-    public ResponseEntity<?> getAllUserRatings() {
-        return service.getAllUserRatings();
     }
 
     @GetMapping("/list/{idUser}")

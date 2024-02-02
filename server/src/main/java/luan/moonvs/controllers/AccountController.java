@@ -2,8 +2,6 @@ package luan.moonvs.controllers;
 
 import luan.moonvs.models.entities.User;
 import luan.moonvs.models.exceptions.IllegalIdException;
-import luan.moonvs.models.requests.AccountRequest;
-import luan.moonvs.models.requests.AuthRequest;
 import luan.moonvs.models.requests.UserAccountRequest;
 import luan.moonvs.models.responses.AccountResponse;
 import luan.moonvs.services.AccountService;
@@ -25,12 +23,6 @@ public class AccountController {
         this.service = service;
     }
 
-    @Deprecated
-    @GetMapping("/")
-    public ResponseEntity<AccountResponse> account() {
-        return service.account();
-    }
-
     @GetMapping("/{idUser}")
     public ResponseEntity<AccountResponse> getAccount(@PathVariable UUID idUser) {
         try {
@@ -44,12 +36,6 @@ public class AccountController {
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new AccountResponse(e.message));
         }
-    }
-
-    @Deprecated
-    @PatchMapping("/update")
-    public ResponseEntity<AccountResponse> updateAccount(@RequestBody AccountRequest accountDto) {
-        return service.updateAccount(accountDto);
     }
 
     @PatchMapping("/update/username-and-email")
@@ -80,12 +66,6 @@ public class AccountController {
         }
     }
 
-    @Deprecated
-    @PatchMapping("/update-password")
-    public ResponseEntity<String> updatePassword(@RequestBody String password) {
-        return service.updatePassword(password);
-    }
-
     @PatchMapping("/update/password")
     public ResponseEntity<AccountResponse> updatePassword(@RequestBody UserAccountRequest userAccount) {
         final String EMPTY_REQUEST = "You must fill the password!";
@@ -110,12 +90,6 @@ public class AccountController {
                     .header(HEADER_NAME, e.getMessage())
                     .build();
         }
-    }
-
-    @Deprecated
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteAccount(@RequestBody AuthRequest authRequest) {
-        return service.deleteAccount(authRequest);
     }
 
     @DeleteMapping("/delete-account")
