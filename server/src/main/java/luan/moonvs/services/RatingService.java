@@ -7,12 +7,10 @@ import luan.moonvs.models.entities.Profile;
 import luan.moonvs.models.entities.Rating;
 import luan.moonvs.models.entities.User;
 import luan.moonvs.models.requests.RateRequest;
-import luan.moonvs.models.requests.RatingRequest;
 import luan.moonvs.models.responses.Response;
 import luan.moonvs.repositories.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -22,33 +20,15 @@ import java.util.UUID;
 
 @Service
 public class RatingService {
-    private RatingRepository repository;
-    private AccountService accountService;
-    private ProfileService profileService;
+    private final RatingRepository repository;
+    private final AccountService accountService;
+    private final ProfileService profileService;
 
     @Autowired
     public RatingService(RatingRepository repository, AccountService accountService, ProfileService profileService) {
         this.repository = repository;
         this.accountService = accountService;
         this.profileService = profileService;
-    }
-
-    @Deprecated
-    public ResponseEntity<Rating> newRating(RatingRequest ratingRequest) {
-        User authUser = accountService.getAccount();
-        Rating rating = null;
-
-        rating = RatingBuilder.create()
-                .withId(authUser.getIdUser(), ratingRequest.idContent())
-                .addRating(ratingRequest.ratingValue())
-                .addCommentary(ratingRequest.commentary())
-                .build();
-
-        repository.save(rating);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(rating);
     }
 
     public Response<Rating> addOrEditRating(int idContent, RateRequest rateRequest) {
@@ -95,22 +75,6 @@ public class RatingService {
             return new Response<>(HttpStatus.NOT_FOUND, Float.NaN, NOT_FOUND);
 
         return new Response<>(HttpStatus.OK, avgRating);
-    }
-
-    @Deprecated
-    public ResponseEntity<?> getAllUserRatings() {
-        User authUser = accountService.getAccount();
-        try {
-            List<Rating> ratingList = repository.getByIdRatingIdUser(authUser.getIdUser());
-
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(ratingList);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Perfil não encontrado");
-        }
     }
 
     public Response<List<Rating>> getUserRatingList(UUID idUser) {

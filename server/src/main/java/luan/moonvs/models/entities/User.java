@@ -17,7 +17,7 @@ import java.util.UUID;
 @Data
 
 @Entity(name = "users")
-public class User implements UserDetails, Cloneable{
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_user")
@@ -84,16 +84,6 @@ public class User implements UserDetails, Cloneable{
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override
-    @Deprecated
-    public User clone() {
-        try {
-            return (User) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
     }
 
     public boolean isOfLegalAge() {

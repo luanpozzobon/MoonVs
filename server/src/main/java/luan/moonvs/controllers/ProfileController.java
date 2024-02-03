@@ -19,12 +19,6 @@ public class ProfileController {
     private final String HEADER_NAME = "message",
                          MISSING_ID = "It is necessary the Id of the user!";
 
-    @Deprecated
-    @PostMapping("/new")
-    public ResponseEntity<String> createProfile(@RequestBody ProfileRequest profileRequest) {
-        return service.createProfile(profileRequest);
-    }
-
     @PostMapping("/create/{idUser}")
     public ResponseEntity<ProfileResponse> createProfile(@PathVariable UUID idUser, @RequestBody ProfileRequest profileRequest) {
         if (idUser == null)
@@ -40,12 +34,6 @@ public class ProfileController {
                 .body(new ProfileResponse(response.entity()));
     }
 
-    @Deprecated
-    @GetMapping("/")
-    public ResponseEntity<ProfileResponse> seeProfile() {
-        return service.profileInfo();
-    }
-
     @GetMapping("/{idUser}")
     public ResponseEntity<ProfileResponse> getProfile(@PathVariable UUID idUser) {
         if (idUser == null)
@@ -59,12 +47,6 @@ public class ProfileController {
                 .status(response.status())
                 .header(HEADER_NAME, response.message())
                 .body(new ProfileResponse(response.entity()));
-    }
-
-    @Deprecated
-    @PutMapping("/edit")
-    public ResponseEntity<String> editProfile(@RequestBody ProfileRequest profileRequest) {
-        return service.editProfile(profileRequest);
     }
 
     @PutMapping("/edit/{idUser}")
