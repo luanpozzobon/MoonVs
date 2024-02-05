@@ -42,47 +42,58 @@ CONTENT_SECTION.appendChild(genres);
 
 const WATCH_SECTION = document.getElementById("watch");
 
-const BUY = CONTENT.watchProvider.buy;
-const RENT = CONTENT.watchProvider.rent;
-const STREAMING = CONTENT.watchProvider.flatrate;
+if (!CONTENT.watchProvider) {
+    document.querySelector('main').removeChild(WATCH_SECTION);
+} else {
+    const BUY = CONTENT.watchProvider.buy ?? "";
+    const RENT = CONTENT.watchProvider.rent ?? "";
+    const STREAMING = CONTENT.watchProvider.flatrate ?? "";
 
-var buyContainer = document.createElement('div');
-var buyTitle = document.createElement('h3');
-buyTitle.innerText = "Buy";
-buyContainer.appendChild(buyTitle);
+    if (BUY != "") {
+        var buyContainer = document.createElement('div');
+        var buyTitle = document.createElement('h3');
+        buyTitle.innerText = "Buy";
+        buyContainer.appendChild(buyTitle);
 
-Array.from(BUY).forEach(p => {
-    var buy = document.createElement('p');
-    buy.innerText = p;
-    buyContainer.appendChild(buy)
-})
+        Array.from(BUY).forEach(p => {
+            var buy = document.createElement('p');
+            buy.innerText = p;
+            buyContainer.appendChild(buy)
+        })
 
-var rentContainer = document.createElement('div');
-var rentTitle = document.createElement('h3');
-rentTitle.innerText = "Rent";
-rentContainer.appendChild(rentTitle);
+        WATCH_SECTION.lastElementChild.before(buyContainer);
+    }
 
-Array.from(RENT).forEach(p => {
-    var rent = document.createElement('p');
-    rent.innerText = p;
-    rentContainer.appendChild(rent)
-})
+    if (RENT != "") {
+        var rentContainer = document.createElement('div');
+        var rentTitle = document.createElement('h3');
+        rentTitle.innerText = "Rent";
+        rentContainer.appendChild(rentTitle);
 
-var streamingContainer = document.createElement('div');
-var streamingTitle = document.createElement('h3');
-streamingTitle.innerText = "Streaming";
-streamingContainer.appendChild(streamingTitle);
+        Array.from(RENT).forEach(p => {
+            var rent = document.createElement('p');
+            rent.innerText = p;
+            rentContainer.appendChild(rent)
+        })
 
-Array.from(STREAMING).forEach(p => {
-    var streaming = document.createElement('p');
-    streaming.innerText = p;
-    streamingContainer.appendChild(streaming)
-})
+        WATCH_SECTION.lastElementChild.before(rentContainer);
+    }
 
-WATCH_SECTION.lastElementChild.before(buyContainer);
-WATCH_SECTION.lastElementChild.before(rentContainer);
-WATCH_SECTION.lastElementChild.before(streamingContainer);
+    if (STREAMING != "") {
+        var streamingContainer = document.createElement('div');
+        var streamingTitle = document.createElement('h3');
+        streamingTitle.innerText = "Streaming";
+        streamingContainer.appendChild(streamingTitle);
 
+        Array.from(STREAMING).forEach(p => {
+            var streaming = document.createElement('p');
+            streaming.innerText = p;
+            streamingContainer.appendChild(streaming)
+        })
+
+        WATCH_SECTION.lastElementChild.before(streamingContainer);
+    }
+}
 
 function getRating(idContent) {
     const URL = `${BASE_URL}/rating`;
