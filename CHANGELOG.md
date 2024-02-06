@@ -7,6 +7,8 @@
 ## Changed
 
 - Upgrade Dependencies: Spring Boot 3.1.8.
+- Now only non-empty sections are shown in 'Watch Providers'.
+- Now the 'Watch Providers' section won't be shown if it's empty.
 
 ## Deprecated
 
@@ -14,7 +16,7 @@
 
 ## Fixed
 
-
+- Fixed bug where the rating wouldn't load if there was no 'Watch Provider'.
 
 ## Removed
 
