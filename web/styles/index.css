@@ -1,5 +1,36 @@
 @import url(./style.css);
 
+.hidden {
+    display: none;
+}
+
+#tabs {
+    display: flex;
+    margin: auto;
+    width: 35%;
+    justify-content: space-around;
+}
+
+#tabs span {
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 11px;
+    border-bottom: 7px solid var(--comp-color1);
+}
+
+#tabs span:hover {
+    border-bottom: 7px solid var(--font-color);
+    color: var(--comp-color3);
+    background-color: var(--gray);
+    transition: 0.5s;
+    opacity: 75%;
+}
+
+#tabs span#selected {
+    border-bottom: 7px solid var(--comp-color2);
+    background-color: var(--comp-color1);
+}
+
 section {
     width: 100%;
 }
@@ -9,6 +40,7 @@ form {
     align-items: center;
     justify-content: center;
     margin: auto;
+    margin-top: 50px;
 }
 
 input {
@@ -18,7 +50,7 @@ input {
     padding: 12px;
     width: 60%;
     border-radius: 25px;
-    background-color: var(--gray);
+    background-color: var(--comp-color1);
     color: var(--font-color);
     border: none;
 }
@@ -28,7 +60,7 @@ button {
     position: absolute;
     right: calc(20% - 13px);
     z-index: 2;
-    background-color: black;
+    background-color: var(--bg-color);
     border: none;
     width: 47px;
     height: 47px;
@@ -39,10 +71,6 @@ button {
 button img {
     width: 45px;
     height: 45px;
-}
-
-.hidden {
-    display: none;
 }
 
 main {
@@ -58,7 +86,7 @@ main div {
     grid-template-columns: auto 1fr;
     column-gap: 20px;
     row-gap: 5px;
-    border: 1px solid var(--gray);
+    border: 1px solid var(--comp-color1);
     border-radius: 20px;
     padding: 10px;
     cursor: pointer;

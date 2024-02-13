@@ -1,7 +1,9 @@
 :root {
     --font-color: rgba(255, 255, 255, 0.75);
     --bg-color: rgba(0, 0, 0, 0.8);
-    --gray: #2d2d2dff;
+    --comp-color1: rgb(45, 45, 45);
+    --comp-color2: rgb(99, 32, 238);
+    --comp-color3: rgb(139, 128, 249);
 }
 
 * {
@@ -46,7 +48,7 @@ header nav a {
     text-decoration: none;
     padding: 18px;
     margin: 10px;
-    border: 1px solid var(--gray);
+    border: 1px solid var(--comp-color1);
     border-radius: 10px;
     transition: 0.7s;
     cursor: pointer;
@@ -65,7 +67,7 @@ footer {
     flex-wrap: wrap;
     justify-content: safe center;
     border-radius: 50px 50px 0 0;
-    padding-top: 20px;
+    padding: 0px 20px;
     justify-content: center;
 }
 
