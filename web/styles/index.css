@@ -7,7 +7,7 @@
 #tabs {
     display: flex;
     margin: auto;
-    width: 35%;
+    width: 50%;
     justify-content: space-around;
 }
 
@@ -26,13 +26,9 @@
     opacity: 75%;
 }
 
-#tabs span#selected {
+#tabs span.selected {
     border-bottom: 7px solid var(--comp-color2);
     background-color: var(--comp-color1);
-}
-
-section {
-    width: 100%;
 }
 
 form {
@@ -40,7 +36,7 @@ form {
     align-items: center;
     justify-content: center;
     margin: auto;
-    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 input {
