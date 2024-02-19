@@ -1,21 +1,19 @@
 package luan.moonvs.models.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 
-@Embeddable
 public class MovieListId implements Serializable {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_list")
-    private int idList;
-
-    @Column(name = "id_user")
+    private Long idList;
     private UUID idUser;
 }
