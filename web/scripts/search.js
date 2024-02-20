@@ -4,6 +4,7 @@ const POSTER_URL = 'https://image.tmdb.org/t/p/w92'
 
 const input = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
+const SECTION = document.getElementById('content');
 const main = document.querySelector('main');
 
 async function internalSearch() {
@@ -15,7 +16,7 @@ async function internalSearch() {
 
     await doSearch(URL);
 
-    Array.from(main.children).forEach(e => {
+    Array.from(SECTION.children).forEach(e => {
         e.addEventListener('click', function() {
             internalInfo(this)
         })
@@ -24,7 +25,7 @@ async function internalSearch() {
     span.id = "external";
     span.innerText = "Didn't find what you were looking for? Try searching using TMDB!";
     span.addEventListener('click', () => externalSearch());
-    main.appendChild(span);
+    SECTION.appendChild(span);
 }
 
 async function externalSearch() {
@@ -50,8 +51,7 @@ async function doSearch(URL) {
             "Authorization": config.TOKEN
         }
     };
-
-    main.innerHTML = "";
+    SECTION.innerHTML = "";
 
     await fetch(URL, options)
         .then(response => response.json())
@@ -66,7 +66,7 @@ async function doSearch(URL) {
                                 <p>${obj.overview}</p>
                                 <p>TMDB Rating: ${obj.voteAverage.toFixed(2)}</p>
                             `;
-                main.appendChild(div);
+                SECTION.appendChild(div);
             });
         })
         .catch(error => {
