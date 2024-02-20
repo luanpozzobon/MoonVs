@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface MovieListRepository extends JpaRepository<MovieList, MovieListId> {
     Optional<MovieList> findTopByOrderByIdListDesc();
+    Optional<MovieList> findByIdList(Long idLists);
 }

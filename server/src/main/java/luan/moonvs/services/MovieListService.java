@@ -2,6 +2,7 @@ package luan.moonvs.services;
 
 import luan.moonvs.models.builders.MovieListBuilder;
 import luan.moonvs.models.entities.MovieList;
+import luan.moonvs.models.entities.MovieListId;
 import luan.moonvs.models.requests.MovieListRequest;
 import luan.moonvs.models.responses.Response;
 import luan.moonvs.repositories.MovieListRepository;
@@ -39,5 +40,16 @@ public class MovieListService {
         Optional<MovieList> lastList = repository.findTopByOrderByIdListDesc();
         return lastList.map(movieList -> movieList.getIdList() + 1).orElse(1L);
 
+    }
+
+    public Response<?> delete(Long idList) {
+        final String ID_DOESNT_EXIST = "There's no list with the given Id!";
+
+        Optional<MovieList> movieList = repository.findByIdList(idList);
+        if (movieList.isEmpty())
+            return new Response(HttpStatus.BAD_REQUEST, ID_DOESNT_EXIST);
+
+        repository.delete(movieList.get());
+        return new Response(HttpStatus.OK, "");
     }
 }
