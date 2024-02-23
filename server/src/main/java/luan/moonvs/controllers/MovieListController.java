@@ -49,4 +49,27 @@ public class MovieListController {
                 .header(HEADER_NAME, response.message())
                 .build();
     }
+
+    @PostMapping("/{idList}/add")
+    public ResponseEntity<?> addContent(@PathVariable Long idList, @RequestParam Integer idContent) {
+        final String ID_NOT_PRESENT = "The %s id should be provided!";
+
+        if (idList == null)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .header(HEADER_NAME, String.format(ID_NOT_PRESENT, "list"))
+                    .build();
+
+        if (idContent == null)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .header(HEADER_NAME, String.format(ID_NOT_PRESENT, "content"))
+                    .build();
+
+        var response = service.add(idList, idContent);
+        return ResponseEntity
+                .status(response.status())
+                .header(HEADER_NAME, response.message())
+                .body(response.entity());
+    }
 }

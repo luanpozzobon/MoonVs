@@ -2,9 +2,11 @@ package luan.moonvs.services;
 
 import luan.moonvs.models.builders.MovieListBuilder;
 import luan.moonvs.models.entities.MovieList;
-import luan.moonvs.models.entities.MovieListId;
+import luan.moonvs.models.entities.MovieListContent;
 import luan.moonvs.models.requests.MovieListRequest;
 import luan.moonvs.models.responses.Response;
+import luan.moonvs.repositories.ContentRepository;
+import luan.moonvs.repositories.MovieListContentRepository;
 import luan.moonvs.repositories.MovieListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +16,21 @@ import java.util.Optional;
 
 @Service
 public class MovieListService {
+    private MovieListRepository listRepository;
+    private MovieListContentRepository listContentRepository;
+    private ContentRepository contentRepository;
+
+
+    private final String ID_DOESNT_EXIST = "There's no %s with the given Id!";
 
     @Autowired
-    private MovieListRepository repository;
+    public MovieListService(MovieListRepository listRepository,
+                            MovieListContentRepository listContentRepository,
+                            ContentRepository contentRepository) {
+        this.listRepository = listRepository;
+        this.listContentRepository = listContentRepository;
+        this.contentRepository = contentRepository;
+    }
 
     public synchronized Response<MovieList> create(MovieListRequest movieListRequest) {
         Long idList = movieListRequest.idList();
@@ -29,7 +43,7 @@ public class MovieListService {
                     .addListDescription(movieListRequest.listDescription())
                     .build();
 
-            repository.save(movieList);
+            listRepository.save(movieList);
             return new Response<>(HttpStatus.CREATED, movieList);
         } catch (IllegalArgumentException e) {
             return new Response<>(HttpStatus.BAD_REQUEST, new MovieList(), e.getMessage());
@@ -37,19 +51,35 @@ public class MovieListService {
     }
 
     private Long getNextIdList() {
-        Optional<MovieList> lastList = repository.findTopByOrderByIdListDesc();
+        Optional<MovieList> lastList = listRepository.findTopByOrderByIdListDesc();
         return lastList.map(movieList -> movieList.getIdList() + 1).orElse(1L);
 
     }
 
     public Response<?> delete(Long idList) {
-        final String ID_DOESNT_EXIST = "There's no list with the given Id!";
-
-        Optional<MovieList> movieList = repository.findByIdList(idList);
+        Optional<MovieList> movieList = listRepository.findByIdList(idList);
         if (movieList.isEmpty())
-            return new Response(HttpStatus.BAD_REQUEST, ID_DOESNT_EXIST);
+            return new Response(HttpStatus.BAD_REQUEST, String.format(ID_DOESNT_EXIST, "list"));
 
-        repository.delete(movieList.get());
+        listRepository.delete(movieList.get());
         return new Response(HttpStatus.OK, "");
+    }
+
+    public Response<MovieListContent> add(Long idList, Integer idContent) {
+        Optional<MovieList> movieList = listRepository.findByIdList(idList);
+        if (movieList.isEmpty())
+            return new Response<>(HttpStatus.BAD_REQUEST, null, String.format(ID_DOESNT_EXIST, "list"));
+
+        if (!contentRepository.existsById(idContent))
+            return new Response<>(HttpStatus.BAD_REQUEST, null, String.format(ID_DOESNT_EXIST, "content"));
+
+        var movieListContent = new MovieListContent(idList, idContent);
+        try {
+            movieListContent = listContentRepository.save(movieListContent);
+
+            return new Response<>(HttpStatus.CREATED, movieListContent);
+        } catch (IllegalArgumentException e) {
+            return new Response<>(HttpStatus.BAD_REQUEST, null, e.getMessage());
+        }
     }
 }
