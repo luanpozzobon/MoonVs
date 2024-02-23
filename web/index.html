@@ -12,6 +12,7 @@
 <script>
     checkAuth();
 </script>
+
 <body>
     <header>
         <a href="./index.html"><img src="./assets/images/logos/Logo-Black.svg" id="logo"></a>
@@ -20,37 +21,53 @@
             <a onclick="logout()">Log-Out</a>
         </nav>
     </header>
-    <section>
-        <form action="">
-            <input required type="text" name="search" placeholder="Enter a Movie or Series to get Started" id="searchInput">
-            <button id="searchButton" type="submit" onclick="internalSearch(); return false">
-                <img src="./assets/icons/MoonVs-Search.svg">
-            </button>
-        </form>
-    </section>
+    <span id="tabs">
+        <span class="tab" id="search" onclick="selectTab(this)">Search</span>
+        <span class="tab" id="ratings" onclick="selectTab(this)">My Ratings</span>
+        <span class="tab" id="lists" onclick="selectTab(this)">My Lists</span>
+        <span class="tab" id="watchlist" onclick="selectTab(this)">WatchList</span>
+    </span>
     <main>
+
     </main>
     <footer>
         <div id="attribution">
-            <p>This website uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</p>
+            <p>This website uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.
+            </p>
             <img src="./assets/images/attribution/tmdb.svg" alt="">
         </div>
         <div id="project">
             <h3>The Project</h3>
             <ul>
-                <a href="https://luanpozzobon.github.io/luanpozzobon_site/pages/projects/moonvs/moonvs.html" target="_blank" rel="external"><li>About MoonVs</li></a>
-                <a href="mailto:luanpozzobon@gmail.com"><li>Have any Suggestions?</li></a>
+                <a href="https://luanpozzobon.github.io/luanpozzobon_site/pages/projects/moonvs/moonvs.html"
+                    target="_blank" rel="external">
+                    <li>About MoonVs</li>
+                </a>
+                <a href="mailto:luanpozzobon@gmail.com">
+                    <li>Have any Suggestions?</li>
+                </a>
             </ul>
         </div>
         <div id="author">
             <h3>The Author</h3>
             <ul>
-                <a href="https://luanpozzobon.github.io/luanpozzobon_site/pages/about.html" target="_blank" rel="author"><li>About the Author</li></a>
-                <a href="https://github.com/luanpozzobon" target="_blank" rel="author"><li>Github</li></a>
-                <a href="https://www.linkedin.com/in/luanpozzobon/" target="_blank" rel="author"><li>LinkedIn</li></a>
+                <a href="https://luanpozzobon.github.io/luanpozzobon_site/pages/about.html" target="_blank"
+                    rel="author">
+                    <li>About the Author</li>
+                </a>
+                <a href="https://github.com/luanpozzobon" target="_blank" rel="author">
+                    <li>Github</li>
+                </a>
+                <a href="https://www.linkedin.com/in/luanpozzobon/" target="_blank" rel="author">
+                    <li>LinkedIn</li>
+                </a>
             </ul>
+        </div>
+        <div id="info">
+            <p>Service Version: v0.2.0-beta.2024-02</p>
+            <p>Created By: Luan Rafael Pozzobon</p>
         </div>
     </footer>
 </body>
-<script src="./scripts/search.js"></script>
+<script src="./scripts/index.js"></script>
 </html>

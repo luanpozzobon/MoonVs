@@ -2,7 +2,7 @@
 
 ## Added
 
-
+- Added Tabs on home page.
 
 ## Changed
 

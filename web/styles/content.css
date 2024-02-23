@@ -48,8 +48,8 @@ main {
 section {
     margin: 20px 0px;
     border-radius: 25px;
-    border: 1px solid var(--gray);
-    box-shadow: inset 0px 0px 50px var(--gray);
+    border: 1px solid var(--comp-color1);
+    box-shadow: inset 0px 0px 50px var(--comp-color1);
     padding: 25px;
 }
 
