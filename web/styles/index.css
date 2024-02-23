@@ -111,3 +111,14 @@ main div p {
     cursor: pointer;
     text-decoration: underline solid var(--font-color);
 }
+
+.not-imp {
+    margin: auto;
+    text-align: center;
+    box-shadow: inset 0px 0px 10px var(--comp-color2);
+}
+
+.not-imp p {
+    font-size: 25px;
+    text-shadow: 0px 0px 3px var(--comp-color3);
+}

@@ -1,6 +1,5 @@
 var config = JSON.parse(sessionStorage.getItem("config")) || {
-    BASE_URL: "http://localhost:8080"
-    // BASE_URL: "https://moonvs.fly.dev"
+    BASE_URL: "https://moonvs.fly.dev"
 };
 
 function setAuth(auth) {
