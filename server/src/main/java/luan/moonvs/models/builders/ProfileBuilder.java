@@ -4,44 +4,14 @@ import luan.moonvs.models.entities.Content;
 import luan.moonvs.models.entities.Profile;
 import luan.moonvs.models.entities.User;
 import luan.moonvs.models.enums.Privacy;
-import luan.moonvs.models.requests.ProfileRequest;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProfileBuilder {
     private Profile profile;
 
-    @Deprecated
     public ProfileBuilder() {
         profile = new Profile();
-    }
-
-    @Deprecated
-    public ProfileBuilder fromAuthUser(User authUser) {
-        this.profile.setUser(authUser);
-        return this;
-    }
-
-    @Deprecated
-    public ProfileBuilder createProfile(ProfileRequest profileRequest) {
-        this.profile = new Profile();
-        return this
-                .withBio(profileRequest.biography())
-                .privacy(profileRequest.isPrivate());
-        // TODO - Alterar tipo de favMovie e favSeries
-                // .withFavoriteMovie(profileRequest.favoriteMovie())
-                // .withFavoriteSeries(profileRequest.favoriteSeries());
-    }
-
-    @Deprecated
-    public ProfileBuilder editProfile(Profile profile, ProfileRequest profileRequest) {
-        this.profile = profile;
-        return this
-                .withBio(profileRequest.biography())
-                .privacy(profileRequest.isPrivate());
-        // TODO - Alterar tipo de favMovie e favSeries
-            // .withFavoriteMovie(profileRequest.favoriteMovie())
-            // .withFavoriteSeries(profileRequest.favoriteSeries());
     }
 
     public static ProfileBuilder create() {

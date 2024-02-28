@@ -15,7 +15,7 @@ main div {
 
     margin: 20px auto;
     border-radius: 25px;
-    border: 3px solid var(--gray);
+    border: 3px solid var(--comp-color1);
 }
 
 form {
@@ -58,7 +58,7 @@ button {
 }
 
 .cancel {
-    background-color: var(--gray);
+    background-color: var(--comp-color1);
 }
 
 #delete {

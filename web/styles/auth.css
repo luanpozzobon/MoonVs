@@ -13,7 +13,7 @@ main {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--gray);
+    border: 2px solid var(--comp-color1);
     padding: 30px;
     border-radius: 50px;
 
@@ -79,7 +79,7 @@ input {
 }
 
 button {
-    background-color: var(--gray);
+    background-color: var(--comp-color1);
     color: var(--font-color);
     padding: 10px;
     margin: 20px;
