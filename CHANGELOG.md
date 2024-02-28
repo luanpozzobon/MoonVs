@@ -1,4 +1,4 @@
-<h1 align="center">Changelog - v0.3.0-beta.2024-03</h1>
+<h1 align="center">Changelog - v0.2.1-beta.2024-02</h1>
 
 ## Added
 
@@ -9,6 +9,7 @@
 - Upgrade Dependencies: Spring Boot 3.1.8.
 - Now only non-empty sections are shown in 'Watch Providers'.
 - Now the 'Watch Providers' section won't be shown if it's empty.
+- Upgrade Dependencies: PostgreSQL 42.7.2
 
 ## Deprecated
 
