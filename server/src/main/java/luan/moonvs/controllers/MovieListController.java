@@ -2,11 +2,15 @@ package luan.moonvs.controllers;
 
 import luan.moonvs.models.entities.MovieList;
 import luan.moonvs.models.requests.MovieListRequest;
+import luan.moonvs.models.responses.MovieListResponse;
 import luan.moonvs.services.MovieListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/lists")
@@ -15,6 +19,7 @@ public class MovieListController {
     private MovieListService service;
 
     private final String HEADER_NAME = "message";
+    private final String ID_NOT_PRESENT = "The %s id should be provided!";
 
     @PostMapping("/create")
     public ResponseEntity<MovieList> createList(@RequestBody MovieListRequest movieListRequest) {
@@ -33,17 +38,30 @@ public class MovieListController {
                 .body(response.entity());
     }
 
-    @DeleteMapping("/{listId}/delete")
-    public ResponseEntity<?> deleteList(@PathVariable Long listId) {
-        final String ID_NOT_PRESENT = "The list id should be provided!";
-
-        if (listId == null)
+    @GetMapping("/get")
+    public ResponseEntity<List<MovieListResponse>> getUserLists(@RequestParam UUID idUser) {
+        if (idUser == null)
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .header(HEADER_NAME, ID_NOT_PRESENT)
+                    .header(HEADER_NAME, String.format(ID_NOT_PRESENT, "user"))
                     .build();
 
-        var response = service.delete(listId);
+        var response = service.getUserLists(idUser);
+        return ResponseEntity
+                .status(response.status())
+                .header(HEADER_NAME, response.message())
+                .body(response.entity());
+    }
+
+    @DeleteMapping("/{idList}/delete")
+    public ResponseEntity<?> deleteList(@PathVariable Long idList) {
+        if (idList == null)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .header(HEADER_NAME, String.format(ID_NOT_PRESENT, "list"))
+                    .build();
+
+        var response = service.delete(idList);
         return ResponseEntity
                 .status(response.status())
                 .header(HEADER_NAME, response.message())
@@ -52,8 +70,6 @@ public class MovieListController {
 
     @PostMapping("/{idList}/add")
     public ResponseEntity<?> addContent(@PathVariable Long idList, @RequestParam Integer idContent) {
-        final String ID_NOT_PRESENT = "The %s id should be provided!";
-
         if (idList == null)
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

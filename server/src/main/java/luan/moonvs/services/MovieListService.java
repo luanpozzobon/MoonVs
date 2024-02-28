@@ -4,6 +4,7 @@ import luan.moonvs.models.builders.MovieListBuilder;
 import luan.moonvs.models.entities.MovieList;
 import luan.moonvs.models.entities.MovieListContent;
 import luan.moonvs.models.requests.MovieListRequest;
+import luan.moonvs.models.responses.MovieListResponse;
 import luan.moonvs.models.responses.Response;
 import luan.moonvs.repositories.ContentRepository;
 import luan.moonvs.repositories.MovieListContentRepository;
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MovieListService {
@@ -54,6 +58,21 @@ public class MovieListService {
         Optional<MovieList> lastList = listRepository.findTopByOrderByIdListDesc();
         return lastList.map(movieList -> movieList.getIdList() + 1).orElse(1L);
 
+    }
+
+    public Response<List<MovieListResponse>> getUserLists(UUID idUser) {
+        final String NO_LISTS_FOUND = "The user doesn't have any list!";
+
+        Optional<List<MovieList>> movieLists = listRepository.findByIdUser(idUser);
+        if (movieLists.isEmpty())
+            return new Response<>(HttpStatus.NOT_FOUND, null, NO_LISTS_FOUND);
+
+        var response = new ArrayList<>(movieLists.get()
+                .stream()
+                .map(MovieListResponse::new)
+                .toList());
+
+        return new Response<>(HttpStatus.OK, response);
     }
 
     public Response<?> delete(Long idList) {

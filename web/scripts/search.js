@@ -1,11 +1,10 @@
-const BASE_URL = `${config.BASE_URL}/content`;
+var BASE_URL = `${config.BASE_URL}/content`;
 
-const POSTER_URL = 'https://image.tmdb.org/t/p/w92'
+var POSTER_URL = 'https://image.tmdb.org/t/p/w92'
 
-const input = document.getElementById('searchInput');
-const searchButton = document.getElementById('searchButton');
-const SECTION = document.getElementById('content');
-const main = document.querySelector('main');
+var input = document.getElementById('searchInput');
+var searchButton = document.getElementById('searchButton');
+var SECTION = document.getElementById('content');
 
 async function internalSearch() {
     const PARAMS = new URLSearchParams({
@@ -36,7 +35,7 @@ async function externalSearch() {
     const URL = `${BASE_URL}/search?${PARAMS}`;
 
     await doSearch(URL);
-    Array.from(main.children).forEach(e => {
+    Array.from(MAIN.children).forEach(e => {
         e.addEventListener('click', function() {
             externalInfo(this)
         })

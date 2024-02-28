@@ -9,6 +9,7 @@
 - Upgrade Dependencies: Spring Boot 3.1.8.
 - Now only non-empty sections are shown in 'Watch Providers'.
 - Now the 'Watch Providers' section won't be shown if it's empty.
+- Upgrade Dependencies: PostgreSQL 42.7.2
 
 ## Deprecated
 
