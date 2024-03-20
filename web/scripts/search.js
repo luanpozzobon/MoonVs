@@ -35,7 +35,7 @@ async function externalSearch() {
     const URL = `${BASE_URL}/search?${PARAMS}`;
 
     await doSearch(URL);
-    Array.from(MAIN.children).forEach(e => {
+    Array.from(SECTION.children).forEach(e => {
         e.addEventListener('click', function() {
             externalInfo(this)
         })
@@ -58,13 +58,13 @@ async function doSearch(URL) {
             Array.from(data).forEach(function (obj) {
                 var div = document.createElement('div');
                 div.innerHTML = `
-                                <span class="hidden">${obj.id}</span>
                                 <span class="hidden">${obj.contentType}</span>
-                                <img src="${POSTER_URL}${obj.posterPath}">
+                                <img src="${getPoster(obj.posterPath)}">
                                 <h2>${obj.originalTitle}</h2>
                                 <p>${obj.overview}</p>
                                 <p>TMDB Rating: ${obj.voteAverage.toFixed(2)}</p>
                             `;
+                div.id = obj.id;
                 SECTION.appendChild(div);
             });
         })
@@ -73,8 +73,17 @@ async function doSearch(URL) {
         }) 
 }
 
+function getPoster(posterPath) {
+    if (posterPath == 'null') {
+        return '../assets/images/logos/Logo-B-Symbol.svg';
+    }
+
+    return `${POSTER_URL}${posterPath}`;
+}
+
 function internalInfo(element) {
-    const ID = element.children[0].innerText;
+    const ID = element.id;
+    // const ID = element.children[0].innerText;
     const PARAMS = new URLSearchParams({
         searchType: 'INTERNAL'
     }).toString();
@@ -98,8 +107,8 @@ function internalInfo(element) {
 }
 
 function externalInfo(element) {
-    const ID = element.children[0].innerText;
-    const TYPE = element.children[1].innerText;
+    const ID = element.id;
+    const TYPE = element.children[0].innerText;
     const PARAMS = new URLSearchParams({
         searchType: 'EXTERNAL',
         contentType: TYPE
