@@ -12,4 +12,5 @@ public interface MovieListRepository extends JpaRepository<MovieList, MovieListI
     Optional<MovieList> findTopByOrderByIdListDesc();
     Optional<MovieList> findByIdList(Long idList);
     Optional<List<MovieList>> findByIdUser(UUID idUser);
+    boolean existsByIdList(Long idList);
 }

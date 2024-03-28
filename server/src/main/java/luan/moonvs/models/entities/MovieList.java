@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -32,6 +33,20 @@ public class MovieList {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    /*
+    @ManyToMany
+    @JoinColumn(name = "id_content")
+    private List<MovieListContent> contents;
+    */
+
+    public MovieList(MovieList movieList) {
+        this.idList = movieList.getIdList();
+        this.idUser = movieList.getIdUser();
+        this.listName = movieList.getListName();
+        this.listDescription = movieList.getListDescription();
+        this.createdAt = movieList.getCreatedAt();
+    }
 
     public void setMovieListId(MovieListId movieListId) {
         this.setIdList(movieListId.getIdList());

@@ -23,7 +23,11 @@ public class MovieListBuilder {
         return builder;
     }
 
-
+    public static MovieListBuilder create(MovieList movieList) {
+        MovieListBuilder builder = create();
+        builder.movieList = new MovieList(movieList);
+        return builder;
+    }
 
     public static MovieListBuilder create() {
         return new MovieListBuilder();
@@ -44,16 +48,21 @@ public class MovieListBuilder {
     }
 
     public MovieListBuilder addListName(String listName) throws IllegalArgumentException {
-        final String ILLEGAL_NAME = "The list should contain a name, between 1 and 255 characters!";
+        final String ILLEGAL_NAME = "The list should contain a name, between 1 and 64 characters!";
 
-        if (listName.isEmpty() || listName.length() > 255)
+        if (listName.isEmpty() || listName.length() > 64)
             throw new IllegalArgumentException(ILLEGAL_NAME);
 
         this.movieList.setListName(listName);
         return this;
     }
 
-    public MovieListBuilder addListDescription(String listDescription) {
+    public MovieListBuilder addListDescription(String listDescription) throws IllegalArgumentException {
+        final String ILLEGAL_DESCRIPTION = "The description can't be over 255 characters!";
+
+        if (listDescription.length() > 255)
+            throw new IllegalArgumentException(ILLEGAL_DESCRIPTION);
+
         this.movieList.setListDescription(listDescription);
         return this;
     }

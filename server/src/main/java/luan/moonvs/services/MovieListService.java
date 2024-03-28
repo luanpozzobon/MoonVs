@@ -1,9 +1,12 @@
 package luan.moonvs.services;
 
 import luan.moonvs.models.builders.MovieListBuilder;
+import luan.moonvs.models.entities.Content;
 import luan.moonvs.models.entities.MovieList;
 import luan.moonvs.models.entities.MovieListContent;
+import luan.moonvs.models.entities.MovieListContentId;
 import luan.moonvs.models.requests.MovieListRequest;
+import luan.moonvs.models.responses.ContentSearch;
 import luan.moonvs.models.responses.MovieListResponse;
 import luan.moonvs.models.responses.Response;
 import luan.moonvs.repositories.ContentRepository;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -75,13 +79,46 @@ public class MovieListService {
         return new Response<>(HttpStatus.OK, response);
     }
 
-    public Response<?> delete(Long idList) {
+    public Response<MovieListResponse> edit(Long idList, String listName, String listDescription) {
+        Optional<MovieList> optionalList = listRepository.findByIdList(idList);
+
+        if (optionalList.isEmpty())
+            return new Response<>(HttpStatus.NOT_FOUND, null, String.format(ID_DOESNT_EXIST, "list"));
+
+        MovieList list = optionalList.get();
+
+        if (listName == null)
+            listName = list.getListName();
+
+        try {
+            list = MovieListBuilder.create(list)
+                    .addListName(listName)
+                    .addListDescription(listDescription)
+                    .build();
+
+            listRepository.save(list);
+            MovieListResponse response = new MovieListResponse(list);
+            return new Response<>(HttpStatus.OK, response);
+        } catch (IllegalArgumentException e) {
+            return new Response<>(HttpStatus.BAD_REQUEST, null, e.getMessage());
+        }
+    }
+
+    public Response<Void> delete(Long idList) {
         Optional<MovieList> movieList = listRepository.findByIdList(idList);
         if (movieList.isEmpty())
-            return new Response(HttpStatus.BAD_REQUEST, String.format(ID_DOESNT_EXIST, "list"));
+            return new Response<>(HttpStatus.BAD_REQUEST, String.format(ID_DOESNT_EXIST, "list"));
 
         listRepository.delete(movieList.get());
-        return new Response(HttpStatus.OK, "");
+        return new Response<>(HttpStatus.OK, "");
+    }
+
+    public Response<MovieList> getList(Long idList) {
+        Optional<MovieList> movieList = listRepository.findByIdList(idList);
+        if (movieList.isEmpty())
+            return new Response<>(HttpStatus.BAD_REQUEST, String.format(ID_DOESNT_EXIST, "list"));
+
+        return new Response<>(HttpStatus.OK, movieList.get());
     }
 
     public Response<MovieListContent> add(Long idList, Integer idContent) {
@@ -100,5 +137,28 @@ public class MovieListService {
         } catch (IllegalArgumentException e) {
             return new Response<>(HttpStatus.BAD_REQUEST, null, e.getMessage());
         }
+    }
+
+    public Response<List<MovieListContent>> getListContent(Long idList) {
+        if (!listRepository.existsByIdList(idList))
+            return new Response<>(HttpStatus.BAD_REQUEST, null, String.format(ID_DOESNT_EXIST, "list"));
+
+        List<MovieListContent> listContent = listContentRepository.findAllByIdList(idList);
+        if (listContent.isEmpty())
+            return new Response<>(HttpStatus.NOT_FOUND, null, "There's no content on this list");
+
+        return new Response<>(HttpStatus.OK, listContent);
+    }
+
+    public Response<Void> removeListContent(Long idList, Integer idContent) {
+        if (!listRepository.existsByIdList(idList))
+            return new Response<>(HttpStatus.BAD_REQUEST, null, String.format(ID_DOESNT_EXIST, "list"));
+
+        Optional<MovieListContent> content = listContentRepository.findById(new MovieListContentId(idList, idContent));
+        if (content.isEmpty())
+            return new Response<>(HttpStatus.NOT_FOUND, null, "The content is not present on the list!");
+
+        listContentRepository.delete(content.get());
+        return new Response<>(HttpStatus.NO_CONTENT);
     }
 }

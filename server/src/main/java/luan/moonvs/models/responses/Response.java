@@ -13,4 +13,8 @@ public record Response<T>(HttpStatus status,
     public Response(HttpStatus status, T entity) {
         this(status, entity, "");
     }
+
+    public Response(HttpStatus status) {
+        this(status, null, "");
+    }
 }

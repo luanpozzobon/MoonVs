@@ -24,6 +24,11 @@ public class MovieListContent {
             nullable = false)
     private Integer idContent;
 
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id_content")
+    private Content content;
+
     @CreationTimestamp
     @Column(name = "date_added",
             nullable = false)

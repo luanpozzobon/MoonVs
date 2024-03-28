@@ -1,6 +1,7 @@
 package luan.moonvs.controllers;
 
 import luan.moonvs.models.entities.MovieList;
+import luan.moonvs.models.entities.MovieListContent;
 import luan.moonvs.models.requests.MovieListRequest;
 import luan.moonvs.models.responses.MovieListResponse;
 import luan.moonvs.services.MovieListService;
@@ -53,8 +54,26 @@ public class MovieListController {
                 .body(response.entity());
     }
 
+    @PatchMapping("/{idList}/edit")
+    public ResponseEntity<MovieListResponse> edit(@PathVariable Long idList,
+                                                  @RequestParam String listName,
+                                                  @RequestParam String listDescription) {
+        if (idList == null)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .header(HEADER_NAME, String.format(ID_NOT_PRESENT, "list"))
+                    .build();
+
+        var response = service.edit(idList, listName, listDescription);
+        return ResponseEntity
+                .status(response.status())
+                .header(HEADER_NAME, response.message())
+                .body(response.entity());
+    }
+
+
     @DeleteMapping("/{idList}/delete")
-    public ResponseEntity<?> deleteList(@PathVariable Long idList) {
+    public ResponseEntity<Void> deleteList(@PathVariable Long idList) {
         if (idList == null)
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -68,7 +87,22 @@ public class MovieListController {
                 .build();
     }
 
-    @PostMapping("/{idList}/add")
+    @GetMapping("/{idList}/get")
+    public ResponseEntity<MovieList> getList(@PathVariable Long idList) {
+        if (idList == null)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .header(HEADER_NAME, String.format(ID_NOT_PRESENT, "list"))
+                    .build();
+
+        var response = service.getList(idList);
+        return ResponseEntity
+                .status(response.status())
+                .header(HEADER_NAME, response.message())
+                .body(response.entity());
+    }
+
+    @PostMapping("/{idList}/add")   
     public ResponseEntity<?> addContent(@PathVariable Long idList, @RequestParam Integer idContent) {
         if (idList == null)
             return ResponseEntity
@@ -87,5 +121,35 @@ public class MovieListController {
                 .status(response.status())
                 .header(HEADER_NAME, response.message())
                 .body(response.entity());
+    }
+
+    @GetMapping("/{idList}/get-contents")
+    public ResponseEntity<List<MovieListContent>> getListContent(@PathVariable Long idList) {
+        if (idList == null)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .header(HEADER_NAME, String.format(ID_NOT_PRESENT, "list"))
+                    .build();
+
+        var response = service.getListContent(idList);
+        return ResponseEntity
+                .status(response.status())
+                .header(HEADER_NAME, response.message())
+                .body(response.entity());
+    }
+
+    @DeleteMapping("{idList}/remove")
+    public ResponseEntity<Void> removeListContent(@PathVariable Long idList, @RequestParam Integer idContent) {
+        if (idContent == null)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .header(HEADER_NAME, String.format(ID_NOT_PRESENT, "content"))
+                    .build();
+
+        var response = service.removeListContent(idList, idContent);
+        return ResponseEntity
+                .status(response.status())
+                .header(HEADER_NAME, response.message())
+                .build();
     }
 }
