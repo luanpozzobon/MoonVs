@@ -1,4 +1,4 @@
-const BASE_URL = `${config.BASE_URL}`;
+const BASE_URL = `${CONFIG.BASE_URL}`;
 
 const POSTER_URL = 'https://image.tmdb.org/t/p/w185'
 
@@ -34,10 +34,18 @@ Array.from(CONTENT.genres).forEach(g => {
     genres.innerText += `${g} | `;
 })
 
+var addToListBtn = document.createElement('span');
+addToListBtn.style.cursor = 'pointer';
+addToListBtn.innerText = 'Add To List'
+addToListBtn.addEventListener('click', function() {
+    showLists();
+});
+
 CONTENT_SECTION.appendChild(poster);
 CONTENT_SECTION.appendChild(title);
 CONTENT_SECTION.appendChild(overview);
 CONTENT_SECTION.appendChild(ratingContainer);
+CONTENT_SECTION.appendChild(addToListBtn);
 CONTENT_SECTION.appendChild(genres);
 
 const WATCH_SECTION = document.getElementById("watch");
@@ -102,7 +110,7 @@ function getRating(idContent) {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         }
     };
 
@@ -160,7 +168,7 @@ function rating() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": config.TOKEN
+                "Authorization": CONFIG.TOKEN
             }
         };
 
@@ -198,7 +206,7 @@ function doRate() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         },
         body: JSON.stringify(body)
     };
@@ -207,4 +215,65 @@ function doRate() {
         .then(() => {
             window.location.href = "./content.html";
         })
+}
+
+async function getLists() {
+    const PARAMS = new URLSearchParams({
+        idUser: CONFIG.ID_USER
+    }).toString();
+    const URL = `${ROUTES.lists}/get?${PARAMS}`;
+    const OPTIONS = {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": CONFIG.TOKEN
+        }
+    }
+    const CONTAINER = document.getElementById('list');
+    const DIV = document.createElement('div');
+
+    try {
+        let data = await send(URL, OPTIONS, 200);
+        if (data !== undefined) {
+            Array.from(data).forEach(list => {
+                let listContainer = document.createElement('div');
+                listContainer.id = list.idList;
+                listContainer.innerText = list.listName;
+                listContainer.addEventListener('click', function() {
+                    addToList(this);
+                })
+                DIV.appendChild(listContainer);
+            })
+            CONTAINER.appendChild(DIV)
+        }
+    } catch (error) {
+        alert(error);
+    }
+}
+
+function showLists() {
+    const LISTS_CONTAINER = document.getElementById('list');
+    LISTS_CONTAINER.classList.remove('hidden');
+}
+
+async function addToList(element) {
+    const ID = element.id;
+    const PARAMS = new URLSearchParams({
+        idContent: CONTENT.idContent
+    }).toString();
+    const URL = `${ROUTES.lists}/${ID}/add?${PARAMS}`;
+    const OPTIONS = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": CONFIG.TOKEN
+        }
+    }
+
+    try {
+        const data = await send(URL, OPTIONS, 201);
+        window.location.href = `/pages/content.html`;
+    } catch (error) {
+        alert(error);
+    }
 }

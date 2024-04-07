@@ -1,4 +1,4 @@
-var BASE_URL = `${config.BASE_URL}/content`;
+var BASE_URL = `${CONFIG.BASE_URL}/content`;
 
 var POSTER_URL = 'https://image.tmdb.org/t/p/w92'
 
@@ -47,7 +47,7 @@ async function doSearch(URL) {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         }
     };
     SECTION.innerHTML = "";
@@ -94,7 +94,7 @@ function internalInfo(element) {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         }
     }
 
@@ -121,7 +121,7 @@ function externalInfo(element) {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         }
     };
 

@@ -1,16 +1,16 @@
-var BASE_URL = `${config.BASE_URL}/lists`;
+var BASE_URL = `${CONFIG.BASE_URL}/lists`;
 
 var getLists = function getLists() {
     const OPTIONS = {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         }
     };
 
     const PARAMS = new URLSearchParams({
-        idUser: config.ID_USER
+        idUser: CONFIG.ID_USER
     }).toString();
     const URL = `${BASE_URL}/get?${PARAMS}`;
 
@@ -22,7 +22,7 @@ var getLists = function getLists() {
                 listContainer.id = list.idList;
                 listContainer.innerHTML = `<h2>${list.listName}</h2>
                                            <p>${list.listDescription ?? "Empty Description"}</p>`;
-                listContainer.addEventListener("click", function() {
+                listContainer.addEventListener("click", function () {
                     openList(this)
                 })
 
@@ -81,12 +81,13 @@ function addButtonAnimation() {
 }
 
 async function createList() {
+    const EXPECTED_STATUS = 201;
     const URL = `${BASE_URL}/create`;
 
     const LIST_NAME = document.getElementById('new-list-name').value;
     const LIST_DESCRIPTION = document.getElementById('new-list-description').value;
     const BODY = {
-        idUser: config.ID_USER,
+        idUser: CONFIG.ID_USER,
         listName: LIST_NAME,
         listDescription: LIST_DESCRIPTION
     };
@@ -95,44 +96,28 @@ async function createList() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': config.TOKEN
+            'Authorization': CONFIG.TOKEN
         },
         body: JSON.stringify(BODY)
     };
 
-    data = await send(URL, OPTIONS);
-    if (data !== undefined) {
-        let list = document.createElement('div');
-        list.id = data.idList;
-        list.innerHTML = `<h2>${data.listName}</h2>
-                        <p>${data.listDescription}</p>`;
-        list.addEventListener("click", function() {
-            openList(this)
-        })
+    try {
+        data = await send(URL, OPTIONS, EXPECTED_STATUS);
+        if (data !== undefined) {
+            let list = document.createElement('div');
+            list.id = data.idList;
+            list.innerHTML = `<h2>${data.listName}</h2>
+                            <p>${data.listDescription}</p>`;
+            list.addEventListener("click", function () {
+                openList(this)
+            })
 
-        MAIN.appendChild(list);
-        removeForm();
+            MAIN.appendChild(list);
+            removeForm();
+        }
+    } catch (error) {
+        alert(error);
     }
-}
-
-async function send(URL, OPTIONS) {
-    let response;
-    await fetch(URL, OPTIONS)
-        .then(response => {
-            if (response.status < 200 || response.status > 299) {
-                throw new Error(response.headers.get('message'));
-            }
-
-            return response.json();
-        })
-        .then(data => {
-            response = data;
-        })
-        .catch(error => {
-            alert(error);
-        });
-
-    return response
 }
 
 function openList(element) {

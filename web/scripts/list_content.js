@@ -1,4 +1,3 @@
-var BASE_URL = `${config.BASE_URL}/lists`;
 var POSTER_URL = 'https://image.tmdb.org/t/p/w92';
 
 function load() {
@@ -7,7 +6,7 @@ function load() {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': config.TOKEN
+            'Authorization': CONFIG.TOKEN
         }
     };
 
@@ -15,41 +14,31 @@ function load() {
     getContents(ID_LIST, OPTIONS);
 }
 
-function getList(ID_LIST, OPTIONS) {
+async function getList(ID_LIST, OPTIONS) {
+    const EXPECTED_STATUS = 200;
     const SECTION = document.querySelector('section')
-    const URL = `${BASE_URL}/${ID_LIST}/get`;
+    const URL = `${ROUTES.lists}/${ID_LIST}/get`;
 
-    fetch(URL, OPTIONS)
-        .then(response => {
-            if (response.status !== 200) {
-                throw new Error(response.headers.get('message'));
-            }
-
-            return response.json();
-        })
-        .then(data => {
+    try {
+        let data = await send(URL, OPTIONS, EXPECTED_STATUS);
+        if (data !== undefined) {
             SECTION.querySelector('h1').innerText = data.listName;
             SECTION.querySelector('p').innerText = data.listDescription;
-        })
-        .catch(error => {
-            alert(error);
-        });
+        }
+    } catch (error) {
+        alert(error)
+    }
 }
 
-function getContents(ID_LIST, OPTIONS) {
+async function getContents(ID_LIST, OPTIONS) {
+    const EXPECTED_STATUS = 200;
     const MAIN = document.querySelector('main');
-    const URL = `${BASE_URL}/${ID_LIST}/get-contents`;
+    const URL = `${ROUTES.lists}/${ID_LIST}/get-contents`;
 
-    fetch(URL, OPTIONS)
-        .then(response => {
-            if (response.status != 200) {
-                throw new Error(response.headers.get('message'));
-            }
+    try {
+        let data = await send(URL, OPTIONS, EXPECTED_STATUS);
 
-            return response.json();
-        })
-        .then(data => {
-            localStorage.setItem('list', JSON.stringify(data));
+        if (data !== undefined) {
             data.forEach(element => {
                 let content = document.createElement('div');
                 content.id = element.idContent;
@@ -60,7 +49,12 @@ function getContents(ID_LIST, OPTIONS) {
                                     `;
                 MAIN.appendChild(content);
             });
-        })
+
+            localStorage.setItem('list', JSON.stringify(data));
+        }
+    } catch(error) {
+        alert(error)
+    }
 }
 
 function getPoster(posterPath) {
@@ -72,31 +66,27 @@ function getPoster(posterPath) {
 }
 
 function remove(element, ID_LIST) {
+    const EXPECTED_STATUS = 204;
     const MAIN = document.querySelector('main');
 
     const ID_CONTENT = element.parentNode.id;
     const PARAMS = new URLSearchParams({
         idContent: ID_CONTENT
     }).toString();
-    const URL = `${BASE_URL}/${ID_LIST}/remove?${PARAMS}`;
+    const URL = `${ROUTES.lists}/${ID_LIST}/remove?${PARAMS}`;
 
     const OPTIONS = {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': config.TOKEN
+            'Authorization': CONFIG.TOKEN
         }
     };
 
-    fetch(URL, OPTIONS)
-        .then(response => {
-            if (response.status !== 204) {
-                throw new Error(response.headers.get('message'))
-            }
-
-            MAIN.removeChild(element.parentNode);
-        })
-        .catch(error => {
-            alert(error);
-        });
+    try {
+        send(URL, OPTIONS, EXPECTED_STATUS);
+        MAIN.removeChild(element.parentNode);
+    } catch(error) {
+        alert(error)
+    }
 }

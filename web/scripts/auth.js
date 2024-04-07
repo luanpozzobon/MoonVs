@@ -1,4 +1,4 @@
-const URL = `${config.BASE_URL}/auth`
+const URL = `${CONFIG.BASE_URL}/auth`
 
 const labels = document.getElementById('labels');
 const forms = document.getElementsByClassName('forms');

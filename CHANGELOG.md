@@ -3,6 +3,7 @@
 ## Added
 
 - Added creation of lists.
+- Added function to add a content to a list.
 
 ## Changed
 
