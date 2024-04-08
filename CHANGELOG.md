@@ -4,10 +4,12 @@
 
 - Added creation of lists.
 - Added function to add a content to a list.
+- Added loading animation.
 
 ## Changed
 
 - When a content doesn't have a Poster it will load the MoonVS Symbol.
+- Now the title of the tab changes according to the content you open it.
 
 
 ## Deprecated

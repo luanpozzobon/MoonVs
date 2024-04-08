@@ -34,8 +34,10 @@ const ROUTES = {
 };
 
 async function send(URL, OPTIONS, EXPECTED_STATUS) {
+    showLoading();
     return await fetch(URL, OPTIONS)
         .then(response => {
+            hideLoading();
             if (response.status != EXPECTED_STATUS) {
                 throw new Error(response.headers.get('message'));
             }
@@ -46,4 +48,22 @@ async function send(URL, OPTIONS, EXPECTED_STATUS) {
 
             return response.json();
         })
+}
+
+function getPoster(POSTER_URL, POSTER_PATH) {
+    if (POSTER_PATH == null) {
+        return '../assets/images/logos/Logo-B-Symbol.svg';
+    }
+
+    return `${POSTER_URL}/${POSTER_PATH}`;
+}
+
+function showLoading() {
+    document.getElementById('loading-overlay').style.display = 'flex';
+}
+
+function hideLoading() {
+    setTimeout(() => {
+        document.getElementById('loading-overlay').style.display = 'none';
+    }, 500);
 }

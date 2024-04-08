@@ -9,6 +9,16 @@ main {
 .hidden {
     visibility: hidden;
     display: none;
+    width: 0px;
+    height: 0px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    text-decoration: underline solid var(--font-color);
 }
 
 #rating {
@@ -45,18 +55,14 @@ main {
     border: 1px solid var(--font-color);
 }
 
-#list {
-    width: 200px;
+#list.visible {
+    width: 230px;
     height: 100px;
+}
+
+#list {
     border: 1px solid var(--comp-color1);
     border-radius: 10px;
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -64,13 +70,15 @@ main {
     backdrop-filter: blur(10px);
 }
 
-#list div div {
+#list div {
     width: 200px;
+    flex-wrap: wrap;
     height: 50px;
-    margin: 10px auto;
+    margin: 7px auto;
     border: 1px solid var(--comp-color1);
     border-radius: 5px;
     cursor: pointer;
+    padding: 3px 5px;
 }
 
 section {
@@ -105,11 +113,6 @@ section {
 
 #content div p {
     padding-right: 20px;
-}
-
-#userRating:hover {
-    cursor: pointer;
-    text-decoration: underline solid var(--font-color);
 }
 
 h1 {

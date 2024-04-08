@@ -11,9 +11,16 @@
 </head>
 <script>
     checkAuth();
+    setTimeout(() => {
+        hideLoading();
+    }, 500);
 </script>
 
 <body>
+    <div id="loading-overlay">
+        <div id="loader"></div>
+    </div>
+
     <header>
         <a href="./index.html"><img src="./assets/images/logos/Logo-Black.svg" id="logo"></a>
         <nav>
@@ -22,7 +29,7 @@
         </nav>
     </header>
     <span id="tabs">
-        <span class="tab" id="home" onclick="selectTab(this)">Home</span>
+        <!-- <span class="tab" id="home" onclick="selectTab(this)">Home</span> -->
         <span class="tab" id="search" onclick="selectTab(this)">Search</span>
         
         <span class="tab" id="lists" onclick="selectTab(this)">My Lists</span>

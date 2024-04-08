@@ -1,7 +1,7 @@
 var POSTER_URL = 'https://image.tmdb.org/t/p/w92';
 
 function load() {
-    const ID_LIST = JSON.parse(localStorage.getItem('id'));
+    const ID_LIST = JSON.parse(localStorage.getItem('idList'));
     const OPTIONS = {
         method: 'GET',
         headers: {
@@ -12,6 +12,7 @@ function load() {
 
     getList(ID_LIST, OPTIONS);
     getContents(ID_LIST, OPTIONS);
+    hideLoading();
 }
 
 async function getList(ID_LIST, OPTIONS) {

@@ -122,7 +122,7 @@ async function createList() {
 
 function openList(element) {
     const ID = element.id;
-    localStorage.setItem('id', ID);
+    localStorage.setItem('idList', ID);
 
     window.location.href = './pages/list_content.html';
 }
