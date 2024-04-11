@@ -37,3 +37,11 @@ main div p {
 span {
     cursor: pointer;
 }
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    text-decoration: underline solid var(--font-color);
+}

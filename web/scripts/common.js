@@ -4,9 +4,12 @@ const CONFIG = JSON.parse(sessionStorage.getItem("config")) || {
 };
 
 function setAuth(auth) {
-    CONFIG.TOKEN = `Bearer ${auth.session.token}`;
+    if (auth.session.token) {
+        CONFIG.TOKEN = auth.session.token;
+    }
+
     CONFIG.EXPIRATION = auth.session.expiration;
-    CONFIG.ID_USER = auth.id;
+    CONFIG.ID_USER = auth.idUser;
 
     sessionStorage.setItem("config", JSON.stringify(CONFIG));
 };
@@ -14,7 +17,7 @@ function setAuth(auth) {
 function checkAuth() {
     const NOW = new Date().getTime();
 
-    if (CONFIG.TOKEN == null || CONFIG.EXPIRATION < NOW) {
+    if (!CONFIG.TOKEN || CONFIG.EXPIRATION < NOW) {
         logout()
     };
 };
@@ -51,8 +54,8 @@ async function send(URL, OPTIONS, EXPECTED_STATUS) {
 }
 
 function getPoster(POSTER_URL, POSTER_PATH) {
-    if (POSTER_PATH == null) {
-        return '../assets/images/logos/Logo-B-Symbol.svg';
+    if (POSTER_PATH == 'null') {
+        return '/assets/images/logos/Logo-B-Symbol.svg';
     }
 
     return `${POSTER_URL}/${POSTER_PATH}`;

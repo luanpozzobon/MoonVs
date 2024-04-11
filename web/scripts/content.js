@@ -1,4 +1,3 @@
-const POSTER_URL = 'https://image.tmdb.org/t/p/w185'
 const CONTENT = JSON.parse(sessionStorage.getItem("content"));
 
 function load() {
@@ -11,6 +10,7 @@ function load() {
 }
 
 function fillContentSection(CONTENT) {
+    const POSTER_URL = 'https://image.tmdb.org/t/p/w185'
     const POSTER_CONTAINER = document.getElementById('poster');
     const POSTER = getPoster(POSTER_URL, CONTENT.posterPath);
     POSTER_CONTAINER.src = POSTER;
@@ -116,8 +116,6 @@ function fillProviders(PROVIDERS, PROVIDERS_TITLE) {
     WATCH_SECTION.lastElementChild.before(CONTAINER);
 }
 
-const RATING_CONTAINER = document.getElementById('rating');
-
 const RATING_VALUE = document.getElementById('ratingValue');
 const COMMENTARY = document.getElementById('commentary');
 
@@ -128,7 +126,7 @@ async function rating() {
         COMMENTARY.value = USER_RATING.commentary;
     }
 
-    RATING_CONTAINER.classList.remove('hidden');
+    document.getElementById('rating').classList.remove('hidden');
 }
 
 async function doRate() {
@@ -179,11 +177,12 @@ async function getLists() {
         }
     }
     const CONTAINER = document.getElementById('list');
+    const EXPECTED_STATUS = 200;
 
     try {
-        let data = await send(URL, OPTIONS, 200);
-        if (data !== undefined) {
-            Array.from(data).forEach(list => {
+        const DATA = await send(URL, OPTIONS, EXPECTED_STATUS);
+        if (DATA !== undefined) {
+            Array.from(DATA).forEach(list => {
                 let listContainer = document.createElement('div');
                 listContainer.id = list.idList;
                 listContainer.innerText = list.listName;
@@ -223,9 +222,10 @@ async function addToList(element) {
             "Authorization": CONFIG.TOKEN
         }
     }
+    const EXPECTED_STATUS = 201
 
     try {
-        const data = await send(URL, OPTIONS, 201);
+        await send(URL, OPTIONS, EXPECTED_STATUS);
         window.location.href = `/pages/content.html`;
     } catch (error) {
         alert(error);

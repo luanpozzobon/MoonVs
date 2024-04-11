@@ -12,7 +12,6 @@ function load() {
 
     getList(ID_LIST, OPTIONS);
     getContents(ID_LIST, OPTIONS);
-    hideLoading();
 }
 
 async function getList(ID_LIST, OPTIONS) {
@@ -25,6 +24,9 @@ async function getList(ID_LIST, OPTIONS) {
         if (data !== undefined) {
             SECTION.querySelector('h1').innerText = data.listName;
             SECTION.querySelector('p').innerText = data.listDescription;
+            document.getElementById('delete').addEventListener('click', function () {
+                deleteList(ID_LIST);
+            })
         }
     } catch (error) {
         alert(error)
@@ -46,7 +48,7 @@ async function getContents(ID_LIST, OPTIONS) {
                 content.innerHTML = `<img src="${getPoster(element.content.posterPath)}">
                                      <h2>${element.content.originalTitle}</h2>
                                      <p>${element.content.overview}</p>
-                                     <span onclick="remove(this, ${ID_LIST})">Remove</span>
+                                     <span class="clickable" onclick="remove(this, ${ID_LIST})">Remove</span>
                                     `;
                 MAIN.appendChild(content);
             });
@@ -89,5 +91,28 @@ function remove(element, ID_LIST) {
         MAIN.removeChild(element.parentNode);
     } catch(error) {
         alert(error)
+    }
+}
+
+async function deleteList(ID_LIST) {
+    const EXPECTED_STATUS = 204;
+    const URL = `${ROUTES.lists}/${ID_LIST}/delete`;
+    const OPTIONS = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': CONFIG.TOKEN
+        }
+    };
+
+    try {
+        await send(URL, OPTIONS, EXPECTED_STATUS);
+
+        localStorage.removeItem('idList');
+        localStorage.removeItem('list');
+
+        window.location.href = '/index.html';
+    } catch (error) {
+        alert(error);
     }
 }

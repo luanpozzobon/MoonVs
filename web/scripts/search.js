@@ -1,51 +1,43 @@
-var BASE_URL = `${CONFIG.BASE_URL}/content`;
-
-var POSTER_URL = 'https://image.tmdb.org/t/p/w92'
-
-var searchButton = document.getElementById('searchButton');
-
 async function internalSearch() {
-    var input = document.getElementById('searchInput');
-    var SECTION = document.getElementById('content');
+    const INPUT = document.getElementById('searchInput').value;
     const PARAMS = new URLSearchParams({
         searchType: 'INTERNAL',
-        title: encodeURIComponent(input.value)
+        title: encodeURIComponent(INPUT)
     }).toString();
-    const URL = `${BASE_URL}/search?${PARAMS}`;
+    const URL = `${ROUTES.content}/search?${PARAMS}`;
 
-    await doSearch(URL);
+    const SECTION = document.getElementById('content');
+    await doSearch(URL, SECTION);
 
     Array.from(SECTION.children).forEach(e => {
-        e.addEventListener('click', function() {
+        e.addEventListener('click', function () {
             internalInfo(this)
         })
     })
-    var span = document.createElement('span');
-    span.id = "external";
-    span.innerText = "Didn't find what you were looking for? Try searching using TMDB!";
-    span.addEventListener('click', () => externalSearch());
-    SECTION.appendChild(span);
+    const SPAN = document.createElement('span');
+    SPAN.id = "external";
+    SPAN.innerText = "Didn't find what you were looking for? Try searching using TMDB!";
+    SPAN.addEventListener('click', () => externalSearch(INPUT));
+    SECTION.appendChild(SPAN);
 }
 
-async function externalSearch() {
-    var input = document.getElementById('searchInput');
-    var SECTION = document.getElementById('content');
+async function externalSearch(INPUT) {
     const PARAMS = new URLSearchParams({
         searchType: 'EXTERNAL',
-        title: encodeURIComponent(input.value)
+        title: encodeURIComponent(INPUT)
     }).toString();
-    const URL = `${BASE_URL}/search?${PARAMS}`;
+    const URL = `${ROUTES.content}/search?${PARAMS}`;
 
-    await doSearch(URL);
+    const SECTION = document.getElementById('content');
+    await doSearch(URL, SECTION);
     Array.from(SECTION.children).forEach(e => {
-        e.addEventListener('click', function() {
+        e.addEventListener('click', function () {
             externalInfo(this)
         })
     })
 }
 
-async function doSearch(URL) {
-    var SECTION = document.getElementById('content');
+async function doSearch(URL, SECTION) {
     const OPTIONS = {
         method: "GET",
         headers: {
@@ -57,13 +49,14 @@ async function doSearch(URL) {
     SECTION.innerHTML = "";
 
     try {
-        let data = await send(URL, OPTIONS, EXPECTED_STATUS);
+        const DATA = await send(URL, OPTIONS, EXPECTED_STATUS);
 
-        Array.from(data).forEach(function (obj) {
+        const POSTER_URL = 'https://image.tmdb.org/t/p/w92';
+        Array.from(DATA).forEach(obj => {
             var div = document.createElement('div');
             div.innerHTML = `
                             <span class="hidden">${obj.contentType}</span>
-                            <img src="${getPoster(obj.posterPath)}">
+                            <img src="${getPoster(POSTER_URL, obj.posterPath)}">
                             <h2>${obj.originalTitle}</h2>
                             <p>${obj.overview}</p>
                             <p>TMDB Rating: ${obj.voteAverage.toFixed(2)}</p>
@@ -76,36 +69,13 @@ async function doSearch(URL) {
     }
 }
 
-function getPoster(posterPath) {
-    if (posterPath == 'null') {
-        return '../assets/images/logos/Logo-B-Symbol.svg';
-    }
-
-    return `${POSTER_URL}${posterPath}`;
-}
-
 function internalInfo(element) {
     const ID = element.id;
     const PARAMS = new URLSearchParams({
         searchType: 'INTERNAL'
     }).toString();
 
-    const URL = `${BASE_URL}/view/${ID}?${PARAMS}`;
-    
-    const OPTIONS = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": CONFIG.TOKEN
-        }
-    }
-
-    fetch(URL, OPTIONS)
-    .then(response => response.json())
-    .then(data => {
-        sessionStorage.setItem('content', JSON.stringify(data));
-        window.location.href = "./pages/content.html"
-    })
+    openContent(ID, PARAMS);
 }
 
 function externalInfo(element) {
@@ -116,22 +86,26 @@ function externalInfo(element) {
         contentType: TYPE
     }).toString();
 
-    const URL = `${BASE_URL}/view/${ID}?${PARAMS}`;
+    openContent(ID, PARAMS);
+}
 
-
-    const options = {
+async function openContent(ID, PARAMS) {
+    const OPTIONS = {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             "Authorization": CONFIG.TOKEN
         }
     };
+    const URL = `${ROUTES.content}/view/${ID}?${PARAMS}`;
+    const EXPECTED_STATUS = 200;
 
-    fetch(URL, options)
-    .then(response => response.json())
-    .then(data => {
-        sessionStorage.setItem('content', JSON.stringify(data));
-        window.location.href = "./pages/content.html";
-    })
+    try {
+        const DATA = await send(URL, OPTIONS, EXPECTED_STATUS);
+
+        sessionStorage.setItem('content', JSON.stringify(DATA));
+        window.location.href = "/pages/content.html";
+    } catch (error) {
+        alert(error);
+    }
 }
-

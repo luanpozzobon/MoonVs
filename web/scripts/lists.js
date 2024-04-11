@@ -1,6 +1,4 @@
-var BASE_URL = `${CONFIG.BASE_URL}/lists`;
-
-var getLists = function getLists() {
+let getLists = function getLists() {
     const OPTIONS = {
         method: "GET",
         headers: {
@@ -12,7 +10,7 @@ var getLists = function getLists() {
     const PARAMS = new URLSearchParams({
         idUser: CONFIG.ID_USER
     }).toString();
-    const URL = `${BASE_URL}/get?${PARAMS}`;
+    const URL = `${ROUTES.lists}/get?${PARAMS}`;
 
     fetch(URL, OPTIONS)
         .then(response => response.json())
@@ -82,7 +80,7 @@ function addButtonAnimation() {
 
 async function createList() {
     const EXPECTED_STATUS = 201;
-    const URL = `${BASE_URL}/create`;
+    const URL = `${ROUTES.lists}/create`;
 
     const LIST_NAME = document.getElementById('new-list-name').value;
     const LIST_DESCRIPTION = document.getElementById('new-list-description').value;
@@ -124,7 +122,7 @@ function openList(element) {
     const ID = element.id;
     localStorage.setItem('idList', ID);
 
-    window.location.href = './pages/list_content.html';
+    window.location.href = '/pages/list_content.html';
 }
 
 function addContent(content) {

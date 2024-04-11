@@ -5,6 +5,7 @@
 - Added creation of lists.
 - Added function to add a content to a list.
 - Added loading animation.
+- Added function delete a list.
 
 ## Changed
 

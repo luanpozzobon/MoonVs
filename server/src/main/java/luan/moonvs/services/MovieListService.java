@@ -109,8 +109,9 @@ public class MovieListService {
         if (movieList.isEmpty())
             return new Response<>(HttpStatus.BAD_REQUEST, String.format(ID_DOESNT_EXIST, "list"));
 
+        listContentRepository.deleteByIdList(idList);
         listRepository.delete(movieList.get());
-        return new Response<>(HttpStatus.OK, "");
+        return new Response<>(HttpStatus.NO_CONTENT, "");
     }
 
     public Response<MovieList> getList(Long idList) {
