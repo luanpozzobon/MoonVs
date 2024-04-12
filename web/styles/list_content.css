@@ -1,0 +1,47 @@
+@import url(./style.css);
+
+section,
+main {
+    width: 80%;
+    margin: auto;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+main div {
+
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 20px;
+    row-gap: 5px;
+    border: 1px solid var(--comp-color1);
+    border-radius: 20px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+main div img {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    border-radius: 30%;
+}
+
+main div h2,
+main div p {
+    grid-column: 2;
+}
+
+span {
+    cursor: pointer;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    text-decoration: underline solid var(--font-color);
+}

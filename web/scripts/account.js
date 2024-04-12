@@ -1,5 +1,5 @@
-const PROFILE_URL = `${config.BASE_URL}/profile`;
-const ACCOUNT_URL = `${config.BASE_URL}/account`;
+const PROFILE_URL = `${CONFIG.BASE_URL}/profile`;
+const ACCOUNT_URL = `${CONFIG.BASE_URL}/account`;
 
 const biographyField = document.getElementById('biography');
 const username = document.getElementById('username');
@@ -8,13 +8,13 @@ let profile;
 getProfile();
 
 function getProfile() {
-    const URL = `${PROFILE_URL}/${config.ID_USER}`;
+    const URL = `${PROFILE_URL}/${CONFIG.ID_USER}`;
     
     const options = {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': config.TOKEN
+            'Authorization': CONFIG.TOKEN
         }
     };
 
@@ -36,24 +36,24 @@ function saveProfile() {
     const biography = biographyField.value;
 
     const body = {
-        'idUser': config.ID_USER,
+        'idUser': CONFIG.ID_USER,
         'biography': biography
     };
 
     var options = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': config.TOKEN
+            'Authorization': CONFIG.TOKEN
         },
         body: JSON.stringify(body)
     };
 
     if (profile == true) {
         options.method = 'PUT';
-        url += `/edit/${config.ID_USER}`;
+        url += `/edit/${CONFIG.ID_USER}`;
     } else {
         options.method = 'POST';
-        url += `/create/${config.ID_USER}`;
+        url += `/create/${CONFIG.ID_USER}`;
     }
 
     fetch(url, options)
@@ -75,7 +75,7 @@ function editAccount() {
     const editEmail = emailField.value;
 
     const body = {
-        "idUser": config.ID_USER,
+        "idUser": CONFIG.ID_USER,
         "username": editUsername,
         "email": editEmail
     };
@@ -84,7 +84,7 @@ function editAccount() {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         },
         body: JSON.stringify(body)
     };
@@ -112,7 +112,7 @@ function changePassword() {
     }
 
     const body = {
-        "idUser": config.ID_USER,
+        "idUser": CONFIG.ID_USER,
         "password": password
     };
 
@@ -120,7 +120,7 @@ function changePassword() {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         },
         body: JSON.stringify(body)
     };
@@ -144,7 +144,7 @@ function deleteAccount() {
     const deletePassword = deletePasswordField.value;
 
     const body = {
-        "idUser": config.ID_USER,
+        "idUser": CONFIG.ID_USER,
         "username": deleteUsername,
         "password": deletePassword
     };
@@ -153,7 +153,7 @@ function deleteAccount() {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         },
         body: JSON.stringify(body)
     };

@@ -1,210 +1,233 @@
-const BASE_URL = `${config.BASE_URL}`;
-
-const POSTER_URL = 'https://image.tmdb.org/t/p/w185'
-
-const CONTENT_SECTION = document.getElementById("content");
 const CONTENT = JSON.parse(sessionStorage.getItem("content"));
 
-var poster = document.createElement('img');
-poster.src = POSTER_URL + CONTENT.posterPath;
-
-var title = document.createElement('h1');
-title.innerText = CONTENT.originalTitle;
-
-var overview = document.createElement('p');
-overview.innerText = CONTENT.overview;
-
-var ratingContainer = document.createElement('div');
-var tmdbRating = document.createElement('p');
-tmdbRating.innerText = `Tmdb Rating: ${CONTENT.tmdbVoteAvg.toFixed(2)}`
-
-var moonvsRating = document.createElement('p');
-var userRating = document.createElement('p');
-userRating.id = "userRating";
-userRating.addEventListener('click', () => rating());
-
-getRating(CONTENT.idContent)
-ratingContainer.appendChild(tmdbRating);
-ratingContainer.appendChild(moonvsRating);
-ratingContainer.appendChild(userRating);
-
-var genres = document.createElement('p');
-genres.innerText = "Genres: ";
-Array.from(CONTENT.genres).forEach(g => {
-    genres.innerText += `${g} | `;
-})
-
-CONTENT_SECTION.appendChild(poster);
-CONTENT_SECTION.appendChild(title);
-CONTENT_SECTION.appendChild(overview);
-CONTENT_SECTION.appendChild(ratingContainer);
-CONTENT_SECTION.appendChild(genres);
-
-const WATCH_SECTION = document.getElementById("watch");
-
-if (!CONTENT.watchProvider) {
-    document.querySelector('main').removeChild(WATCH_SECTION);
-} else {
-    const BUY = CONTENT.watchProvider.buy ?? "";
-    const RENT = CONTENT.watchProvider.rent ?? "";
-    const STREAMING = CONTENT.watchProvider.flatrate ?? "";
-
-    if (BUY != "") {
-        var buyContainer = document.createElement('div');
-        var buyTitle = document.createElement('h3');
-        buyTitle.innerText = "Buy";
-        buyContainer.appendChild(buyTitle);
-
-        Array.from(BUY).forEach(p => {
-            var buy = document.createElement('p');
-            buy.innerText = p;
-            buyContainer.appendChild(buy)
-        })
-
-        WATCH_SECTION.lastElementChild.before(buyContainer);
-    }
-
-    if (RENT != "") {
-        var rentContainer = document.createElement('div');
-        var rentTitle = document.createElement('h3');
-        rentTitle.innerText = "Rent";
-        rentContainer.appendChild(rentTitle);
-
-        Array.from(RENT).forEach(p => {
-            var rent = document.createElement('p');
-            rent.innerText = p;
-            rentContainer.appendChild(rent)
-        })
-
-        WATCH_SECTION.lastElementChild.before(rentContainer);
-    }
-
-    if (STREAMING != "") {
-        var streamingContainer = document.createElement('div');
-        var streamingTitle = document.createElement('h3');
-        streamingTitle.innerText = "Streaming";
-        streamingContainer.appendChild(streamingTitle);
-
-        Array.from(STREAMING).forEach(p => {
-            var streaming = document.createElement('p');
-            streaming.innerText = p;
-            streamingContainer.appendChild(streaming)
-        })
-
-        WATCH_SECTION.lastElementChild.before(streamingContainer);
-    }
+function load() {
+    document.title = CONTENT.originalTitle;
+    
+    fillContentSection(CONTENT);
+    fillWatchSection(CONTENT);
+    getLists();
+    hideLoading();
 }
 
-function getRating(idContent) {
-    const URL = `${BASE_URL}/rating`;
+function fillContentSection(CONTENT) {
+    const POSTER_URL = 'https://image.tmdb.org/t/p/w185'
+    const POSTER_CONTAINER = document.getElementById('poster');
+    const POSTER = getPoster(POSTER_URL, CONTENT.posterPath);
+    POSTER_CONTAINER.src = POSTER;
 
-    const options = {
+    const TITLE = document.getElementById('title');
+    TITLE.innerText = CONTENT.originalTitle;
+
+    const OVERVIEW = document.getElementById('overview');
+    OVERVIEW.innerText = CONTENT.overview;
+
+    const TMDB_RATING = document.getElementById('tmdbRating');
+    TMDB_RATING.innerText += ` ${CONTENT.tmdbVoteAvg.toFixed(2)}`;
+
+    getRating(CONTENT.idContent)
+
+    const GENRES = document.getElementById('genres');
+    const GENRES_ARRAY = Array.from(CONTENT.genres);
+    GENRES_ARRAY.forEach((genre, index) => {
+        if (index !== GENRES_ARRAY.length - 1) {
+            GENRES.innerText += ` ${genre} |`;
+        } else {
+            GENRES.innerText += ` ${genre}`;
+        }
+    })
+}
+
+function getRating(ID_CONTENT) {
+    const OPTIONS = {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         }
     };
 
-    fetch(`${URL}/${idContent}`, options)
-        .then(response => {
-            if (response.ok) {
-                return response.json()
-            }
-            throw new Error("Network response was not ok.");
-        })
-        .then(data => {
-            sessionStorage.setItem("userRating", JSON.stringify(data.ratingValue));
-            userRating.innerText = `Your Rating: ${data.ratingValue.toFixed(2)}`;
-        })
-        .catch(error => {
-            sessionStorage.setItem("userRating", JSON.stringify(-1));
-            userRating.innerText = `Your Rating: 0.00`;
-            console.error(error);
-        });
+    getUserRating(ID_CONTENT, OPTIONS);
+    getAvgRating(ID_CONTENT, OPTIONS);
 
-    fetch(`${URL}/avg-rating/${idContent}`, options)
-        .then(response => {
-            if (response.ok) {
-                return response.text();
-            } else if (response.status === 404) {
-                moonvsRating.innerText = `MoonVs Rating: 0.00`;
-                return Promise.resolve();
-            }
-
-            throw new Error('Network response was not ok.');
-        })
-        .then(data => {
-            if (data !== undefined) {
-                moonvsRating.innerText = `MoonVs Rating: ${data}`;
-            }
-        })
-        .catch(error => {
-            moonvsRating.innerText = `MoonVs Rating: 0.00`
-            console.error(error);
-        })
 }
 
-const RATING_CONTAINER = document.getElementById('rating');
-const RATING_FORM = RATING_CONTAINER.firstChild;
+async function getUserRating(ID_CONTENT, OPTIONS) {
+    const URL = `${ROUTES.rating}/${ID_CONTENT}`
+    const EXPECTED_STATUS = 200;
+
+    try {
+        let data = await send(URL, OPTIONS, EXPECTED_STATUS);
+
+        sessionStorage.setItem("userRating", JSON.stringify(data));
+        userRating.innerText += ` ${data.ratingValue.toFixed(2)}`;
+    } catch (error) {
+        sessionStorage.setItem("userRating", JSON.stringify({ratingValue : -1}));
+        userRating.innerText = `Your Rating: 0.00`;
+    }
+}
+
+async function getAvgRating(ID_CONTENT, OPTIONS) {
+    const URL = `${ROUTES.rating}/avg-rating/${ID_CONTENT}`;
+    const EXPECTED_STATUS = 200;
+
+    try {
+        let data = await send(URL, OPTIONS, EXPECTED_STATUS);
+
+        moonvsRating.innerText += ` ${data.toFixed(2)}`;
+    } catch (error) {
+        moonvsRating.innerText += ' 0.00'
+    }
+}
+
+function fillWatchSection(CONTENT) {
+    const WATCH_SECTION = document.getElementById('watch');
+    const WATCH_PROVIDERS = CONTENT.watchProvider ?? null;
+
+    if (!WATCH_PROVIDERS) {
+        document.querySelector('main').removeChild(WATCH_SECTION)
+    } else {
+        const BUY_PROVIDERS = WATCH_PROVIDERS.buy;
+        const RENT_PROVIDERS = WATCH_PROVIDERS.rent;
+        const STREAMING_PROVIDERS = WATCH_PROVIDERS.flatrate;
+
+        fillProviders(BUY_PROVIDERS, "Buy");
+        fillProviders(RENT_PROVIDERS, "Rent");
+        fillProviders(STREAMING_PROVIDERS, "Streaming");
+
+    }
+}
+
+function fillProviders(PROVIDERS, PROVIDERS_TITLE) {
+    if (PROVIDERS == "") return;
+
+    const PROVIDERS_ARRAY = Array.from(PROVIDERS);
+    const CONTAINER = document.createElement('div');
+    const TITLE = document.createElement('h3');
+    const WATCH_SECTION = document.getElementById("watch");
+
+    TITLE.innerText = PROVIDERS_TITLE
+    CONTAINER.appendChild(TITLE);
+    PROVIDERS_ARRAY.forEach(p => {
+        let provider = document.createElement('p');
+        provider.innerText = p;
+        CONTAINER.appendChild(provider);
+    })
+
+    WATCH_SECTION.lastElementChild.before(CONTAINER);
+}
 
 const RATING_VALUE = document.getElementById('ratingValue');
 const COMMENTARY = document.getElementById('commentary');
 
-function rating() {
-    const URL = `${BASE_URL}/rating/${CONTENT.idContent}`;
-
+async function rating() {
     const USER_RATING = JSON.parse(sessionStorage.getItem('userRating'));
-    if (USER_RATING !== -1) {
-        const options = {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": config.TOKEN
-            }
-        };
-
-        fetch(URL, options)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-            })
-            .then(data => {
-                RATING_VALUE.value = data.ratingValue;
-                COMMENTARY.value = data.commentary;
-            })
+    if (USER_RATING.ratingValue !== -1) {
+        RATING_VALUE.value = USER_RATING.ratingValue;
+        COMMENTARY.value = USER_RATING.commentary;
     }
-    RATING_CONTAINER.classList.remove('hidden');
+
+    document.getElementById('rating').classList.remove('hidden');
 }
 
-function doRate() {
-    const URL = `${BASE_URL}/rating/rate/${CONTENT.idContent}`;
+async function doRate() {
+    const URL = `${ROUTES.rating}/rate/${CONTENT.idContent}`
 
-    var ratingValue = RATING_VALUE.value;
-    var commentary = COMMENTARY.value;
-
+    let ratingValue = RATING_VALUE.value;
     if (ratingValue < 0 || ratingValue > 10) {
         alert("The rating value must be between 0.0 and 10.0");
         return false;
     }
 
-    const body = {
+    let commentary = COMMENTARY.value;
+
+    const BODY = {
         "ratingValue": ratingValue,
         "commentary": commentary
     };
 
-    const options = {
+    const OPTIONS = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": config.TOKEN
+            "Authorization": CONFIG.TOKEN
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(BODY)
     };
+    const EXPECTED_STATUS = 200;
 
-    fetch(URL, options)
-        .then(() => {
-            window.location.href = "./content.html";
-        })
+    try {
+        await send(URL, OPTIONS, EXPECTED_STATUS);
+
+        window.location.href = "./content.html";
+    } catch (error) {
+        alert (error);
+    }
+}
+
+async function getLists() {
+    const PARAMS = new URLSearchParams({
+        idUser: CONFIG.ID_USER
+    }).toString();
+    const URL = `${ROUTES.lists}/get?${PARAMS}`;
+    const OPTIONS = {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": CONFIG.TOKEN
+        }
+    }
+    const CONTAINER = document.getElementById('list');
+    const EXPECTED_STATUS = 200;
+
+    try {
+        const DATA = await send(URL, OPTIONS, EXPECTED_STATUS);
+        if (DATA !== undefined) {
+            Array.from(DATA).forEach(list => {
+                let listContainer = document.createElement('div');
+                listContainer.id = list.idList;
+                listContainer.innerText = list.listName;
+                listContainer.addEventListener('click', function () {
+                    addToList(this);
+                })
+
+                CONTAINER.appendChild(listContainer)
+            })
+        }
+    } catch (error) {
+        alert(error);
+    }
+}
+
+function showLists() {
+    const LISTS_CONTAINER = document.getElementById('list');
+    if (LISTS_CONTAINER.classList.contains('hidden')) {
+        LISTS_CONTAINER.classList.remove('hidden');
+        LISTS_CONTAINER.classList.add('visible');
+    } else {
+        LISTS_CONTAINER.classList.add('hidden');
+        LISTS_CONTAINER.classList.remove('visible');
+    }
+}
+
+async function addToList(element) {
+    const ID = element.id;
+    const PARAMS = new URLSearchParams({
+        idContent: CONTENT.idContent
+    }).toString();
+    const URL = `${ROUTES.lists}/${ID}/add?${PARAMS}`;
+    const OPTIONS = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": CONFIG.TOKEN
+        }
+    }
+    const EXPECTED_STATUS = 201
+
+    try {
+        await send(URL, OPTIONS, EXPECTED_STATUS);
+        window.location.href = `/pages/content.html`;
+    } catch (error) {
+        alert(error);
+    }
 }
