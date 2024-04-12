@@ -1,115 +1,100 @@
-const URL = `${config.BASE_URL}/auth`
-
-const labels = document.getElementById('labels');
-const forms = document.getElementsByClassName('forms');
-
-const loginForm = document.getElementById('login-form');
-const registerForm = document.getElementById('register-form');
-
-const usernameRegister = document.getElementById('username-register');
-const emailRegister = document.getElementById('email-register');
-const birthdateRegister = document.getElementById('birthdate-register');
-const passwordRegister = document.getElementById('password-register');
-const confirmPasswordRegister = document.getElementById('confirmPassword-register')
-
-const usernameLogin = document.getElementById('username-login');
-const passwordLogin = document.getElementById('password-login');
-
 function authForms(element) {
     unselect();
-
-    const id = element.id;
-    const form = document.getElementById(`${id}-form`)
-
+    
+    const ID = element.id;
+    const FORM = document.getElementById(`${ID}-form`)
+    
     element.classList.add('selected');
-    form.classList.add('selected')
+    FORM.classList.add('selected')
 }
 
 function unselect() {
-    Array.from(labels.children).forEach(e => {
+    const LABELS = document.getElementById('labels');
+    const FORMS = document.getElementsByClassName('forms');
+
+    Array.from(LABELS.children).forEach(e => {
         e.classList.remove('selected');
     });
 
-    Array.from(forms).forEach(e => {
+    Array.from(FORMS).forEach(e => {
         e.classList.remove('selected');
     });
 }
 
-function register() {
-    const username = usernameRegister.value;
-    const email = emailRegister.value;
-    const birthdate = birthdateRegister.value;
-    const password = passwordRegister.value;
-    const confirmPassword = confirmPasswordRegister.value;
+async function register() {
+    const USERNAME = document.getElementById('username-register').value;
+    const EMAIL = document.getElementById('email-register').value;
+    const BIRTHDATE = document.getElementById('birthdate-register').value;
+    const PASSWORD = document.getElementById('password-register').value;
+    const CONFIRM_PASSWORD = document.getElementById('confirmPassword-register').value;
 
-    if (password != confirmPassword) {
+    if (PASSWORD != CONFIRM_PASSWORD) {
         alert("The passwords doesn't match");
         return false;
     }
 
-    const body = {
-        "username": username,
-        "email": email,
-        "birthDate": birthdate,
-        "password": password
+    const BODY = {
+        username: USERNAME,
+        email: EMAIL,
+        birthDate: BIRTHDATE,
+        password: PASSWORD
     }
-
-    const options = {
+    const OPTIONS = {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(BODY)
     }
+    const URL = `${ROUTES.auth}/sign-up`;
+    const EXPECTED_STATUS = 200;
 
-    fetch(`${URL}/sign-up`, options)
-        .then(response => response.json())
-        .then(data => {
-            var session = generateToken(data.token);
-            var auth = {
-                "session": session,
-                "id": data.idUser
-            };
-            setAuth(auth);
-            window.location.href = './account.html';
-        })
-        .catch(error => {
-            alert(error.message);
-        });
+    try {
+        const DATA = await send(URL, OPTIONS, EXPECTED_STATUS);
+
+        authenticate(DATA);
+        window.location.href = '/pages/account.html';
+    } catch (error) {
+        alert(error);
+    }
 }
 
 
-function login() {
-    const username = usernameLogin.value;
-    const password = passwordLogin.value;
+async function login() {
+    const USERNAME = document.getElementById('username-login').value;
+    const PASSWORD = document.getElementById('password-login').value;
 
-    const body = {
-        "username": username,
-        "password": password
+    const BODY = {
+        "username": USERNAME,
+        "password": PASSWORD
     };
-
-    const options = {
+    const OPTIONS = {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(BODY)
     };
+    const URL = `${ROUTES.auth}/sign-in`;
+    const EXPECTED_STATUS = 200;
 
-    fetch(`${URL}/sign-in`, options)
-        .then(response => response.json())
-        .then(data => {
-            var session = generateToken(data.token);
-            var auth = {
-                "session": session,
-                "id": data.idUser
-            };
-            setAuth(auth);
-            window.location.href = "../index.html";
-        })
-        .catch(error => {
-            alert(error);
-        });
+    try {
+        const DATA = await send(URL, OPTIONS, EXPECTED_STATUS);
+
+        authenticate(DATA);
+        window.location.href = '/index.html';
+    } catch (error) {
+        alert(error);
+    }
+}
+
+function authenticate(DATA) {
+    const SESSION = generateToken(DATA.token);
+    const AUTH = {
+        session: SESSION,
+        idUser: DATA.idUser
+    };
+    setAuth(AUTH);
 }
 
 function generateToken(token) {

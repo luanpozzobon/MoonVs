@@ -1,28 +1,20 @@
-<h1 align="center">Changelog - v0.2.1-beta.2024-02</h1>
+<h1 align="center">Changelog - v0.3.0-beta.2024-04</h1>
 
 ## Added
 
-- Added Tabs on home page.
+- Added creation of lists.
+- Added function to add a content to a list.
+- Added loading animation.
+- Added function delete a list.
 
 ## Changed
 
-- Upgrade Dependencies: Spring Boot 3.1.8.
-- Now only non-empty sections are shown in 'Watch Providers'.
-- Now the 'Watch Providers' section won't be shown if it's empty.
-- Upgrade Dependencies: PostgreSQL 42.7.2
-
-## Deprecated
-
-
+- When a content doesn't have a Poster it will load the MoonVS Symbol.
+- Now the title of the tab changes according to the content you open it.
 
 ## Fixed
 
-- Fixed bug where the rating wouldn't load if there was no 'Watch Provider'.
-
-## Removed
-
-- Removed all previous deprecated methods and classes.
-- Removed ExternalContentRequest DTO.
+- Fixed bug on the TMDb Search, where no content would open.
 
 
 [You can also access the full changelog](https://luanpozzobon.github.io/luanpozzobon_site/pages/projects/moonvs/moonvs.html)

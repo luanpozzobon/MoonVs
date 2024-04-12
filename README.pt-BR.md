@@ -4,9 +4,9 @@
   <img alt="MoonVs Logo" src="./assets/logos/Logo-White.png">
 </picture>
 
-![Static Badge](https://img.shields.io/badge/versão-0.2.0-white?style=for-the-badge&labelColor=black)
-![Static Badge](https://img.shields.io/badge/beta-2024--02-white?style=for-the-badge&labelColor=black)
-![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-01%2F02%2F2024-white?style=for-the-badge&labelColor=black)
+![Static Badge](https://img.shields.io/badge/versão-0.3.0-white?style=for-the-badge&labelColor=black)
+![Static Badge](https://img.shields.io/badge/beta-2024--04-white?style=for-the-badge&labelColor=black)
+![Static Badge](https://img.shields.io/badge/%C3%9altima%20atualiza%C3%A7%C3%A3o-12%2F04%2F2024-white?style=for-the-badge&labelColor=black)
 [![Static Badge](https://img.shields.io/badge/licença-MIT-white?style=for-the-badge&labelColor=black)](./LICENSE)
 ![Static Badge](https://img.shields.io/badge/status-em_desenvolvimento-white?style=for-the-badge&labelColor=black)
 <p>Uma aplicação web, que utiliza da API do TMDB, é possível buscar e acessar informações sobre muitos filmes e séries. No futuro será possível também, criar listas para agrupar conteúdos, avaliá-los, e adicionar os conteúdos em uma lista à assistir, permitindo rastrear filmes e séries a assistir, e àqueles já assistidos.</p>
@@ -21,7 +21,7 @@
 - [X] Pesquisa de filmes e séries
 - [X] Visualização de informações completas sobre filmes e séries
 - [x] Avaliação e comentários de filmes e séries
-- [ ] Criação de listas, e inserção de títulos as listas
+- [X] Criação de listas, e inserção de títulos as listas
 - [ ] Recomendação baseada nos filmes e séries assistidos anteriormente
 
 ## 🚀 Access the Project

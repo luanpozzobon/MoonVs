@@ -1,5 +1,12 @@
 <div id="template">
-    <div class="not-imp">
-        <p>Not Implemented Yet!</p>
-    </div>
+    <link rel="stylesheet" href="/styles/lists.css">
+    <button onclick="newList()" id="new-list-button">New List</button>
+</div>
+
+<div id="new-list">
+    <form id="new-list-form">
+        <input type="text" name="new-list-name" id="new-list-name" placeholder="List name" maxlength="64" required>
+        <input type="text" name="new-list-description" id="new-list-description" placeholder="List Description" maxlength="255">
+        <button onclick="createList(); return false" id="create-list-button">Create List</button>
+    </form>
 </div>

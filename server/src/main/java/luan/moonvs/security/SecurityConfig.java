@@ -59,6 +59,8 @@ public class SecurityConfig {
         config.setAllowedOrigins(Collections.singletonList(ORIGIN));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
+        config.addExposedHeader("message");
+
         return new UrlBasedCorsConfigurationSource() {{
             registerCorsConfiguration("/**", config);
         }};

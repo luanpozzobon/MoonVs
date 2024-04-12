@@ -4,16 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/index.css">
-    <link rel="shortcut icon" href="./assets/images/logos/Logo-W-Symbol.svg" type="image/x-icon">
-    <script id="common" src="./scripts/common.js"></script>
-    <title>MoonVs</title>
+    <link rel="stylesheet" href="../styles/list_content.css">
+    <link rel="shortcut icon" href="../assets/images/logos/Logo-W-Symbol.svg" type="image/x-icon">
+    <title>MoonVs: List</title>
+    <script src="../scripts/common.js"></script>
 </head>
 <script>
     checkAuth();
-    setTimeout(() => {
-        hideLoading();
-    }, 500);
 </script>
 
 <body>
@@ -22,18 +19,20 @@
     </div>
 
     <header>
-        <a href="./index.html"><img src="./assets/images/logos/Logo-Black.svg" id="logo"></a>
+        <a href="../index.html"><img src="../assets/images/logos/Logo-Black.svg" id="logo"></a>
         <nav>
-            <a href="./pages/account.html">Account</a>
+            <a href="./account.html">Account</a>
             <a onclick="logout()">Log-Out</a>
         </nav>
     </header>
-    <span id="tabs">
-        <span class="tab" id="search" onclick="selectTab(this)">Search</span>
-        
-        <span class="tab" id="lists" onclick="selectTab(this)">My Lists</span>
-
-    </span>
+    <section>
+        <h1>List Name</h1>
+        <p>List Description: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta, exercitationem nulla,
+            laborum in officia atque repudiandae consequatur animi impedit est unde! Maiores sunt dignissimos cum
+            soluta, quidem nisi ea eveniet!
+        </p>
+        <span class="clickable" id="delete">Delete</span>
+    </section>
     <main>
 
     </main>
@@ -41,7 +40,7 @@
         <div id="attribution">
             <p>This website uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.
             </p>
-            <img src="./assets/images/attribution/tmdb.svg" alt="">
+            <img src="../assets/images/attribution/tmdb.svg" alt="">
         </div>
         <div id="project">
             <h3>The Project</h3>
@@ -76,5 +75,9 @@
         </div>
     </footer>
 </body>
-<script id="index" src="./scripts/index.js"></script>
+<script src="../scripts/list_content.js"></script>
+<script>
+    load();
+</script>
+
 </html>
