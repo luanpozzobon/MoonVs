@@ -5,6 +5,7 @@ const TEMPLATES = ["search", "lists"]
 
 function selectTab(element) {
     const ID = element.id;
+
     TABS.forEach(tab => {
         tab.classList.remove('selected');
     })
