@@ -4,9 +4,9 @@
 <img alt="MoonVs Logo" src="./assets/logos/Logo-White.png">
 </picture>
 
-![Static Badge](https://img.shields.io/badge/version-0.2.0-white?style=for-the-badge&labelColor=black)
-![Static Badge](https://img.shields.io/badge/beta-2024--02-white?style=for-the-badge&labelColor=black)
-![Static Badge](https://img.shields.io/badge/last%20update-2024--02--01-white?style=for-the-badge&labelColor=black)
+![Static Badge](https://img.shields.io/badge/version-0.3.0-white?style=for-the-badge&labelColor=black)
+![Static Badge](https://img.shields.io/badge/beta-2024--04-white?style=for-the-badge&labelColor=black)
+![Static Badge](https://img.shields.io/badge/last%20update-2024--04--12-white?style=for-the-badge&labelColor=black)
 [![Static Badge](https://img.shields.io/badge/license-MIT-white?style=for-the-badge&labelColor=black)](./LICENSE)
 ![Static Badge](https://img.shields.io/badge/status-developing-white?style=for-the-badge&labelColor=black)
 <p>A web application, using TMDB's API, to search and access information about lots of movies and series. In the future, will be possible to also create lists to group the contents, rate them, and add the contents to watchlists, making it able to track the movies and series to watch, and those you already watched!</p>
@@ -22,7 +22,7 @@
 - [X] Movies and TV Shows search
 - [X] View of complete information about Movies and TV Shows
 - [X] Rate and comment on Movies and TV Shows
-- [ ] Create lists and add titles to the lists
+- [X] Create lists and add content to the lists
 - [ ] Recommendations based on previously watched Movies and TV Shows
 
 ## 🚀 Access the Project
