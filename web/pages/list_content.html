@@ -9,6 +9,7 @@
     <title>MoonVs: List</title>
     <script src="../scripts/common.js"></script>
 </head>
+<script src="../scripts/list_content.js"></script>
 <script>
     checkAuth();
 </script>
@@ -34,7 +35,7 @@
         <span class="clickable" id="delete">Delete</span>
     </section>
     <main>
-
+        <button onclick="loadContents()" id="laod_more">Load More</button>
     </main>
     <footer>
         <div id="attribution">
@@ -75,7 +76,6 @@
         </div>
     </footer>
 </body>
-<script src="../scripts/list_content.js"></script>
 <script>
     load();
 </script>

@@ -1,4 +1,5 @@
 var POSTER_URL = 'https://image.tmdb.org/t/p/w92';
+let loaded_content = 0;
 
 function load() {
     const ID_LIST = JSON.parse(localStorage.getItem('idList'));
@@ -12,6 +13,7 @@ function load() {
 
     getList(ID_LIST, OPTIONS);
     getContents(ID_LIST, OPTIONS);
+    loadContents();
 }
 
 async function getList(ID_LIST, OPTIONS) {
@@ -35,29 +37,44 @@ async function getList(ID_LIST, OPTIONS) {
 
 async function getContents(ID_LIST, OPTIONS) {
     const EXPECTED_STATUS = 200;
-    const MAIN = document.querySelector('main');
     const URL = `${ROUTES.lists}/${ID_LIST}/get-contents`;
 
     try {
         let data = await send(URL, OPTIONS, EXPECTED_STATUS);
 
-        if (data !== undefined) {
-            data.forEach(element => {
-                let content = document.createElement('div');
-                content.id = element.idContent;
-                content.innerHTML = `<img src="${getPoster(element.content.posterPath)}">
-                                     <h2>${element.content.originalTitle}</h2>
-                                     <p>${element.content.overview}</p>
-                                     <span class="clickable" onclick="remove(this, ${ID_LIST})">Remove</span>
-                                    `;
-                MAIN.appendChild(content);
-            });
-
-            localStorage.setItem('list', JSON.stringify(data));
-        }
+        localStorage.setItem('list', JSON.stringify(data));
     } catch(error) {
         alert(error)
     }
+}
+
+function loadContents() {
+    showLoading();
+    const ID_LIST = JSON.parse(localStorage.getItem('idList'));
+    const MAIN = document.querySelector('main');
+    let data = Array.from(JSON.parse(localStorage.getItem('list')));
+    if (data !== undefined) {
+        let i = loaded_content;
+        loaded_content += 20;
+        while(i < data.length && i < loaded_content) {
+            let element = data[i];
+            let content = document.createElement('div');
+            
+            content.id = element.idContent;
+            content.innerHTML = `<img src="${getPoster(element.content.posterPath)}">
+                                 <h2>${element.content.originalTitle}</h2>
+                                 <p>${element.content.overview}</p>
+                                 <span class="clickable" onclick="remove(this, ${ID_LIST})">Remove</span>
+                                `;
+            MAIN.lastElementChild.before(content);
+            i++;
+        }
+    }
+
+    if (loaded_content >= data.length) {
+        MAIN.lastElementChild.remove();
+    }
+    hideLoading();
 }
 
 function getPoster(posterPath) {

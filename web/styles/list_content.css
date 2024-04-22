@@ -6,12 +6,20 @@ main {
     margin: auto;
 }
 
+main {
+    margin-bottom: 150px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
 h1 {
     font-size: 32px;
 }
 
 main div {
-
+    width: 95%;
     margin: 20px auto;
     display: grid;
     grid-template-columns: auto 1fr;
@@ -36,6 +44,22 @@ main div p {
 
 span {
     cursor: pointer;
+}
+
+button {
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    border-radius: 25px;
+    width: 50%;
+    height: 50px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--comp-color1);
+    opacity: 50%;
+
+    transition: 0.5s;
 }
 
 .clickable {

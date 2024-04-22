@@ -1,4 +1,4 @@
-let getLists = function getLists() {
+function getLists() {
     const OPTIONS = {
         method: "GET",
         headers: {
@@ -30,7 +30,9 @@ let getLists = function getLists() {
         .catch(error => {
             alert(error.message);
         });
-}();
+};
+
+getLists();
 
 function newList() {
     const FORM = document.getElementById('new-list-form');
