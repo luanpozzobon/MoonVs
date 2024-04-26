@@ -9,6 +9,7 @@
     <title>MoonVs: List</title>
     <script src="../scripts/common.js"></script>
 </head>
+<script src="../scripts/list_content.js"></script>
 <script>
     checkAuth();
 </script>
@@ -34,7 +35,7 @@
         <span class="clickable" id="delete">Delete</span>
     </section>
     <main>
-
+        <button onclick="loadContents()" id="laod_more">Load More</button>
     </main>
     <footer>
         <div id="attribution">
@@ -70,12 +71,11 @@
             </ul>
         </div>
         <div id="info">
-            <p>Service Version: v0.3.0-beta.2024-04</p>
+            <p>Service Version: v0.3.1-beta.2024-04</p>
             <p>Created By: Luan Rafael Pozzobon</p>
         </div>
     </footer>
 </body>
-<script src="../scripts/list_content.js"></script>
 <script>
     load();
 </script>

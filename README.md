@@ -4,9 +4,9 @@
 <img alt="MoonVs Logo" src="./assets/logos/Logo-White.png">
 </picture>
 
-![Static Badge](https://img.shields.io/badge/version-0.3.0-white?style=for-the-badge&labelColor=black)
+![Static Badge](https://img.shields.io/badge/version-0.3.1-white?style=for-the-badge&labelColor=black)
 ![Static Badge](https://img.shields.io/badge/beta-2024--04-white?style=for-the-badge&labelColor=black)
-![Static Badge](https://img.shields.io/badge/last%20update-2024--04--12-white?style=for-the-badge&labelColor=black)
+![Static Badge](https://img.shields.io/badge/last%20update-2024--04--26-white?style=for-the-badge&labelColor=black)
 [![Static Badge](https://img.shields.io/badge/license-MIT-white?style=for-the-badge&labelColor=black)](./LICENSE)
 ![Static Badge](https://img.shields.io/badge/status-developing-white?style=for-the-badge&labelColor=black)
 <p>A web application, using TMDB's API, to search and access information about lots of movies and series. In the future, will be possible to also create lists to group the contents, rate them, and add the contents to watchlists, making it able to track the movies and series to watch, and those you already watched!</p>
@@ -32,7 +32,7 @@ You can also check more information about it, such as the changelog, or developm
 
 ## 🛠️ Tools
 <ul style="list-style:none">
-    <li><img src="./assets/icons/Java.png" width=15> <a href="https://www.java.com/en/" target="_blank">Java 19</a></li>
+    <li><img src="./assets/icons/Java.png" width=15> <a href="https://www.java.com/en/" target="_blank">Java 20</a></li>
     <li><img src="./assets/icons/Spring.png" width=15> <a href="https://spring.io/" target="_blank">Spring Framework</a></li>
     <li><img src="./assets/icons/Postgresql.png" width=15> <a href="https://www.postgresql.org/" target="_blank">PostgreSQL 16</a></li>
     <li><img src="./assets/icons/IntelliJ.png" width=15> <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ Idea</a></li>

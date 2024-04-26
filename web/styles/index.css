@@ -21,7 +21,6 @@
 #tabs span:hover {
     border-bottom: 7px solid var(--font-color);
     color: var(--comp-color3);
-    background-color: var(--gray);
     transition: 0.5s;
     opacity: 75%;
 }

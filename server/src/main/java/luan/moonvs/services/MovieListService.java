@@ -130,6 +130,10 @@ public class MovieListService {
         if (!contentRepository.existsById(idContent))
             return new Response<>(HttpStatus.BAD_REQUEST, null, String.format(ID_DOESNT_EXIST, "content"));
 
+
+        if (listContentRepository.existsById(new MovieListContentId(idList, idContent)))
+            return new Response<>(HttpStatus.BAD_REQUEST, null, "The selected content already exists on the list!");
+
         var movieListContent = new MovieListContent(idList, idContent);
         try {
             movieListContent = listContentRepository.save(movieListContent);
