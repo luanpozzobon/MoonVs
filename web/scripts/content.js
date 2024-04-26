@@ -155,6 +155,7 @@ async function doRate() {
     };
     const EXPECTED_STATUS = 200;
 
+    showLoading();
     try {
         await send(URL, OPTIONS, EXPECTED_STATUS);
 
@@ -162,6 +163,7 @@ async function doRate() {
     } catch (error) {
         alert (error);
     }
+    hideLoading();
 }
 
 async function getLists() {
@@ -224,10 +226,12 @@ async function addToList(element) {
     }
     const EXPECTED_STATUS = 201
 
+    showLoading();
     try {
         await send(URL, OPTIONS, EXPECTED_STATUS);
         window.location.href = `/pages/content.html`;
     } catch (error) {
         alert(error);
     }
+    hideLoading();
 }

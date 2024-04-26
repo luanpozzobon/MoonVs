@@ -1,7 +1,8 @@
 var POSTER_URL = 'https://image.tmdb.org/t/p/w92';
 let loaded_content = 0;
 
-function load() {
+async function load() {
+    showLoading();
     const ID_LIST = JSON.parse(localStorage.getItem('idList'));
     const OPTIONS = {
         method: 'GET',
@@ -12,11 +13,13 @@ function load() {
     };
 
     getList(ID_LIST, OPTIONS);
-    getContents(ID_LIST, OPTIONS);
+    await getContents(ID_LIST, OPTIONS);
     loadContents();
+    hideLoading();
 }
 
 async function getList(ID_LIST, OPTIONS) {
+    localStorage.removeItem('list');
     const EXPECTED_STATUS = 200;
     const SECTION = document.querySelector('section')
     const URL = `${ROUTES.lists}/${ID_LIST}/get`;
@@ -52,23 +55,27 @@ function loadContents() {
     showLoading();
     const ID_LIST = JSON.parse(localStorage.getItem('idList'));
     const MAIN = document.querySelector('main');
-    let data = Array.from(JSON.parse(localStorage.getItem('list')));
-    if (data !== undefined) {
-        let i = loaded_content;
-        loaded_content += 20;
-        while(i < data.length && i < loaded_content) {
-            let element = data[i];
-            let content = document.createElement('div');
-            
-            content.id = element.idContent;
-            content.innerHTML = `<img src="${getPoster(element.content.posterPath)}">
-                                 <h2>${element.content.originalTitle}</h2>
-                                 <p>${element.content.overview}</p>
-                                 <span class="clickable" onclick="remove(this, ${ID_LIST})">Remove</span>
-                                `;
-            MAIN.lastElementChild.before(content);
-            i++;
-        }
+    let list = JSON.parse(localStorage.getItem('list')) || undefined;
+    if (list == undefined) {
+        MAIN.lastElementChild.remove();
+        hideLoading();
+        return;
+    }
+    let data = Array.from(list);
+    let i = loaded_content;
+    loaded_content += 20;
+    while(i < data.length && i < loaded_content) {
+        let element = data[i];
+        let content = document.createElement('div');
+        
+        content.id = element.idContent;
+        content.innerHTML = `<img src="${getPoster(element.content.posterPath)}">
+                                <h2>${element.content.originalTitle}</h2>
+                                <p>${element.content.overview}</p>
+                                <span class="clickable" onclick="remove(this, ${ID_LIST})">Remove</span>
+                            `;
+        MAIN.lastElementChild.before(content);
+        i++;
     }
 
     if (loaded_content >= data.length) {
@@ -103,12 +110,14 @@ function remove(element, ID_LIST) {
         }
     };
 
+    showLoading();
     try {
         send(URL, OPTIONS, EXPECTED_STATUS);
         MAIN.removeChild(element.parentNode);
     } catch(error) {
         alert(error)
     }
+    hideLoading();
 }
 
 async function deleteList(ID_LIST) {
@@ -122,6 +131,7 @@ async function deleteList(ID_LIST) {
         }
     };
 
+    showLoading();
     try {
         await send(URL, OPTIONS, EXPECTED_STATUS);
 
@@ -132,4 +142,5 @@ async function deleteList(ID_LIST) {
     } catch (error) {
         alert(error);
     }
+    hideLoading();
 }

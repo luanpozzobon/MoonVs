@@ -36,10 +36,8 @@ const ROUTES = {
 };
 
 async function send(URL, OPTIONS, EXPECTED_STATUS) {
-    showLoading();
     return await fetch(URL, OPTIONS)
         .then(response => {
-            hideLoading();
             if (response.status != EXPECTED_STATUS) {
                 throw new Error(response.headers.get('message'));
             }

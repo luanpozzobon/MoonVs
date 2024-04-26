@@ -48,6 +48,7 @@ async function doSearch(URL, SECTION) {
     const EXPECTED_STATUS = 200;
     SECTION.innerHTML = "";
 
+    showLoading();
     try {
         const DATA = await send(URL, OPTIONS, EXPECTED_STATUS);
 
@@ -64,9 +65,12 @@ async function doSearch(URL, SECTION) {
             div.id = obj.id;
             SECTION.appendChild(div);
         });
+        hideLoading();
     } catch (error) {
+        hideLoading();
         return false;
     }
+
 }
 
 function internalInfo(element) {
@@ -100,6 +104,7 @@ async function openContent(ID, PARAMS) {
     const URL = `${ROUTES.content}/view/${ID}?${PARAMS}`;
     const EXPECTED_STATUS = 200;
 
+    showLoading();
     try {
         const DATA = await send(URL, OPTIONS, EXPECTED_STATUS);
 
@@ -108,4 +113,5 @@ async function openContent(ID, PARAMS) {
     } catch (error) {
         alert(error);
     }
+    hideLoading();
 }

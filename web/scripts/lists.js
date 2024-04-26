@@ -12,6 +12,7 @@ function getLists() {
     }).toString();
     const URL = `${ROUTES.lists}/get?${PARAMS}`;
 
+    showLoading();
     fetch(URL, OPTIONS)
         .then(response => response.json())
         .then(data => {
@@ -30,6 +31,7 @@ function getLists() {
         .catch(error => {
             alert(error.message);
         });
+    hideLoading();
 };
 
 getLists();
@@ -101,6 +103,7 @@ async function createList() {
         body: JSON.stringify(BODY)
     };
 
+    showLoading();
     try {
         data = await send(URL, OPTIONS, EXPECTED_STATUS);
         if (data !== undefined) {
@@ -118,6 +121,7 @@ async function createList() {
     } catch (error) {
         alert(error);
     }
+    hideLoading();
 }
 
 function openList(element) {

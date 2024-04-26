@@ -49,6 +49,7 @@ async function register() {
     const URL = `${ROUTES.auth}/sign-up`;
     const EXPECTED_STATUS = 200;
 
+    showLoading();
     try {
         const DATA = await send(URL, OPTIONS, EXPECTED_STATUS);
 
@@ -57,6 +58,7 @@ async function register() {
     } catch (error) {
         alert(error);
     }
+    hideLoading();
 }
 
 
@@ -78,6 +80,7 @@ async function login() {
     const URL = `${ROUTES.auth}/sign-in`;
     const EXPECTED_STATUS = 200;
 
+    showLoading();
     try {
         const DATA = await send(URL, OPTIONS, EXPECTED_STATUS);
 
@@ -86,6 +89,7 @@ async function login() {
     } catch (error) {
         alert(error);
     }
+    hideLoading();
 }
 
 function authenticate(DATA) {
