@@ -3,6 +3,7 @@
 ## Changed
 
 - The contents on a list are not loaded all at once.
+- Updated JDK version to JDK 20.
 
 ## Fixed
 
