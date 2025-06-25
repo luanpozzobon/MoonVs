@@ -1,0 +1,18 @@
+{
+  "type": "about:blank",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "There is already an user registered with this info",
+  "instance": "/auth/register",
+  "timestamp": "2025-06-22T11:48:18.667741Z",
+  "errors": [
+    {
+      "key": "email",
+      "message": "luanpozzobon@gmail.com"
+    },
+    {
+      "key": "username",
+      "message": "luanpozzobon"
+    }
+  ]
+}

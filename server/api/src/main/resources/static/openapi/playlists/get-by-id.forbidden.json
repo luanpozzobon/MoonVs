@@ -1,0 +1,9 @@
+{
+  "type": "about:blank",
+  "title": "Not Found",
+  "status": 403,
+  "detail": "There is no playlist with the given id.",
+  "instance": "/playlists/a4727bb1-58e2-46bb-8c4a-25d7568c4f0",
+  "timestamp": "2025-06-22T17:51:41.033115Z",
+  "errors": null
+}

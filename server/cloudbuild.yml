@@ -1,0 +1,67 @@
+steps:
+
+# Obter credenciais para acessar repositório de dependências do Maven
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'bash'
+  args: 
+    - '-c'
+    - |
+      mkdir -p /root/.m2 && \
+      gcloud secrets versions access latest --secret="maven-settings" > /root/.m2/settings.xml
+
+
+- name: 'bash'
+  args:
+    - 'chmod'
+    - '+x'
+    - 'mvnw'
+
+
+- name: 'maven:3.9-eclipse-temurin-21'
+  entrypoint: './mvnw'
+  args: 
+    - 'test'
+
+
+- name: maven:3.9-eclipse-temurin-21
+  entrypoint: './mvnw'
+  args: 
+    - 'package'
+    - '-DskipTests'
+
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'build'
+    - '--platform=linux/amd64'
+    - '-t'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/moonvs/moonvs-api:$SHORT_SHA'
+    - '.'
+
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'push'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/moonvs/moonvs-api:$SHORT_SHA'
+
+  
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+    - 'run'
+    - 'deploy'
+    - 'moonvs'
+    - '--image'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/moonvs/moonvs-api:$SHORT_SHA'
+    - '--region'
+    - 'us-central1'
+    - '--platform'
+    - 'managed'
+    - '--allow-unauthenticated'
+    - '--project'
+    - '$PROJECT_ID'
+    - '--update-secrets=DB_URL=db-url:latest,DB_USER=db-user:latest,DB_PASSWORD=db-password:latest,JWT_SECRET=jwt-secret:latest'
+
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/moonvs/moonvs-api:$SHORT_SHA'

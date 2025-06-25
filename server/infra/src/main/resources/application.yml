@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger %n %msg %n"
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET}
+
+springdoc:
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+
+server:
+  forward-headers-strategy: native
+
+front:
+  url: ${FRONT_URL:http://localhost:4200}
