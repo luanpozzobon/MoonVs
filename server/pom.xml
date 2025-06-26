@@ -73,6 +73,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/exception/*</exclude>
+                        <exclude>**/contracts/*</exclude>
+                        <exclude>**/contracts/model/*</exclude>
+                        <exclude>**/seedwork/entity/*</exclude>
+                        <exclude>**/seedwork/validation/*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
