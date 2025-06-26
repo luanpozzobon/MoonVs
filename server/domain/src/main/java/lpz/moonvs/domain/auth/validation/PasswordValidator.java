@@ -26,8 +26,13 @@ public class PasswordValidator implements Validator<Password> {
 
     @Override
     public void validate(final Password domain) {
-        if (domain.getRaw() == null)
+        if (domain.getRaw() == null || domain.getRaw().isBlank()) {
+            this.handler.addError(new Notification(
+                    PASSWORD_ERROR_KEY,
+                    "The password must be filled in."
+            ));
             return;
+        }
 
         this.validateLength(domain.getRaw());
         this.validateUppercase(domain.getRaw());

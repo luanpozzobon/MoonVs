@@ -48,8 +48,4 @@ public class Password extends ValueObject {
     public String getValue() {
         return this.encrypted;
     }
-
-    public boolean matches(final String another) {
-        return this.encryptor.matches(another, encrypted);
-    }
 }

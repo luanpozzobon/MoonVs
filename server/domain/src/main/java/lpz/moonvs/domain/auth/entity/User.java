@@ -23,24 +23,12 @@ public final class User extends Entity {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public Email getEmail() {
         return email;
     }
 
-    public void setEmail(Email email) {
-        this.email = email;
-    }
-
     public Password getPassword() {
         return password;
-    }
-
-    public void setPassword(Password password) {
-        this.password = password;
     }
 
     private User(final NotificationHandler handler,
@@ -76,6 +64,6 @@ public final class User extends Entity {
         new UserValidator(handler).validate(this);
 
         if (handler.hasError())
-            throw new DomainValidationException("Failed to create a user.", handler.getErrors());
+            throw new DomainValidationException("Failed to create an user.", handler.getErrors());
     }
 }
