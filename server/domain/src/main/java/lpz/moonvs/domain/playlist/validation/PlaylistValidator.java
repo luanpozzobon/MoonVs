@@ -11,7 +11,7 @@ public class PlaylistValidator implements Validator<Playlist> {
     private final NotificationHandler handler;
 
     private static final String USER_ID_ERROR_KEY = "user_id";
-    private static final String USER_ID_NULL_MESSAGE = "The user id cannot be null or blank.";
+    private static final String USER_ID_NULL_MESSAGE = "The user id cannot be null.";
 
     private static final int TITLE_MAXIMUM_LENGTH = 64;
     private static final String TITLE_ERROR_KEY = "title";
@@ -34,15 +34,7 @@ public class PlaylistValidator implements Validator<Playlist> {
     }
 
     private void validateUserId(final Id<User> userId) {
-        if (userId == null) {
-            this.handler.addError(new Notification(
-                    USER_ID_ERROR_KEY,
-                    USER_ID_NULL_MESSAGE
-            ));
-            return;
-        }
-
-        if (userId.getValue() == null || userId.getValue().isBlank())
+        if (userId == null)
             this.handler.addError(new Notification(
                     USER_ID_ERROR_KEY,
                     USER_ID_NULL_MESSAGE

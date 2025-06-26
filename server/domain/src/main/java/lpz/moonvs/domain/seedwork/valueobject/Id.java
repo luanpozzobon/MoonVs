@@ -1,6 +1,7 @@
 package lpz.moonvs.domain.seedwork.valueobject;
 
 import lpz.moonvs.domain.seedwork.entity.ValueObject;
+import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -9,7 +10,9 @@ public class Id<T> extends ValueObject {
     private final String value;
 
     private Id(final String value) {
-        Objects.requireNonNull(value);
+        if (value == null || value.isBlank())
+            throw new DomainValidationException("Id cannot be null or empty", null);
+
         this.value = value;
     }
 
