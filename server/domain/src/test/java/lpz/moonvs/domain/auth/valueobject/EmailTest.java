@@ -9,18 +9,18 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EmailTest {
+class EmailTest {
     private static final String VALID_EMAIL = "luanpozzobon@gmail.com";
 
     private NotificationHandler handler;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.handler = NotificationHandler.create();
     }
 
     @Test
-    public void shouldCreateEmailSuccessfully() {
+    void shouldCreateEmailSuccessfully() {
         final Email email = Email.create(this.handler, VALID_EMAIL);
 
         assertNotNull(email);
@@ -32,7 +32,7 @@ public class EmailTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {" ", "  ", "\t", "\n"})
-    public void shouldAddNotificationWhenEmailIsNullOrBlank(final String invalidEmail) {
+    void shouldAddNotificationWhenEmailIsNullOrBlank(final String invalidEmail) {
         Email.create(this.handler, invalidEmail);
 
         assertTrue(this.handler.hasError());
@@ -43,7 +43,7 @@ public class EmailTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"example", "@example", "@example.com", "example@example", "example.com", "example@", "example@example."})
-    public void shouldAddNotificationWhenEmailFormatIsInvalid(final String invalidEmail) {
+    void shouldAddNotificationWhenEmailFormatIsInvalid(final String invalidEmail) {
         Email.create(this.handler, invalidEmail);
 
         assertTrue(this.handler.hasError());

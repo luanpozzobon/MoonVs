@@ -12,18 +12,18 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PlaylistTest {
+class PlaylistTest {
     private Id<User> userId;
     private NotificationHandler handler;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.userId = Id.from("valid_id");
         this.handler = NotificationHandler.create();
     }
 
     @Test
-    public void shouldCreatePlaylist() {
+    void shouldCreatePlaylist() {
         final Playlist playlist = assertDoesNotThrow(() ->
                 Playlist.create(this.handler, this.userId, "Playlist", "")
         );
@@ -37,7 +37,7 @@ public class PlaylistTest {
     }
 
     @Test
-    public void shouldThrowDomainValidationExceptionWhenUserIdIsNull() {
+    void shouldThrowDomainValidationExceptionWhenUserIdIsNull() {
         final var exception = assertThrows(DomainValidationException.class, () ->
                 Playlist.create(this.handler, null, "Playlist", null)
         );
@@ -54,7 +54,7 @@ public class PlaylistTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {" ", "  ", "\t", "\n"})
-    public void shouldThrowDomainValidationExceptionWhenTitleIsNullOrBlank(String invalidTitle) {
+    void shouldThrowDomainValidationExceptionWhenTitleIsNullOrBlank(String invalidTitle) {
         final var exception = assertThrows(DomainValidationException.class, () ->
                 Playlist.create(this.handler, this.userId, invalidTitle, null)
         );
@@ -69,9 +69,10 @@ public class PlaylistTest {
     }
 
     @Test
-    public void shouldThrowDomainValidationExceptionWhenTitleIsTooLarge() {
+    void shouldThrowDomainValidationExceptionWhenTitleIsTooLarge() {
+        final String title = "a".repeat(65);
         final var exception = assertThrows(DomainValidationException.class, () ->
-                Playlist.create(this.handler, this.userId, "a".repeat(65), null)
+                Playlist.create(this.handler, this.userId, title, null)
         );
 
         assertTrue(this.handler.hasError());
@@ -84,9 +85,10 @@ public class PlaylistTest {
     }
 
     @Test
-    public void shouldThrowDomainValidationExceptionWhenDescriptionIsTooLarge() {
+    void shouldThrowDomainValidationExceptionWhenDescriptionIsTooLarge() {
+        final String description = "a".repeat(256);
         final var exception = assertThrows(DomainValidationException.class, () ->
-                Playlist.create(this.handler, this.userId, "Playlist", "a".repeat(256))
+                Playlist.create(this.handler, this.userId, "Playlist", description)
         );
 
         assertTrue(this.handler.hasError());
@@ -99,7 +101,7 @@ public class PlaylistTest {
     }
 
     @Test
-    public void shouldRename() {
+    void shouldRename() {
         final Playlist playlist = Playlist.create(this.handler, this.userId, "Playlist", null);
         playlist.rename(this.handler, "Watchlist");
 
@@ -107,7 +109,7 @@ public class PlaylistTest {
     }
 
     @Test
-    public void shouldChangeDescription() {
+    void shouldChangeDescription() {
         final Playlist playlist = Playlist.create(this.handler, this.userId, "Playlist", null);
         playlist.updateDescription(this.handler, "New Description");
 
@@ -115,7 +117,7 @@ public class PlaylistTest {
     }
 
     @Test
-    public void shouldLoadExisting() {
+    void shouldLoadExisting() {
         final Playlist playlist = Playlist.load(Id.unique(), Id.unique(), "Playlist", null);
 
         assertNotNull(playlist);

@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserTest {
+class UserTest {
     private static final String VALID_EMAIL = "luanpozobon@gmail.com";
     private static final String VALID_PASSWORD = "r@w_Passw0rd";
     private static final String ENCRYPTED_PASSWORD = "encrypted_password";
@@ -34,7 +34,7 @@ public class UserTest {
     private NotificationHandler handler;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         when(this.encryptor.encrypt(anyString())).thenReturn(ENCRYPTED_PASSWORD);
 
         this.handler = NotificationHandler.create();
@@ -43,7 +43,7 @@ public class UserTest {
     }
 
     @Test
-    public void shouldCreateUserSuccessfully() {
+    void shouldCreateUserSuccessfully() {
         final User user = assertDoesNotThrow(() -> User.create(this.handler, VALID_USERNAME, this.email, this.password));
 
         assertNotNull(user);
@@ -59,7 +59,7 @@ public class UserTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {" ", "  ", "\t", "\n"})
-    public void shouldThrowDomainValidationExceptionWhenUsernameIsNullOrBlank(String invalidUsername) {
+    void shouldThrowDomainValidationExceptionWhenUsernameIsNullOrBlank(String invalidUsername) {
         final var exception = assertThrows(DomainValidationException.class, () ->
                 User.create(this.handler, invalidUsername, this.email, this.password)
         );
@@ -74,7 +74,7 @@ public class UserTest {
     }
 
     @Test
-    public void shouldThrowDomainValidationExceptionWhenUsernameIsTooShort() {
+    void shouldThrowDomainValidationExceptionWhenUsernameIsTooShort() {
         final var exception = assertThrows(DomainValidationException.class, () -> {
             User.create(this.handler, "lpz", this.email, this.password);
         });
@@ -89,7 +89,7 @@ public class UserTest {
     }
 
     @Test
-    public void shouldThrowDomainValidationExceptionWhenUsernameContainsNonAlphanumeric() {
+    void shouldThrowDomainValidationExceptionWhenUsernameContainsNonAlphanumeric() {
         final var exception = assertThrows(DomainValidationException.class, () -> {
             User.create(this.handler, "luanpozzobon@", this.email, this.password);
         });
@@ -104,12 +104,12 @@ public class UserTest {
     }
 
     @Test
-    public void shouldLoadExistingUser() {
+    void shouldLoadExistingUser() {
         final Id<User> id = Id.unique();
-        final Email email = Email.load(VALID_EMAIL);
-        final Password password = Password.encrypted(ENCRYPTED_PASSWORD);
+        final Email anEmail = Email.load(VALID_EMAIL);
+        final Password aPassword = Password.encrypted(ENCRYPTED_PASSWORD);
 
-        final User user = User.load(id, VALID_USERNAME, email, password);
+        final User user = User.load(id, VALID_USERNAME, anEmail, aPassword);
 
         assertNotNull(user);
 
@@ -117,7 +117,7 @@ public class UserTest {
 
         assertEquals(id, user.getId());
         assertEquals(VALID_USERNAME, user.getUsername());
-        assertEquals(email, user.getEmail());
-        assertEquals(password, user.getPassword());
+        assertEquals(anEmail, user.getEmail());
+        assertEquals(aPassword, user.getPassword());
     }
 }

@@ -1,12 +1,10 @@
 package lpz.moonvs.domain.seedwork.valueobject;
 
-import lpz.moonvs.domain.seedwork.entity.ValueObject;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 
-import java.util.Objects;
 import java.util.UUID;
 
-public class Id<T> extends ValueObject {
+public class Id<T> {
     private final String value;
 
     private Id(final String value) {

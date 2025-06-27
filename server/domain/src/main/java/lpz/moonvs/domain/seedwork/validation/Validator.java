@@ -1,7 +1,5 @@
 package lpz.moonvs.domain.seedwork.validation;
 
-import lpz.moonvs.domain.seedwork.entity.DomainObject;
-
-public interface Validator<T extends DomainObject> {
+public interface Validator<T> {
     void validate(final T domain);
 }

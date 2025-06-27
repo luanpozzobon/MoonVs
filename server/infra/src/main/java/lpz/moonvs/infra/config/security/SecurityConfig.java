@@ -21,12 +21,6 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Value("${front.url}")
-    private String ORIGIN;
-
-    @Autowired
-    private SecurityFilter securityFilter;
-
     @Bean
     public CorsConfigurationSource configurationSource() {
         final CorsConfiguration config = new CorsConfiguration();
@@ -35,13 +29,15 @@ public class SecurityConfig {
         config.setAllowedHeaders(Collections.singletonList("*"));
         config.setAllowCredentials(Boolean.TRUE);
 
-        return new UrlBasedCorsConfigurationSource() {{
-            registerCorsConfiguration("/**", config);
-        }};
+        final var source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(final SecurityFilter securityFilter,
+                                                   final HttpSecurity http) throws Exception {
         return http
                 .cors(cors -> cors.configurationSource(configurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)

@@ -3,6 +3,7 @@ package lpz.moonvs.domain.playlist.entity;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
+import lpz.moonvs.domain.title.entity.Title;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,42 +13,28 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlaylistItemTest {
+class PlaylistItemTest {
     private NotificationHandler handler;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.handler = NotificationHandler.create();
     }
 
-    @Test
-    public void shouldCreateSuccessfully() {
-        final PlaylistItem item = PlaylistItem.create(this.handler, Id.unique(), Id.unique(), "TV");
+    @ParameterizedTest
+    @ValueSource(strings = {"TV", "tv", "Tv", "MOVIE", "movie", "Movie"})
+    void shouldCreateSuccessfully(final String type) {
+        final PlaylistItem item = PlaylistItem.create(this.handler, Id.unique(), Id.unique(), type);
 
         assertNotNull(item);
         assertFalse(this.handler.hasError());
     }
 
     @Test
-    public void shouldCreateSuccessfullyWhenTypeIsTv() {
-        final PlaylistItem item = PlaylistItem.create(this.handler, Id.unique(), Id.unique(), "tv");
-
-        assertNotNull(item);
-        assertFalse(this.handler.hasError());
-    }
-
-    @Test
-    public void shouldCreateSuccessfullyWhenTypeIsMovie() {
-        final PlaylistItem item = PlaylistItem.create(this.handler, Id.unique(), Id.unique(), "movie");
-
-        assertNotNull(item);
-        assertFalse(this.handler.hasError());
-    }
-
-    @Test
-    public void shouldThrowDomainValidationExceptionWhenPlaylistIdIsNull() {
+    void shouldThrowDomainValidationExceptionWhenPlaylistIdIsNull() {
+        final Id<Title> titleId = Id.unique();
         final var exception = assertThrows(DomainValidationException.class, () ->
-                PlaylistItem.create(this.handler, null, Id.unique(), "TV")
+                PlaylistItem.create(this.handler, null, titleId, "TV")
         );
 
         assertTrue(this.handler.hasError());
@@ -60,9 +47,10 @@ public class PlaylistItemTest {
     }
 
     @Test
-    public void shouldThrowDomainValidationExceptionWhenTitleIdIsNull() {
+    void shouldThrowDomainValidationExceptionWhenTitleIdIsNull() {
+        final Id<Playlist> playlistId = Id.unique();
         final var exception = assertThrows(DomainValidationException.class, () ->
-                PlaylistItem.create(this.handler, Id.unique(), null, "TV")
+                PlaylistItem.create(this.handler, playlistId, null, "TV")
         );
 
         assertTrue(this.handler.hasError());
@@ -77,9 +65,11 @@ public class PlaylistItemTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {" ", "  ", "\t", "\n", "BOOKS", "book"})
-    public void shouldThrowDomainValidationExceptionWhenTypeIsInvalid(String invalidType) {
+    void shouldThrowDomainValidationExceptionWhenTypeIsInvalid(final String invalidType) {
+        final Id<Playlist> playlistId = Id.unique();
+        final Id<Title> titleId = Id.unique();
         final var exception = assertThrows(DomainValidationException.class, () ->
-                PlaylistItem.create(this.handler, Id.unique(), Id.unique(), invalidType)
+                PlaylistItem.create(this.handler, playlistId, titleId, invalidType)
         );
 
         assertTrue(this.handler.hasError());
@@ -92,7 +82,7 @@ public class PlaylistItemTest {
     }
 
     @Test
-    public void shouldLoadExisting() {
+    void shouldLoadExisting() {
         final PlaylistItem item = PlaylistItem.load(Id.unique(), Id.unique(), "TV");
 
         assertNotNull(item);

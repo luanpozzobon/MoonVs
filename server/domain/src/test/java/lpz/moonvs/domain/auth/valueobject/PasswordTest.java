@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
@@ -17,7 +18,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PasswordTest {
+class PasswordTest {
     private static final String VALID_PASSWORD = "r@w_Passw0rd";
     private static final String ENCRYPTED_PASSWORD = "encrypted_password";
 
@@ -27,12 +28,12 @@ public class PasswordTest {
     private NotificationHandler handler;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.handler = NotificationHandler.create();
     }
 
     @Test
-    public void shouldCreatePasswordSuccessfully() {
+    void shouldCreatePasswordSuccessfully() {
         when(this.encryptor.encrypt(anyString())).thenReturn(ENCRYPTED_PASSWORD);
         final Password password = Password.create(this.encryptor, this.handler, VALID_PASSWORD);
 
@@ -49,7 +50,7 @@ public class PasswordTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {" ", "  ", "\t", "\n"})
-    public void shouldAddNotificationWhenPasswordIsNullOrBlank(final String invalidPassword) {
+    void shouldAddNotificationWhenPasswordIsNullOrBlank(final String invalidPassword) {
         Password.create(this.encryptor, this.handler, invalidPassword);
 
         assertTrue(this.handler.hasError());
@@ -59,63 +60,26 @@ public class PasswordTest {
         assertEquals("The password must be filled in.", this.handler.getErrors().getFirst().getMessage());
     }
 
-    @Test
-    public void shouldAddNotificationWhenPasswordIsTooShort() {
-        Password.create(this.encryptor, this.handler, "aA@1");
-
+    @ParameterizedTest
+    @CsvSource({
+            "'aA@1', 'The password must include at least 8 characters.'",
+            "'password@1', 'The password must include at least 1 uppercase letter.'",
+            "'PASSWORD@1', 'The password must include at least 1 lowercase letter.'",
+            "'Password@', 'The password must include at least 1 numeric character.'",
+            "'Password1', 'The password must include at least 1 special character.'"
+    })
+    void shouldAddNotificationWhenPasswordIsInvalid(final String invalidPassword,
+                                                    final String errorMessage) {
+        Password.create(this.encryptor, this.handler, invalidPassword);
         assertTrue(this.handler.hasError());
 
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("password", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The password must include at least 8 characters.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(errorMessage, this.handler.getErrors().getFirst().getMessage());
     }
 
     @Test
-    public void shouldAddNotificationWhenPasswordHasNoUppercase() {
-        Password.create(this.encryptor, this.handler, "password@1");
-
-        assertTrue(this.handler.hasError());
-
-        assertEquals(1, this.handler.getErrors().size());
-        assertEquals("password", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The password must include at least 1 uppercase letter.", this.handler.getErrors().getFirst().getMessage());
-    }
-
-    @Test
-    public void shouldAddNotificationWhenPasswordHasNoLowercase() {
-        Password.create(this.encryptor, this.handler, "PASSWORD@1");
-
-        assertTrue(this.handler.hasError());
-
-        assertEquals(1, this.handler.getErrors().size());
-        assertEquals("password", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The password must include at least 1 lowercase letter.", this.handler.getErrors().getFirst().getMessage());
-    }
-
-    @Test
-    public void shouldAddNotificationWhenPasswordHasNoNumeric() {
-        Password.create(this.encryptor, this.handler, "Password@");
-
-        assertTrue(this.handler.hasError());
-
-        assertEquals(1, this.handler.getErrors().size());
-        assertEquals("password", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The password must include at least 1 numeric character.", this.handler.getErrors().getFirst().getMessage());
-    }
-
-    @Test
-    public void shouldAddNotificationWhenPasswordHasNoLSpecial() {
-        Password.create(this.encryptor, this.handler, "Password1");
-
-        assertTrue(this.handler.hasError());
-
-        assertEquals(1, this.handler.getErrors().size());
-        assertEquals("password", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The password must include at least 1 special character.", this.handler.getErrors().getFirst().getMessage());
-    }
-
-    @Test
-    public void shouldLoadEncryptedPassword() {
+    void shouldLoadEncryptedPassword() {
         final Password password = Password.encrypted(ENCRYPTED_PASSWORD);
 
         assertFalse(this.handler.hasError());
