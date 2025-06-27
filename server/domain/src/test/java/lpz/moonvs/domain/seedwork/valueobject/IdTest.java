@@ -10,10 +10,10 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class IdTest {
+class IdTest {
 
     @Test
-    public void shouldCreateUnique() {
+    void shouldCreateUnique() {
         final Id<?> id = assertDoesNotThrow(() -> Id.unique());
 
         assertNotNull(id);
@@ -22,7 +22,7 @@ public class IdTest {
     }
 
     @Test
-    public void shouldCreateFromUUID() {
+    void shouldCreateFromUUID() {
         final Id<?> id = assertDoesNotThrow(() -> Id.from(UUID.randomUUID()));
 
         assertNotNull(id);
@@ -31,7 +31,7 @@ public class IdTest {
     }
 
     @Test
-    public void shouldCreateFromString() {
+    void shouldCreateFromString() {
         final Id<?> id = assertDoesNotThrow(() -> Id.from("id"));
 
         assertNotNull(id);
@@ -39,7 +39,7 @@ public class IdTest {
     }
 
     @Test
-    public void shouldCreateFromLong() {
+    void shouldCreateFromLong() {
         final Id<?> id = assertDoesNotThrow(() -> Id.from(1L));
 
         assertNotNull(id);
@@ -50,7 +50,7 @@ public class IdTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {" ", "  ", "\t", "\n"})
-    public void shouldThrowDomainValidationExceptionWhenNullOrBlank(String invalidId) {
+    void shouldThrowDomainValidationExceptionWhenNullOrBlank(String invalidId) {
         final var exception = assertThrows(DomainValidationException.class, () ->
                 Id.from(invalidId)
         );
