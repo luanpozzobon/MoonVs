@@ -22,12 +22,22 @@ public class LoginUseCase {
     }
 
     public LoginOutput execute(final LoginCommand command) {
-        final Optional<User> anUser = this.userRepository.findByUsername(command.username());
-        if (anUser.isEmpty())
-            throw new UserDoesNotExistsException(NON_EXISTING_USER);
-        if (!passwordEncryptor.matches(command.password(), anUser.get().getPassword().getValue()))
-            throw new UserDoesNotExistsException(NON_EXISTING_USER);
+        final User user = this.findAndValidateUser(command.username());
+        this.validatePassword(command.password(), user);
 
-        return LoginOutput.from(anUser.get());
+        return LoginOutput.from(user);
+    }
+
+    private User findAndValidateUser(final String username) {
+        return this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserDoesNotExistsException(NON_EXISTING_USER));
+    }
+
+    private void validatePassword(final String password,
+                                  final User user) {
+        final boolean passwordMatches = this.passwordEncryptor.matches(password, user.getPassword().getValue());
+
+        if (!passwordMatches)
+            throw new UserDoesNotExistsException(NON_EXISTING_USER);
     }
 }

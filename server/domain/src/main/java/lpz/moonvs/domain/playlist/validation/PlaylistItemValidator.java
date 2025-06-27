@@ -12,10 +12,10 @@ public class PlaylistItemValidator implements Validator<PlaylistItem> {
     private final NotificationHandler handler;
 
     private static final String PLAYLIST_ID_ERROR_KEY = "playlist_id";
-    private static final String PLAYLIST_ID_NULL_MESSAGE = "The playlist id cannot be null or blank.";
+    private static final String PLAYLIST_ID_NULL_MESSAGE = "The playlist id cannot be null.";
 
     private static final String TITLE_ID_ERROR_KEY = "title_id";
-    private static final String TITLE_ID_NULL_MESSAGE = "The title id cannot be null or blank.";
+    private static final String TITLE_ID_NULL_MESSAGE = "The title id cannot be null.";
 
     private static final String TYPE_ERROR_KEY = "type";
     private static final String TYPE_INVALID_MESSAGE = "The type can only be 'TV' or 'MOVIE'";
@@ -32,7 +32,7 @@ public class PlaylistItemValidator implements Validator<PlaylistItem> {
     }
 
     private void validatePlaylistId(final Id<Playlist> playlistId) {
-        if (playlistId.getValue() == null || playlistId.getValue().isBlank()) {
+        if (playlistId == null) {
             handler.addError(new Notification(
                     PLAYLIST_ID_ERROR_KEY, PLAYLIST_ID_NULL_MESSAGE
             ));
@@ -40,7 +40,7 @@ public class PlaylistItemValidator implements Validator<PlaylistItem> {
     }
 
     private void validateTitleId(final Id<Title> titleId) {
-        if (titleId.getValue() == null || titleId.getValue().isBlank()) {
+        if (titleId == null) {
             handler.addError(new Notification(
                     TITLE_ID_ERROR_KEY, TITLE_ID_NULL_MESSAGE
             ));

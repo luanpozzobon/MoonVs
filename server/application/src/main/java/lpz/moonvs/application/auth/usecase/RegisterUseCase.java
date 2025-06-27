@@ -8,6 +8,7 @@ import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
 import lpz.moonvs.domain.auth.contracts.IUserRepository;
 import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.auth.valueobject.Password;
+import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 
@@ -25,6 +26,17 @@ public class RegisterUseCase {
 
     public RegisterOutput execute(final RegisterCommand command) {
         final var handler = NotificationHandler.create();
+        this.validateIfExists(handler, command);
+
+        final Email email = Email.create(handler, command.email());
+        final Password password = Password.create(this.encryptor, handler, command.password());
+        final User user = User.create(handler, command.username(), email, password);
+
+        return RegisterOutput.from(this.repository.save(user));
+    }
+
+    private void validateIfExists(final NotificationHandler handler,
+                                  final RegisterCommand command) {
         if (this.repository.findByEmail(command.email()).isPresent())
             handler.addError(new Notification("email", command.email()));
         if (this.repository.findByUsername(command.username()).isPresent())
@@ -32,11 +44,5 @@ public class RegisterUseCase {
 
         if (handler.hasError())
             throw new UserAlreadyExistsException(EXISTING_USER, handler.getErrors());
-
-        final Email email = Email.create(handler, command.email());
-        final Password password = Password.create(this.encryptor, handler, command.password());
-        final User user = User.create(handler, command.username(), email, password);
-
-        return RegisterOutput.from(this.repository.save(user));
     }
 }

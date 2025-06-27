@@ -6,11 +6,12 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.entity.Title;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IPlaylistItemRepository {
     PlaylistItem save(final PlaylistItem playlistItem);
 
-    PlaylistItem findByPlaylistIdAndTitleId(final Id<Playlist> playlistId, final Id<Title> titleId);
+    Optional<PlaylistItem> findByPlaylistIdAndTitleId(final Id<Playlist> playlistId, final Id<Title> titleId);
 
     List<PlaylistItem> findAllByPlaylistId(final Id<Playlist> playlistId, final Integer page);
 

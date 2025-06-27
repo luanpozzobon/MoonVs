@@ -14,6 +14,7 @@ import lpz.utils.dao.postgresql.CRUDBuilderFactory;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PlaylistRepository implements IPlaylistRepository {
@@ -56,7 +57,7 @@ public class PlaylistRepository implements IPlaylistRepository {
     }
 
     @Override
-    public Playlist findById(Id<Playlist> playlistId) {
+    public Optional<Playlist> findById(Id<Playlist> playlistId) {
         try (var connection = this.dataSource.getConnection()) {
             final List<PlaylistEntity> entities =
                     new CRUDBuilderFactory(connection)
@@ -64,9 +65,8 @@ public class PlaylistRepository implements IPlaylistRepository {
                             .where("id").equal(UUID.fromString(playlistId.getValue()))
                             .execute().entities();
 
-            return entities.stream()
-                    .map(PlaylistMapper::to).findFirst()
-                    .orElse(null);
+            return entities.stream().findFirst()
+                    .map(PlaylistMapper::to);
         } catch (SQLException e) {
             throw new DataAccessException("Error retrieving playlists from database.", e);
         }
