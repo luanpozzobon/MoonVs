@@ -1,8 +1,8 @@
 package lpz.moonvs.domain.auth.valueobject;
 
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
-import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.auth.validation.PasswordValidator;
+import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 
 public class Password  {
     private String raw;

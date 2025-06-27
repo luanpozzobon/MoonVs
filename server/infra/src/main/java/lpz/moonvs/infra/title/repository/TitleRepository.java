@@ -3,7 +3,6 @@ package lpz.moonvs.infra.title.repository;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.contracts.ITitleRepository;
 import lpz.moonvs.domain.title.entity.Title;
-import lpz.moonvs.infra.playlist.entity.PlaylistEntity;
 import lpz.moonvs.infra.title.entity.TitleEntity;
 import lpz.moonvs.infra.title.mapper.TitleMapper;
 import lpz.utils.dao.postgresql.CRUDBuilderFactory;

@@ -10,7 +10,6 @@ import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.auth.valueobject.Password;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

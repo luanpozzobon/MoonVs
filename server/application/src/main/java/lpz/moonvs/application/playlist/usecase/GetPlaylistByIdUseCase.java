@@ -9,8 +9,6 @@ import lpz.moonvs.domain.playlist.exception.PlaylistNotFoundException;
 import lpz.moonvs.domain.seedwork.exception.NoAccessToResourceException;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
-import java.util.Optional;
-
 public class GetPlaylistByIdUseCase {
     private final IPlaylistRepository repository;
 

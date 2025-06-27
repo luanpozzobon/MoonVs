@@ -1,9 +1,8 @@
 package lpz.moonvs.domain.auth.validation;
 
-import lpz.moonvs.domain.seedwork.exception.DomainException;
+import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
-import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.seedwork.validation.Validator;
 
 public class EmailValidator implements Validator<Email> {

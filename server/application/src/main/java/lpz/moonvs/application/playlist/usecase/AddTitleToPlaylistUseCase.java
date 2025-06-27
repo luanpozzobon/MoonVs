@@ -6,16 +6,12 @@ import lpz.moonvs.domain.playlist.contracts.IPlaylistItemRepository;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistRepository;
 import lpz.moonvs.domain.playlist.entity.Playlist;
 import lpz.moonvs.domain.playlist.entity.PlaylistItem;
-import lpz.moonvs.domain.playlist.exception.PlaylistItemAlreadyExistsException;
 import lpz.moonvs.domain.playlist.exception.PlaylistNotFoundException;
 import lpz.moonvs.domain.seedwork.exception.NoAccessToResourceException;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.contracts.ITitleRepository;
 import lpz.moonvs.domain.title.entity.Title;
-import lpz.moonvs.domain.title.exception.TitleNotFoundException;
-
-import java.util.Optional;
 
 public class AddTitleToPlaylistUseCase {
     private final IPlaylistItemRepository repository;

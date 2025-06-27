@@ -1,7 +1,7 @@
 package lpz.moonvs.domain.auth.valueobject;
 
-import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.auth.validation.EmailValidator;
+import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 
 public class Email {
     private final String value;

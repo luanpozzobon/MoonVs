@@ -1,10 +1,10 @@
 package lpz.moonvs.domain.auth.entity;
 
-import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
-import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.auth.validation.UserValidator;
 import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.auth.valueobject.Password;
+import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
+import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
 

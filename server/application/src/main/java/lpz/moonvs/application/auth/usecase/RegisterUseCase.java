@@ -2,13 +2,12 @@ package lpz.moonvs.application.auth.usecase;
 
 import lpz.moonvs.application.auth.command.RegisterCommand;
 import lpz.moonvs.application.auth.output.RegisterOutput;
-import lpz.moonvs.domain.auth.entity.User;
-import lpz.moonvs.domain.auth.exception.UserAlreadyExistsException;
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
 import lpz.moonvs.domain.auth.contracts.IUserRepository;
+import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.auth.exception.UserAlreadyExistsException;
 import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.auth.valueobject.Password;
-import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 

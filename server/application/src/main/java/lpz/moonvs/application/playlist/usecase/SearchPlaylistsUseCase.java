@@ -5,7 +5,6 @@ import lpz.moonvs.application.playlist.output.SearchPlaylistsOutput;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistRepository;
 import lpz.moonvs.domain.playlist.contracts.model.PlaylistSearchQuery;
 import lpz.moonvs.domain.playlist.entity.Playlist;
-import lpz.moonvs.domain.playlist.exception.PlaylistNotFoundException;
 
 import java.util.List;
 
