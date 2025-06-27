@@ -41,7 +41,7 @@ public class TokenService {
                 .path("/")
                 .maxAge(Duration.between(now, expiration).toSeconds())
                 .sameSite("Lax")
-                .secure(Boolean.FALSE)
+                .secure(Boolean.TRUE)
                 .build();
     }
 
