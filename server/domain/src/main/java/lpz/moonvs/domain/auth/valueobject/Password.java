@@ -1,11 +1,10 @@
 package lpz.moonvs.domain.auth.valueobject;
 
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
-import lpz.moonvs.domain.seedwork.entity.ValueObject;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.auth.validation.PasswordValidator;
 
-public class Password extends ValueObject {
+public class Password  {
     private String raw;
     private String encrypted;
     private IPasswordEncryptor encryptor;

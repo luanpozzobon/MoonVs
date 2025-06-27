@@ -2,12 +2,11 @@ package lpz.moonvs.domain.playlist.entity;
 
 import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.playlist.validation.PlaylistValidator;
-import lpz.moonvs.domain.seedwork.entity.Entity;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
-public class Playlist extends Entity {
+public class Playlist {
     private final Id<Playlist> id;
     private final Id<User> userId;
     private String title;

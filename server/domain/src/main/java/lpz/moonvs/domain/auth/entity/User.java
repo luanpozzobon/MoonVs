@@ -1,6 +1,5 @@
 package lpz.moonvs.domain.auth.entity;
 
-import lpz.moonvs.domain.seedwork.entity.Entity;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.auth.validation.UserValidator;
@@ -9,7 +8,7 @@ import lpz.moonvs.domain.auth.valueobject.Password;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
 
-public final class User extends Entity {
+public final class User {
     private final Id<User> id;
     private String username;
     private Email email;

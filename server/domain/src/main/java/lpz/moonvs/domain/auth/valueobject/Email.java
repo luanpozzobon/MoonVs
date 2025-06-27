@@ -1,10 +1,9 @@
 package lpz.moonvs.domain.auth.valueobject;
 
-import lpz.moonvs.domain.seedwork.entity.ValueObject;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.auth.validation.EmailValidator;
 
-public class Email extends ValueObject {
+public class Email {
     private final String value;
 
     private Email(final NotificationHandler handler,
