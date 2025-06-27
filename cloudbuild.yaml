@@ -44,7 +44,7 @@ steps:
     - 'push'
     - 'us-central1-docker.pkg.dev/$PROJECT_ID/moonvs/moonvs-api:$SHORT_SHA'
 
-  
+
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   dir: 'server'
   entrypoint: 'gcloud'
@@ -67,7 +67,7 @@ steps:
 availableSecrets:
   secretManager:
     - versionName: 'projects/$PROJECT_ID/secrets/sonar-token/versions/latest'
-  env: 'SONAR_TOKEN'
+      env: 'SONAR_TOKEN'
 
 images:
   - 'us-central1-docker.pkg.dev/$PROJECT_ID/moonvs/moonvs-api:$SHORT_SHA'
