@@ -2,11 +2,14 @@ package lpz.moonvs.application.playlist.usecase;
 
 import lpz.moonvs.application.playlist.command.GetAllTitlesFromPlaylistCommand;
 import lpz.moonvs.application.playlist.output.GetAllTitlesFromPlaylistOutput;
+import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistItemRepository;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistRepository;
 import lpz.moonvs.domain.playlist.entity.Playlist;
 import lpz.moonvs.domain.playlist.entity.PlaylistItem;
 import lpz.moonvs.domain.playlist.exception.PlaylistNotFoundException;
+import lpz.moonvs.domain.seedwork.exception.NoAccessToResourceException;
+import lpz.moonvs.domain.seedwork.valueobject.Id;
 
 import java.util.List;
 
@@ -21,16 +24,23 @@ public class GetAllTitlesFromPlaylistUseCase {
     }
 
     public GetAllTitlesFromPlaylistOutput execute(final GetAllTitlesFromPlaylistCommand command) {
-        if (command.playlistId().getValue() == null || command.playlistId().getValue().isBlank())
-            throw new IllegalArgumentException("Invalid playlist id.");
-
-        final Playlist playlist = this.playlistRepository.findById(command.playlistId());
-        if (playlist == null || !command.userId().equals(playlist.getUserId()))
-            throw new PlaylistNotFoundException("There is no playlist with the given id.");
+        final Playlist playlist = this.findAndValidatePlaylist(command.playlistId());
+        validateUserAccess(command.userId(), playlist);
 
         final List<PlaylistItem> playlistItems = this.repository.findAllByPlaylistId(command.playlistId(), command.page());
         final int totalPages = this.repository.getTotalPagesByPlaylistId(command.playlistId());
 
         return GetAllTitlesFromPlaylistOutput.from(playlistItems, command.page(), totalPages);
+    }
+
+    private Playlist findAndValidatePlaylist(final Id<Playlist> playlistId) {
+        return this.playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new PlaylistNotFoundException("There is no playlist with the given id."));
+    }
+
+    private void validateUserAccess(final Id<User> userId,
+                                    final Playlist playlist) {
+        if (!userId.equals(playlist.getUserId()))
+            throw new NoAccessToResourceException("The authenticated user doesn't have access to this playlist.");
     }
 }

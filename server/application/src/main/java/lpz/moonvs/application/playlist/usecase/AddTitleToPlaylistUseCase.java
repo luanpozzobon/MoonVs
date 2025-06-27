@@ -1,16 +1,21 @@
 package lpz.moonvs.application.playlist.usecase;
 
 import lpz.moonvs.application.playlist.command.AddTitleToPlaylistCommand;
+import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistItemRepository;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistRepository;
 import lpz.moonvs.domain.playlist.entity.Playlist;
 import lpz.moonvs.domain.playlist.entity.PlaylistItem;
 import lpz.moonvs.domain.playlist.exception.PlaylistItemAlreadyExistsException;
 import lpz.moonvs.domain.playlist.exception.PlaylistNotFoundException;
+import lpz.moonvs.domain.seedwork.exception.NoAccessToResourceException;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
+import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.contracts.ITitleRepository;
 import lpz.moonvs.domain.title.entity.Title;
 import lpz.moonvs.domain.title.exception.TitleNotFoundException;
+
+import java.util.Optional;
 
 public class AddTitleToPlaylistUseCase {
     private final IPlaylistItemRepository repository;
@@ -26,24 +31,33 @@ public class AddTitleToPlaylistUseCase {
     }
 
     public void execute(final AddTitleToPlaylistCommand command) {
-        if (command.playlistId().getValue() == null || command.playlistId().getValue().isBlank())
-            throw new IllegalArgumentException("Invalid playlist id.");
+        final Playlist playlist = this.findAndValidatePlaylist(command.playlistId());
+        this.validateUserAccess(command.userId(), playlist);
 
-        final Playlist playlist = this.playlistRepository.findById(command.playlistId());
-        if (playlist == null || !command.userId().equals(playlist.getUserId()))
-            throw new PlaylistNotFoundException("There is no playlist with the given id.");
-
-//        final Title title = this.titleRepository.findById(command.titleId());
-//        if (title == null)
-//            throw new TitleNotFoundException("There is no title with the given id.");
-
-        final PlaylistItem anPlaylistItem = this.repository.findByPlaylistIdAndTitleId(command.playlistId(), command.titleId());
-        if (anPlaylistItem != null)
+        PlaylistItem playlistItem = this.findAndValidatePlaylistItem(command.playlistId(), command.titleId());
+        if (playlistItem != null)
             return;
 
         final NotificationHandler handler = NotificationHandler.create();
-        final PlaylistItem playlistItem = PlaylistItem.create(handler, command.playlistId(), command.titleId(), command.type());
+        playlistItem = PlaylistItem.create(handler, command.playlistId(), command.titleId(), command.type());
 
         this.repository.save(playlistItem);
+    }
+
+    private Playlist findAndValidatePlaylist(final Id<Playlist> playlistId) {
+        return this.playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new PlaylistNotFoundException("There is no playlist with the given id."));
+    }
+
+    private void validateUserAccess(final Id<User> userId,
+                                    final Playlist playlist) {
+        if (!userId.equals(playlist.getUserId()))
+            throw new NoAccessToResourceException("The authenticated user doesn't have access to this playlist.");
+    }
+
+    private PlaylistItem findAndValidatePlaylistItem(final Id<Playlist> playlistId,
+                                                     final Id<Title> titleId) {
+        return this.repository.findByPlaylistIdAndTitleId(playlistId, titleId)
+                .orElse(null);
     }
 }

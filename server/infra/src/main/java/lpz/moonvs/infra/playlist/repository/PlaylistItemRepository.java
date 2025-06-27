@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PlaylistItemRepository implements IPlaylistItemRepository {
@@ -42,8 +43,8 @@ public class PlaylistItemRepository implements IPlaylistItemRepository {
     }
 
     @Override
-    public PlaylistItem findByPlaylistIdAndTitleId(final Id<Playlist> playlistId,
-                                                   final Id<Title> titleId) {
+    public Optional<PlaylistItem> findByPlaylistIdAndTitleId(final Id<Playlist> playlistId,
+                                               final Id<Title> titleId) {
         try (final var connection = this.dataSource.getConnection()) {
             final List<PlaylistItemEntity> entities =
                     new CRUDBuilderFactory(connection)
@@ -52,9 +53,8 @@ public class PlaylistItemRepository implements IPlaylistItemRepository {
                             .where("title_id").equal(Long.parseLong(titleId.getValue()))
                             .execute().entities();
 
-            return entities.stream()
-                    .map(PlaylistItemMapper::to).findFirst()
-                    .orElse(null);
+            return entities.stream().findFirst()
+                    .map(PlaylistItemMapper::to);
         } catch (final SQLException e) {
             throw new DataAccessException("Error retrieving playlist item from database.", e);
         }

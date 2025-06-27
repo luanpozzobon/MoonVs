@@ -28,13 +28,13 @@ public class LoginUseCase {
         return LoginOutput.from(user);
     }
 
-    private User findAndValidateUser(final String username) throws UserDoesNotExistsException {
+    private User findAndValidateUser(final String username) {
         return this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserDoesNotExistsException(NON_EXISTING_USER));
     }
 
     private void validatePassword(final String password,
-                                 final User user) throws UserDoesNotExistsException {
+                                  final User user) {
         final boolean passwordMatches = this.passwordEncryptor.matches(password, user.getPassword().getValue());
 
         if (!passwordMatches)

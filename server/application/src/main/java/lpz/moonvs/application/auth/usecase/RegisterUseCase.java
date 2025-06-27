@@ -24,7 +24,7 @@ public class RegisterUseCase {
         this.encryptor = encryptor;
     }
 
-    public RegisterOutput execute(final RegisterCommand command) throws UserAlreadyExistsException, DomainValidationException {
+    public RegisterOutput execute(final RegisterCommand command) {
         final var handler = NotificationHandler.create();
         this.validateIfExists(handler, command);
 
@@ -36,7 +36,7 @@ public class RegisterUseCase {
     }
 
     private void validateIfExists(final NotificationHandler handler,
-                                  final RegisterCommand command) throws UserAlreadyExistsException {
+                                  final RegisterCommand command) {
         if (this.repository.findByEmail(command.email()).isPresent())
             handler.addError(new Notification("email", command.email()));
         if (this.repository.findByUsername(command.username()).isPresent())
