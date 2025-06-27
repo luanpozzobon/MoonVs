@@ -17,11 +17,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class SearchPlaylistsUseCaseTest {
+class SearchPlaylistsUseCaseTest {
 
     @Mock
     private IPlaylistRepository repository;
@@ -30,7 +29,7 @@ public class SearchPlaylistsUseCaseTest {
     private SearchPlaylistsUseCase useCase;
 
     @Test
-    public void shouldExecuteSuccessfully() {
+    void shouldExecuteSuccessfully() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, "Playlist", "Description");

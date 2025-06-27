@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class GetAllPlaylistsUseCaseTest {
+class GetAllPlaylistsUseCaseTest {
 
     @Mock
     private IPlaylistRepository repository;
@@ -27,7 +27,7 @@ public class GetAllPlaylistsUseCaseTest {
     private GetAllPlaylistsUseCase useCase;
 
     @Test
-    public void shouldExecuteSuccessfully() {
+    void shouldExecuteSuccessfully() {
         when(this.repository.findAll(any(Id.class))).thenReturn(List.of());
 
         final GetAllPlaylistsOutput output = assertDoesNotThrow(() ->

@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class AddTitleToPlaylistUseCaseTest {
+class AddTitleToPlaylistUseCaseTest {
 
     @Mock
     private IPlaylistItemRepository repository;
@@ -35,7 +35,7 @@ public class AddTitleToPlaylistUseCaseTest {
     private AddTitleToPlaylistUseCase useCase;
 
     @Test
-    public void shouldExecuteSuccessfully() {
+    void shouldExecuteSuccessfully() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, "Playlist", "Description");
@@ -46,7 +46,7 @@ public class AddTitleToPlaylistUseCaseTest {
     }
 
     @Test
-    public void shouldNotAddWhenTitleAlreadyExists() {
+    void shouldNotAddWhenTitleAlreadyExists() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, "Playlist", "Description");
@@ -61,26 +61,28 @@ public class AddTitleToPlaylistUseCaseTest {
     }
 
     @Test
-    public void shouldThrowPlaylistNotFoundException() {
+    void shouldThrowPlaylistNotFoundException() {
         when(this.playlistRepository.findById(any(Id.class))).thenReturn(Optional.empty());
 
+        final var command = new AddTitleToPlaylistCommand(Id.unique(), Id.unique(), Id.unique(), "TV");
         final var exception = assertThrows(PlaylistNotFoundException.class, () ->
-                this.useCase.execute(new AddTitleToPlaylistCommand(Id.unique(), Id.unique(), Id.unique(), "TV"))
+                this.useCase.execute(command)
         );
 
         assertEquals("There is no playlist with the given id.", exception.getMessage());
     }
 
     @Test
-    public void shouldThrowNoAccessToResourceWhenUserIdIsDifferent() {
+    void shouldThrowNoAccessToResourceWhenUserIdIsDifferent() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, "Playlist", "Description");
 
         when(this.playlistRepository.findById(any(Id.class))).thenReturn(Optional.of(aPlaylist));
 
+        final var command = new AddTitleToPlaylistCommand(Id.unique(), playlistId, Id.unique(), "TV");
         final var exception = assertThrows(NoAccessToResourceException.class, () ->
-                this.useCase.execute(new AddTitleToPlaylistCommand(Id.unique(), playlistId, Id.unique(), "TV"))
+                this.useCase.execute(command)
         );
 
         assertEquals("The authenticated user doesn't have access to this playlist.", exception.getMessage());
