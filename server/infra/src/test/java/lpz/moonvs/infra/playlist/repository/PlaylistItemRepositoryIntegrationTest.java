@@ -224,7 +224,7 @@ class PlaylistItemRepositoryIntegrationTest {
 
     @Test
     void shouldThrowExceptionWhenGettingTotalPagesByNullPlaylistId() {
-        final var exception = assertThrows(NullPointerException.class, () ->
+        assertThrows(NullPointerException.class, () ->
             this.repository.getTotalPagesByPlaylistId(null)
         );
     }
