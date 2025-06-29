@@ -294,8 +294,10 @@ class PlaylistRepositoryIntegrationTest {
 
     @Test
     void shouldThrowExceptionWhenLookingForNullTitle() {
+        final Id<User> userId = this.user.getId();
+
         assertThrows(NullPointerException.class, () ->
-                this.repository.findByTitle(this.user.getId(), null)
+                this.repository.findByTitle(userId, null)
         );
     }
 
