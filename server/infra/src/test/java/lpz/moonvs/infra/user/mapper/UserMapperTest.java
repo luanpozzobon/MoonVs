@@ -1,4 +1,4 @@
-package lpz.moonvs.infra.playlist.mapper;
+package lpz.moonvs.infra.user.mapper;
 
 import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.auth.valueobject.Email;
@@ -13,16 +13,16 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserMapperTest {
-    private static final String anUsername = "luanpozzobon";
-    private static final String anEmail = "luanpozzobon@gmail.com";
-    private static final String aPassword = "M00n_Vs.";
+    private static final String USERNAME = "luanpozzobon";
+    private static final String EMAIL = "luanpozzobon@gmail.com";
+    private static final String PASSWORD = "M00n_Vs.";
 
     @Test
     void shouldMapFromDomainSuccessfully() {
         final Id<User> id = Id.unique();
-        final Email email = Email.load(anEmail);
-        final Password password = Password.encrypted(aPassword);
-        final User anUser = User.load(id, anUsername, email, password);
+        final Email email = Email.load(EMAIL);
+        final Password password = Password.encrypted(PASSWORD);
+        final User anUser = User.load(id, USERNAME, email, password);
 
         final UserEntity entity = assertDoesNotThrow(() ->
                 UserMapper.from(anUser)
@@ -31,9 +31,9 @@ class UserMapperTest {
         assertNotNull(entity);
 
         assertEquals(UUID.fromString(id.getValue()), entity.getId());
-        assertEquals(anUsername, entity.getUsername());
-        assertEquals(anEmail, entity.getEmail());
-        assertEquals(aPassword, entity.getPassword());
+        assertEquals(USERNAME, entity.getUsername());
+        assertEquals(EMAIL, entity.getEmail());
+        assertEquals(PASSWORD, entity.getPassword());
     }
 
     @Test
@@ -50,9 +50,9 @@ class UserMapperTest {
         final UserEntity entity = new UserEntity();
         final UUID id = UUID.randomUUID();
         entity.setId(id);
-        entity.setUsername(anUsername);
-        entity.setEmail(anEmail);
-        entity.setPassword(aPassword);
+        entity.setUsername(USERNAME);
+        entity.setEmail(EMAIL);
+        entity.setPassword(PASSWORD);
 
         final User user = assertDoesNotThrow(() ->
                 UserMapper.to(entity)
@@ -60,8 +60,8 @@ class UserMapperTest {
 
         assertNotNull(user);
         assertEquals(id, UUID.fromString(user.getId().getValue()));
-        assertEquals(anUsername, user.getUsername());
-        assertEquals(anEmail, user.getEmail().getValue());
-        assertEquals(aPassword, user.getPassword().getValue());
+        assertEquals(USERNAME, user.getUsername());
+        assertEquals(EMAIL, user.getEmail().getValue());
+        assertEquals(PASSWORD, user.getPassword().getValue());
     }
 }

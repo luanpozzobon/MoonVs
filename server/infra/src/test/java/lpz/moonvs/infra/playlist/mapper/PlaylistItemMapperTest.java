@@ -1,11 +1,10 @@
-package lpz.moonvs.infra.user.mapper;
+package lpz.moonvs.infra.playlist.mapper;
 
 import lpz.moonvs.domain.playlist.entity.Playlist;
 import lpz.moonvs.domain.playlist.entity.PlaylistItem;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.entity.Title;
 import lpz.moonvs.infra.playlist.entity.PlaylistItemEntity;
-import lpz.moonvs.infra.playlist.mapper.PlaylistItemMapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
