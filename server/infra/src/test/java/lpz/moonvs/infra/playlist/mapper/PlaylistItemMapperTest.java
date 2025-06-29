@@ -12,13 +12,13 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlaylistItemMapperTest {
-    private static final String aType = "TV";
+    private static final String TYPE = "TV";
 
     @Test
     void shouldMapFromDomainSuccessfully() {
         final Id<Playlist> playlistId = Id.unique();
         final Id<Title> titleId = Id.from(1L);
-        final PlaylistItem playlistItem = PlaylistItem.load(playlistId, titleId, aType);
+        final PlaylistItem playlistItem = PlaylistItem.load(playlistId, titleId, TYPE);
 
         final PlaylistItemEntity entity = assertDoesNotThrow(() ->
                 PlaylistItemMapper.from(playlistItem)
@@ -27,7 +27,7 @@ class PlaylistItemMapperTest {
         assertNotNull(entity);
         assertEquals(UUID.fromString(playlistId.getValue()), entity.getPlaylistId());
         assertEquals(Long.parseLong(titleId.getValue()), entity.getTitleId());
-        assertEquals(aType, entity.getType());
+        assertEquals(TYPE, entity.getType());
     }
 
     @Test
@@ -47,7 +47,7 @@ class PlaylistItemMapperTest {
 
         entity.setPlaylistId(playlistId);
         entity.setTitleId(titleId);
-        entity.setType(aType);
+        entity.setType(TYPE);
 
         final PlaylistItem playlistItem = assertDoesNotThrow(() ->
                 PlaylistItemMapper.to(entity)
@@ -56,6 +56,6 @@ class PlaylistItemMapperTest {
         assertNotNull(playlistItem);
         assertEquals(playlistId, UUID.fromString(playlistItem.getPlaylistId().getValue()));
         assertEquals(titleId, Long.parseLong(playlistItem.getTitleId().getValue()));
-        assertEquals(aType, playlistItem.getType());
+        assertEquals(TYPE, playlistItem.getType());
     }
 }

@@ -11,14 +11,14 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlaylistMapperTest {
-    private static final String aTitle = "Playlist";
-    private static final String aDescription = "Description";
+    private static final String TITLE = "Playlist";
+    private static final String DESCRIPTION = "Description";
 
     @Test
     void shouldMapFromDomainSuccessfully() {
         final Id<Playlist> playlistId = Id.unique();
         final Id<User> userId = Id.unique();
-        final Playlist playlist = Playlist.load(playlistId, userId, aTitle, aDescription);
+        final Playlist playlist = Playlist.load(playlistId, userId, TITLE, DESCRIPTION);
 
         final PlaylistEntity entity = assertDoesNotThrow(() ->
                 PlaylistMapper.from(playlist)
@@ -27,8 +27,8 @@ class PlaylistMapperTest {
         assertNotNull(entity);
         assertEquals(UUID.fromString(playlistId.getValue()), entity.getId());
         assertEquals(UUID.fromString(userId.getValue()), entity.getUserId());
-        assertEquals(aTitle, entity.getTitle());
-        assertEquals(aDescription, entity.getDescription());
+        assertEquals(TITLE, entity.getTitle());
+        assertEquals(DESCRIPTION, entity.getDescription());
     }
 
     @Test
@@ -48,8 +48,8 @@ class PlaylistMapperTest {
 
         entity.setId(playlistId);
         entity.setUserId(userId);
-        entity.setTitle(aTitle);
-        entity.setDescription(aDescription);
+        entity.setTitle(TITLE);
+        entity.setDescription(DESCRIPTION);
 
         final Playlist playlist = assertDoesNotThrow(() ->
                 PlaylistMapper.to(entity)
@@ -59,7 +59,7 @@ class PlaylistMapperTest {
 
         assertEquals(playlistId, UUID.fromString(playlist.getId().getValue()));
         assertEquals(userId, UUID.fromString(playlist.getUserId().getValue()));
-        assertEquals(aTitle, playlist.getTitle());
-        assertEquals(aDescription, playlist.getDescription());
+        assertEquals(TITLE, playlist.getTitle());
+        assertEquals(DESCRIPTION, playlist.getDescription());
     }
 }
