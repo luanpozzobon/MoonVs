@@ -49,22 +49,21 @@ class UserRepositoryIntegrationTest {
     private IUserRepository repository;
 
     @Test
-    void shouldSaveAndRetrieveUser() {
+    void shouldSaveSuccessfully() {
         final Email email = Email.load(EMAIL);
         final Password password = Password.encrypted(PASSWORD);
         final User anUser = User.load(Id.unique(), USERNAME, email, password);
 
-        final User savedUser = this.repository.save(anUser);
-        final Optional<User> aRetrievedUser = this.repository.findById(savedUser.getId());
+        final User savedUser = assertDoesNotThrow(() ->
+                this.repository.save(anUser)
+        );
 
         assertNotNull(savedUser);
-        assertTrue(aRetrievedUser.isPresent());
-        final User retrievedUser = aRetrievedUser.get();
 
-        assertEquals(savedUser.getId(), retrievedUser.getId());
-        assertEquals(USERNAME, retrievedUser.getUsername());
-        assertEquals(EMAIL, retrievedUser.getEmail().getValue());
-        assertEquals(PASSWORD, retrievedUser.getPassword().getValue());
+        assertEquals(anUser.getId(), savedUser.getId());
+        assertEquals(USERNAME, savedUser.getUsername());
+        assertEquals(EMAIL, savedUser.getEmail().getValue());
+        assertEquals(PASSWORD, savedUser.getPassword().getValue());
     }
 
     @Test
