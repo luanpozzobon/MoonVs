@@ -9,6 +9,7 @@ import lpz.moonvs.domain.auth.exception.UserDoesNotExistsException;
 import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.auth.valueobject.Password;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,9 +23,15 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class LoginUseCaseTest {
+class LoginUseCaseTest {
     private static final String VALID_USERNAME = "luanpozzobon";
     private static final String VALID_PASSWORD = "M00n_Vs.";
+    private static LoginCommand command;
+
+    @BeforeAll
+    static void init() {
+        command = new LoginCommand(VALID_USERNAME, VALID_PASSWORD);
+    }
 
     @Mock
     private IUserRepository repository;
@@ -36,7 +43,7 @@ public class LoginUseCaseTest {
     private LoginUseCase useCase;
 
     @Test
-    public void shouldExecuteSuccessfully() {
+    void shouldExecuteSuccessfully() {
         final Email email = Email.load("luanpozzobon@gmail.com");
         final Password password = Password.encrypted(VALID_PASSWORD);
         final User anUser = User.load(Id.unique(), VALID_USERNAME, email, password);
@@ -45,7 +52,7 @@ public class LoginUseCaseTest {
         when(this.encryptor.matches(anyString(), anyString())).thenReturn(true);
 
         LoginOutput output = assertDoesNotThrow(() ->
-                this.useCase.execute(new LoginCommand(VALID_USERNAME, VALID_PASSWORD))
+                this.useCase.execute(command)
         );
 
         assertNotNull(output);
@@ -53,18 +60,18 @@ public class LoginUseCaseTest {
     }
 
     @Test
-    public void shouldThrowUserDoesNotExistsExceptionWhenUsernameDontExist() {
+    void shouldThrowUserDoesNotExistsExceptionWhenUsernameDontExist() {
         when(this.repository.findByUsername(anyString())).thenReturn(Optional.empty());
 
         final var exception = assertThrows(UserDoesNotExistsException.class, () ->
-                this.useCase.execute(new LoginCommand(VALID_USERNAME, VALID_PASSWORD))
+                this.useCase.execute(command)
         );
 
         assertEquals("There is no user registered with these credentials.", exception.getMessage());
     }
 
     @Test
-    public void shouldThrowUserDoesNotExistsExceptionWhenPasswordIsDifferent() {
+    void shouldThrowUserDoesNotExistsExceptionWhenPasswordIsDifferent() {
         final Password password = Password.encrypted(VALID_PASSWORD);
         final User anUser = User.load(Id.unique(), VALID_USERNAME, null, password);
 
@@ -72,7 +79,7 @@ public class LoginUseCaseTest {
         when(this.encryptor.matches(anyString(), anyString())).thenReturn(false);
 
         final var exception = assertThrows(UserDoesNotExistsException.class, () ->
-                this.useCase.execute(new LoginCommand(VALID_USERNAME, VALID_PASSWORD))
+                this.useCase.execute(command)
         );
 
         assertEquals("There is no user registered with these credentials.", exception.getMessage());

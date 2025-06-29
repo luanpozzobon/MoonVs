@@ -3,7 +3,6 @@ package lpz.moonvs.domain.auth.contracts;
 import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
 public interface IUserRepository {

@@ -17,13 +17,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class GetAllTitlesFromPlaylistUseCaseTest {
+class GetAllTitlesFromPlaylistUseCaseTest {
 
     @Mock
     private IPlaylistRepository playlistRepository;
@@ -35,7 +33,7 @@ public class GetAllTitlesFromPlaylistUseCaseTest {
     private GetAllTitlesFromPlaylistUseCase useCase;
 
     @Test
-    public void shouldExecuteSuccessfully() {
+    void shouldExecuteSuccessfully() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, "Playlist", "Description");
@@ -46,26 +44,28 @@ public class GetAllTitlesFromPlaylistUseCaseTest {
     }
 
     @Test
-    public void shouldThrowPlaylistNotFoundException() {
+    void shouldThrowPlaylistNotFoundException() {
         when(this.playlistRepository.findById(any(Id.class))).thenReturn(Optional.empty());
 
+        final var command = new GetAllTitlesFromPlaylistCommand(Id.unique(), Id.unique(), 1);
         final var exception = assertThrows(PlaylistNotFoundException.class, () ->
-                this.useCase.execute(new GetAllTitlesFromPlaylistCommand(Id.unique(), Id.unique(), 1))
+                this.useCase.execute(command)
         );
 
         assertEquals("There is no playlist with the given id.", exception.getMessage());
     }
 
     @Test
-    public void shouldThrowNoAccessToResourceWhenUserIdIsDifferent() {
+    void shouldThrowNoAccessToResourceWhenUserIdIsDifferent() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, "Playlist", "Description");
 
         when(this.playlistRepository.findById(any(Id.class))).thenReturn(Optional.of(aPlaylist));
 
+        final var command = new GetAllTitlesFromPlaylistCommand(Id.unique(), playlistId, 1);
         final var exception = assertThrows(NoAccessToResourceException.class, () ->
-                this.useCase.execute(new GetAllTitlesFromPlaylistCommand(Id.unique(), playlistId, 1))
+                this.useCase.execute(command)
         );
 
         assertEquals("The authenticated user doesn't have access to this playlist.", exception.getMessage());

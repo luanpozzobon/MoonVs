@@ -1,8 +1,8 @@
 package lpz.moonvs.infra.auth.repository;
 
-import lpz.moonvs.domain.seedwork.valueobject.Id;
-import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.auth.contracts.IUserRepository;
+import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.infra.auth.entity.UserEntity;
 import lpz.moonvs.infra.auth.mapper.UserMapper;
 import lpz.moonvs.infra.exception.DataAccessException;

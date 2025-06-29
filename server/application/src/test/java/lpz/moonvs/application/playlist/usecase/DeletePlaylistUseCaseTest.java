@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DeletePlaylistUseCaseTest {
+class DeletePlaylistUseCaseTest {
     @Mock
     private IPlaylistRepository repository;
 
@@ -28,7 +28,7 @@ public class DeletePlaylistUseCaseTest {
     private DeletePlaylistUseCase useCase;
 
     @Test
-    public void shouldExecuteSuccessfully() {
+    void shouldExecuteSuccessfully() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, null, null);
@@ -41,26 +41,28 @@ public class DeletePlaylistUseCaseTest {
     }
 
     @Test
-    public void shouldThrowPlaylistNotFoundException() {
+    void shouldThrowPlaylistNotFoundException() {
         when(this.repository.findById(any(Id.class))).thenReturn(Optional.empty());
 
+        final var command = new DeletePlaylistCommand(Id.unique(), Id.unique());
         final var exception = assertThrows(PlaylistNotFoundException.class, () ->
-                this.useCase.execute(new DeletePlaylistCommand(Id.unique(), Id.unique()))
+                this.useCase.execute(command)
         );
 
         assertEquals("There is no playlist with the given id.", exception.getMessage());
     }
 
     @Test
-    public void shouldThrowNoAccessToResourceExceptionWhenDifferentUserId() {
+    void shouldThrowNoAccessToResourceExceptionWhenDifferentUserId() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, null, null);
 
         when(this.repository.findById(any(Id.class))).thenReturn(Optional.of(aPlaylist));
 
+        final var command = new DeletePlaylistCommand(Id.unique(), playlistId);
         final var exception = assertThrows(NoAccessToResourceException.class, () ->
-                this.useCase.execute(new DeletePlaylistCommand(Id.unique(), playlistId))
+                this.useCase.execute(command)
         );
 
         assertEquals("The authenticated user doesn't have access to this playlist.", exception.getMessage());

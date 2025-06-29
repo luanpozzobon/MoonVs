@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
-    private final Id<User> id;
+    private final transient Id<User> id;
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;

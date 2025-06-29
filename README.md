@@ -22,6 +22,19 @@ This, and other technical decisions are explained in the [Thecnical Decisions Do
 
 ---
 
+## Quality Assurance
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=luanpozzobon_moonvs&metric=bugs)](https://sonarcloud.io/summary/new_code?id=luanpozzobon_moonvs)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=luanpozzobon_moonvs&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=luanpozzobon_moonvs)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=luanpozzobon_moonvs&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=luanpozzobon_moonvs)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=luanpozzobon_moonvs&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=luanpozzobon_moonvs)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=luanpozzobon_moonvs&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=luanpozzobon_moonvs)
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=luanpozzobon_moonvs&metric=coverage)](https://sonarcloud.io/summary/new_code?id=luanpozzobon_moonvs)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=luanpozzobon_moonvs&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=luanpozzobon_moonvs)
+
+---
+
 ## Features
 
 - [x] Creation and management of playlists (API)

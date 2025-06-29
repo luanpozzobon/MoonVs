@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UpdatePlaylistUseCaseTest {
+class UpdatePlaylistUseCaseTest {
     private static final String VALID_TITLE = "Playlist";
     private static final String VALID_DESCRIPTION = "Description";
 
@@ -36,7 +36,7 @@ public class UpdatePlaylistUseCaseTest {
     private UpdatePlaylistUseCase useCase;
 
     @Test
-    public void shouldExecuteSuccessfully() {
+    void shouldExecuteSuccessfully() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, VALID_TITLE, VALID_DESCRIPTION);
@@ -55,33 +55,35 @@ public class UpdatePlaylistUseCaseTest {
     }
 
     @Test
-    public void shouldThrowPlaylistNotFoundException() {
+    void shouldThrowPlaylistNotFoundException() {
         when(this.repository.findById(any(Id.class))).thenReturn(Optional.empty());
 
+        final var command = new UpdatePlaylistCommand(Id.unique(), Id.unique(), VALID_TITLE, VALID_DESCRIPTION);
         final var exception = assertThrows(PlaylistNotFoundException.class, () ->
-                this.useCase.execute(new UpdatePlaylistCommand(Id.unique(), Id.unique(), VALID_TITLE, VALID_DESCRIPTION))
+                this.useCase.execute(command)
         );
 
         assertEquals("There is no playlist with the given id.", exception.getMessage());
     }
 
     @Test
-    public void shouldThrowNoAccessToResourceExceptionWhenDifferentUserId() {
+    void shouldThrowNoAccessToResourceExceptionWhenDifferentUserId() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, VALID_TITLE, VALID_DESCRIPTION);
 
         when(this.repository.findById(any(Id.class))).thenReturn(Optional.of(aPlaylist));
 
+        final var command = new UpdatePlaylistCommand(Id.unique(), playlistId, VALID_TITLE, VALID_DESCRIPTION);
         final var exception = assertThrows(NoAccessToResourceException.class, () ->
-                this.useCase.execute(new UpdatePlaylistCommand(Id.unique(), playlistId, VALID_TITLE, VALID_DESCRIPTION))
+                this.useCase.execute(command)
         );
 
         assertEquals("The authenticated user doesn't have access to this playlist.", exception.getMessage());
     }
 
     @Test
-    public void shouldNotRenameWhenTitleIsNull() {
+    void shouldNotRenameWhenTitleIsNull() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, VALID_TITLE, VALID_DESCRIPTION);
@@ -98,7 +100,7 @@ public class UpdatePlaylistUseCaseTest {
     }
 
     @Test
-    public void shouldNotRenameWhenSameTitle() {
+    void shouldNotRenameWhenSameTitle() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, VALID_TITLE, VALID_DESCRIPTION);
@@ -115,7 +117,7 @@ public class UpdatePlaylistUseCaseTest {
     }
 
     @Test
-    public void shouldThrowPlaylistAlreadyExistsExceptionWhenTitleExists() {
+    void shouldThrowPlaylistAlreadyExistsExceptionWhenTitleExists() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, VALID_TITLE, VALID_DESCRIPTION);
@@ -124,8 +126,9 @@ public class UpdatePlaylistUseCaseTest {
         when(this.repository.findById(any(Id.class))).thenReturn(Optional.of(aPlaylist));
         when(this.repository.findByTitle(any(Id.class), anyString())).thenReturn(List.of(otherPlaylist));
 
+        final var command = new UpdatePlaylistCommand(userId, playlistId, "New Title", VALID_DESCRIPTION);
         final var exception = assertThrows(PlaylistAlreadyExistsException.class, () ->
-                this.useCase.execute(new UpdatePlaylistCommand(userId, playlistId, "New Title", VALID_DESCRIPTION))
+                this.useCase.execute(command)
         );
 
         assertEquals("There is already a playlist created with this title.", exception.getMessage());
@@ -135,7 +138,7 @@ public class UpdatePlaylistUseCaseTest {
     }
 
     @Test
-    public void shouldNotUpdateDescriptionWhenDescriptionIsNull() {
+    void shouldNotUpdateDescriptionWhenDescriptionIsNull() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, VALID_TITLE, VALID_DESCRIPTION);
@@ -152,7 +155,7 @@ public class UpdatePlaylistUseCaseTest {
     }
 
     @Test
-    public void shouldNotUpdateDescriptionWhenSameDescription() {
+    void shouldNotUpdateDescriptionWhenSameDescription() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
         final Playlist aPlaylist = Playlist.load(playlistId, userId, VALID_TITLE, VALID_DESCRIPTION);

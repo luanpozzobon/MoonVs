@@ -7,8 +7,6 @@ import lpz.moonvs.domain.auth.contracts.IUserRepository;
 import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.auth.exception.UserDoesNotExistsException;
 
-import java.util.Optional;
-
 public class LoginUseCase {
     private final static String NON_EXISTING_USER = "There is no user registered with these credentials.";
 

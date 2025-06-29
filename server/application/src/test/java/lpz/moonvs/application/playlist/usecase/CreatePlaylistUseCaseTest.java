@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CreatePlaylistUseCaseTest {
+class CreatePlaylistUseCaseTest {
     private static final String VALID_TITLE = "Playlist";
     private static final String VALID_DESCRIPTION = "Description";
 
@@ -32,7 +32,7 @@ public class CreatePlaylistUseCaseTest {
     private CreatePlaylistUseCase useCase;
 
     @Test
-    public void shouldExecuteSuccessfully() {
+    void shouldExecuteSuccessfully() {
         final Playlist aPlaylist = Playlist.load(Id.unique(), Id.unique(), VALID_TITLE, VALID_DESCRIPTION);
 
         when(this.repository.findByTitle(any(Id.class), anyString())).thenReturn(Collections.EMPTY_LIST);
@@ -49,13 +49,14 @@ public class CreatePlaylistUseCaseTest {
     }
 
     @Test
-    public void shouldThrowPlaylistDoesNotExistsExceptionWhenTitleExists() {
+    void shouldThrowPlaylistDoesNotExistsExceptionWhenTitleExists() {
         final Playlist aPlaylist = Playlist.load(Id.unique(), Id.unique(), VALID_TITLE, VALID_DESCRIPTION);
 
         when(this.repository.findByTitle(any(Id.class), anyString())).thenReturn(List.of(aPlaylist));
 
+        final var command = new CreatePlaylistCommand(Id.unique(), VALID_TITLE, VALID_DESCRIPTION);
         final var exception = assertThrows(PlaylistAlreadyExistsException.class, () ->
-                this.useCase.execute(new CreatePlaylistCommand(Id.unique(), VALID_TITLE, VALID_DESCRIPTION))
+                this.useCase.execute(command)
         );
 
         assertEquals("There is already a playlist created with this title.", exception.getMessage());

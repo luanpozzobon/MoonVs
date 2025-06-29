@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Table(schema = "mvs", name = "user")
 public class UserEntity {
-    @Field(insertable = false, updatable = false, primaryKey = true)
+    @Field(updatable = false, primaryKey = true)
     private UUID id;
 
     @Field(uniqueKey = true, nullable = false, length = 255)

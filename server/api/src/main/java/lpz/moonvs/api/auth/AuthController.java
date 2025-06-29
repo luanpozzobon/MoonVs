@@ -1,10 +1,10 @@
 package lpz.moonvs.api.auth;
 
+import lpz.moonvs.api.auth.input.LoginInput;
+import lpz.moonvs.api.auth.input.RegisterInput;
 import lpz.moonvs.application.auth.command.LoginCommand;
 import lpz.moonvs.application.auth.command.RegisterCommand;
-import lpz.moonvs.api.auth.input.LoginInput;
 import lpz.moonvs.application.auth.output.LoginOutput;
-import lpz.moonvs.api.auth.input.RegisterInput;
 import lpz.moonvs.application.auth.output.RegisterOutput;
 import lpz.moonvs.application.auth.usecase.LoginUseCase;
 import lpz.moonvs.application.auth.usecase.RegisterUseCase;
@@ -13,7 +13,10 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.infra.config.security.TokenService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
