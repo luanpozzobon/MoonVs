@@ -36,9 +36,9 @@ public class RegisterUseCase {
 
     private void validateIfExists(final NotificationHandler handler,
                                   final RegisterCommand command) {
-        if (this.repository.findByEmail(command.email()).isPresent())
+        if (command.email() != null && this.repository.findByEmail(command.email()).isPresent())
             handler.addError(new Notification("email", command.email()));
-        if (this.repository.findByUsername(command.username()).isPresent())
+        if (command.username() != null && this.repository.findByUsername(command.username()).isPresent())
             handler.addError(new Notification("username", command.username()));
 
         if (handler.hasError())
