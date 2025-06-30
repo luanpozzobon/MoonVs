@@ -2,7 +2,7 @@
   "type": "about:blank",
   "title": "Bad Request",
   "status": 400,
-  "detail": "Failed to create a user.",
+  "detail": "Failed to create an user.",
   "instance": "/auth/register",
   "timestamp": "2025-06-22T11:44:50.598317Z",
   "errors": [
