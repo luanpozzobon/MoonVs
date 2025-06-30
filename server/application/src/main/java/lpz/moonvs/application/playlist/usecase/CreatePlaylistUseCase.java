@@ -29,7 +29,7 @@ public class CreatePlaylistUseCase {
 
     private void validateIfExists(final NotificationHandler handler,
                                   final CreatePlaylistCommand command) throws PlaylistAlreadyExistsException {
-        if (!this.repository.findByTitle(command.userId(), command.title()).isEmpty())
+        if (command.title() != null && !this.repository.findByTitle(command.userId(), command.title()).isEmpty())
             handler.addError(new Notification(
                     "title", command.title()
             ));
