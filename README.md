@@ -68,6 +68,7 @@ This, and other technical decisions are explained in the [Thecnical Decisions Do
 - [Docker](https://www.docker.com)
 - [Google Cloud Platform](https://cloud.google.com) (API Deployment)
 - [Aiven](https://aiven.io) (Database Hosting)
+- [SonarQube](https://www.sonarsource.com/products/sonarqube/)
 - [SemVer](https://semver.org/) (Semantic Versioning)
 
 ---
@@ -82,11 +83,11 @@ Since it's hosted in the free tier of GCP, it may take a while to load the first
 
 This project is under continuous development, as so here is a planning of the next steps:
 
-### Phase 1 (Current)
+### Phase 1
 
 - [x] Basic API development
 - [x] Documentation
-- [ ] Tests
+- [x] Tests
 
 ### Phase 2
 
