@@ -2,6 +2,7 @@ package lpz.moonvs.domain.auth.valueobject;
 
 
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
+import lpz.moonvs.domain.auth.validation.PasswordValidator;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ class PasswordTest {
 
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("password", this.handler.getErrors().getFirst().getKey());
-        assertEquals("error.common.null-or-blank", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(PasswordValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
     }
 
     @ParameterizedTest

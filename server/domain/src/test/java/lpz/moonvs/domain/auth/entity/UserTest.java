@@ -1,6 +1,7 @@
 package lpz.moonvs.domain.auth.entity;
 
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
+import lpz.moonvs.domain.auth.validation.UserValidator;
 import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.auth.valueobject.Password;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
@@ -67,9 +68,9 @@ class UserTest {
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("username", this.handler.getErrors().getFirst().getKey());
-        assertEquals("error.common.null-or-blank", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(UserValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("error.user.invalid", exception.getMessage());
+        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 
@@ -82,9 +83,9 @@ class UserTest {
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("username", this.handler.getErrors().getFirst().getKey());
-        assertEquals("error.common.min-length", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(UserValidator.MINIMUM_LENGTH_KEY, this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("error.user.invalid", exception.getMessage());
+        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 
@@ -97,9 +98,9 @@ class UserTest {
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("username", this.handler.getErrors().getFirst().getKey());
-        assertEquals("error.user.username.invalid-characters", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(UserValidator.INVALID_CHARACTERS_KEY, this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("error.user.invalid", exception.getMessage());
+        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 

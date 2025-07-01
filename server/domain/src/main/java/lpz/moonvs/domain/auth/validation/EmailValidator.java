@@ -6,7 +6,9 @@ import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.validation.Validator;
 
 public class EmailValidator implements Validator<Email> {
-    private static final String EMAIL_ERROR_KEY = "email";
+    public static final String EMAIL_ERROR_KEY = "email";
+    public static final String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
+    public static final String INVALID_EMAIL_KEY = "error.user.email.invalid";
 
     private final NotificationHandler handler;
 
@@ -19,7 +21,7 @@ public class EmailValidator implements Validator<Email> {
         if (domain.getValue() == null || domain.getValue().isBlank()) {
             handler.addError(new Notification(
                     EMAIL_ERROR_KEY,
-                    "error.common.null-or-blank",
+                    NULL_OR_BLANK_KEY,
                     "E-mail"));
             return;
         }
@@ -27,6 +29,6 @@ public class EmailValidator implements Validator<Email> {
         if (!domain.getValue().matches("^[\\w.-]+@[\\w.-]+\\.\\w+$"))
             handler.addError(new Notification(
                     EMAIL_ERROR_KEY,
-                    "error.user.email.invalid"));
+                    INVALID_EMAIL_KEY));
     }
 }

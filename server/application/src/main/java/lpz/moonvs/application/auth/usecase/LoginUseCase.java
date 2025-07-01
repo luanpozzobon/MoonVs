@@ -26,7 +26,7 @@ public class LoginUseCase {
 
     private User findAndValidateUser(final String username) {
         return this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserDoesNotExistsException("error.user.not-found"));
+                .orElseThrow(UserDoesNotExistsException::new);
     }
 
     private void validatePassword(final String password,
@@ -34,6 +34,6 @@ public class LoginUseCase {
         final boolean passwordMatches = this.passwordEncryptor.matches(password, user.getPassword().getValue());
 
         if (!passwordMatches)
-            throw new UserDoesNotExistsException("error.user.not-found");
+            throw new UserDoesNotExistsException();
     }
 }

@@ -19,7 +19,13 @@ public class PasswordValidator implements Validator<Password> {
     private final static Pattern NUMERIC_CHARS = Pattern.compile("\\d");
     private final static Pattern SPECIAL_CHARS = Pattern.compile("[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\/-]");
 
-    private final static String PASSWORD_ERROR_KEY = "password";
+    public final static String PASSWORD_ERROR_KEY = "password";
+    public final static String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
+    public final static String MINIMUM_LENGTH_KEY = "error.common.min-length";
+    public final static String UPPERCASE_KEY = "error.user.password.uppercase";
+    public final static String LOWERCASE_KEY = "error.user.password.lowercase";
+    public final static String NUMERIC_KEY = "error.user.password.numeric";
+    public final static String SPECIAL_KEY = "error.user.password.special";
 
     private final NotificationHandler handler;
 
@@ -32,7 +38,7 @@ public class PasswordValidator implements Validator<Password> {
         if (domain.getRaw() == null || domain.getRaw().isBlank()) {
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    "error.common.null-or-blank"
+                    NULL_OR_BLANK_KEY
             ));
             return;
         }
@@ -48,7 +54,7 @@ public class PasswordValidator implements Validator<Password> {
         if (password.length() < MINIMUM_PASSWORD_LENGTH)
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    "error.common.min-length",
+                    MINIMUM_LENGTH_KEY,
                     "password", MINIMUM_PASSWORD_LENGTH
             ));
     }
@@ -57,7 +63,7 @@ public class PasswordValidator implements Validator<Password> {
         if (!UPPERCASE_LETTERS.matcher(password).find())
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    "error.user.password.uppercase",
+                    UPPERCASE_KEY,
                     MINIMUM_UPPERCASE
             ));
     }
@@ -66,7 +72,7 @@ public class PasswordValidator implements Validator<Password> {
         if (!LOWERCASE_LETTERS.matcher(password).find())
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    "error.user.password.lowercase",
+                    LOWERCASE_KEY,
                     MINIMUM_LOWERCASE
             ));
     }
@@ -75,7 +81,7 @@ public class PasswordValidator implements Validator<Password> {
         if (!NUMERIC_CHARS.matcher(password).find())
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    "error.user.password.numeric",
+                    NUMERIC_KEY,
                     MINIMUM_NUMERIC
             ));
     }
@@ -84,7 +90,7 @@ public class PasswordValidator implements Validator<Password> {
         if (!SPECIAL_CHARS.matcher(password).find())
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    "error.user.password.special",
+                    SPECIAL_KEY,
                     MINIMUM_SPECIAL
             ));
     }

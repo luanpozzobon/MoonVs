@@ -2,11 +2,12 @@ error:
   common:
     null-or-blank: The {0} must be filled in.
     min-length: The {0} must contain at least {1} characters
+    already-exists: "There is already another {0} saved with this {1}: {2}"
+    invalid: Failed to create
 
   user:
-    register: Failed to register.
     invalid: Failed to create an user.
-    already-exists: "There is already an user registered with this {0}: {1}."
+    already-exists: There is already an user registered with these info
     not-found: There is no user registered with these credentials.
 
     email:

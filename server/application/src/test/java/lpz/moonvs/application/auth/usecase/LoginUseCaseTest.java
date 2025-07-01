@@ -67,7 +67,7 @@ class LoginUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("error.user.not-found", exception.getMessage());
+        assertEquals(UserDoesNotExistsException.ERROR_KEY, exception.getMessage());
     }
 
     @Test
@@ -82,6 +82,6 @@ class LoginUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("error.user.not-found", exception.getMessage());
+        assertEquals(UserDoesNotExistsException.ERROR_KEY, exception.getMessage());
     }
 }
