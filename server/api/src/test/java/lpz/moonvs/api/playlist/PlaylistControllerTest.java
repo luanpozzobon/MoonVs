@@ -3,6 +3,7 @@ package lpz.moonvs.api.playlist;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import lpz.moonvs.api.auth.input.RegisterInput;
+import lpz.moonvs.api.playlist.input.AddTitleToPlaylistInput;
 import lpz.moonvs.api.playlist.input.CreatePlaylistInput;
 import lpz.moonvs.api.playlist.input.UpdatePlaylistInput;
 import lpz.moonvs.application.playlist.output.CreatePlaylistOutput;
@@ -38,7 +39,7 @@ import static org.springframework.http.HttpStatus.*;
 @Testcontainers
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class PlaylistControllerTest {
+class PlaylistControllerTest {
     private static final String PLAYLIST_PATH = "/playlists/";
 
     private static final String VALID_TITLE = "Playlist";
@@ -341,6 +342,151 @@ public class PlaylistControllerTest {
                 .cookie("token", this.token)
         .when()
                 .delete(PLAYLIST_PATH + UUID.randomUUID())
+        .then()
+                .statusCode(NOT_FOUND.value())
+                .body("detail", equalTo("There is no playlist with the given id."));
+    }
+
+    @Test
+    void shouldAddTitleToPlaylistSuccessfully() {
+        final var createInput = new CreatePlaylistInput(VALID_TITLE, VALID_DESCRIPTION);
+        final var output =
+                given().contentType(ContentType.JSON).cookie("token", this.token).body(createInput)
+                        .when().post(PLAYLIST_PATH)
+                        .then().statusCode(CREATED.value()).extract().body().as(CreatePlaylistOutput.class);
+
+        final var input = new AddTitleToPlaylistInput(1L, "TV");
+        given()
+                .contentType(ContentType.JSON)
+                .cookie("token", this.token)
+                .body(input)
+        .when()
+                .post(PLAYLIST_PATH + output.id() + "/items/")
+        .then()
+                .statusCode(NO_CONTENT.value());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenAddingTitleToAPlaylistThatDoesNotExists() {
+        final var input = new AddTitleToPlaylistInput(1L, "TV");
+        given()
+                .contentType(ContentType.JSON)
+                .cookie("token", this.token)
+                .body(input)
+        .when()
+                .post(PLAYLIST_PATH + UUID.randomUUID() + "/items/")
+        .then()
+                .statusCode(NOT_FOUND.value())
+                .body("detail", equalTo("There is no playlist with the given id."));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "  ", "\t", "a"})
+    void shouldReturnBadRequestWhenAddingToAPlaylistWithInvalidId(final String invalidId) {
+        final var input = new AddTitleToPlaylistInput(1L, "TV");
+        given()
+                .contentType(ContentType.JSON)
+                .cookie("token", this.token)
+                .body(input)
+        .when()
+                .post(PLAYLIST_PATH + invalidId + "/items/")
+        .then()
+                .statusCode(BAD_REQUEST.value());
+    }
+
+    @Test
+    void shouldDeleteFromPlaylistSuccessfully() {
+        final var createInput = new CreatePlaylistInput(VALID_TITLE, VALID_DESCRIPTION);
+        final var output =
+                given().contentType(ContentType.JSON).cookie("token", this.token).body(createInput)
+                        .when().post(PLAYLIST_PATH)
+                        .then().statusCode(CREATED.value()).extract().body().as(CreatePlaylistOutput.class);
+
+        final var addInput = new AddTitleToPlaylistInput(1L, "TV");
+        given().contentType(ContentType.JSON).cookie("token", this.token).body(addInput)
+                .when().post(PLAYLIST_PATH + output.id() + "/items/")
+                .then().statusCode(NO_CONTENT.value());
+
+        given()
+                .cookie("token", this.token)
+        .when()
+                .delete(PLAYLIST_PATH + output.id() + "/items/" + 1L)
+        .then()
+                .statusCode(NO_CONTENT.value());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDeletingFromPlaylistThatDoesNotExists() {
+        given()
+                .cookie("token", this.token)
+        .when()
+                .delete(PLAYLIST_PATH + UUID.randomUUID() + "/items/" + 1L)
+        .then()
+                .statusCode(NOT_FOUND.value())
+                .body("detail", equalTo("There is no playlist with the given id."));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDeletingTitleThatDoesNotExists() {
+        final var createInput = new CreatePlaylistInput(VALID_TITLE, VALID_DESCRIPTION);
+        final var output =
+                given().contentType(ContentType.JSON).cookie("token", this.token).body(createInput)
+                        .when().post(PLAYLIST_PATH)
+                        .then().statusCode(CREATED.value()).extract().body().as(CreatePlaylistOutput.class);
+
+        given()
+                .cookie("token", this.token)
+        .when()
+                .delete(PLAYLIST_PATH + output.id() + "/items/" + 1L)
+        .then()
+                .statusCode(NOT_FOUND.value())
+                .body("detail", equalTo("This title is not in the playlist."));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {" ", "  ", "\t"})
+    void shouldReturnBadRequestWhenDeletingWithInvalidPlaylistId(final String invalidId) {
+        given()
+                .cookie("token", this.token)
+        .when()
+                .delete(PLAYLIST_PATH + invalidId + "/items/" + 1L)
+        .then()
+                .statusCode(BAD_REQUEST.value())
+                .body("detail", equalTo("Id cannot be null or empty"));
+    }
+
+    @Test
+    void shouldGetTitlesFromPlaylistSuccessfully() {
+        final var createInput = new CreatePlaylistInput(VALID_TITLE, VALID_DESCRIPTION);
+        final var output =
+                given().contentType(ContentType.JSON).cookie("token", this.token).body(createInput)
+                        .when().post(PLAYLIST_PATH)
+                        .then().statusCode(CREATED.value()).extract().body().as(CreatePlaylistOutput.class);
+
+        final var addInput = new AddTitleToPlaylistInput(1L, "TV");
+        given().contentType(ContentType.JSON).cookie("token", this.token).body(addInput)
+                .when().post(PLAYLIST_PATH + output.id() + "/items/")
+                .then().statusCode(NO_CONTENT.value());
+
+        given()
+                .cookie("token", this.token)
+                .param("page", 1)
+        .when()
+                .get(PLAYLIST_PATH + output.id() + "/items/")
+        .then()
+                .statusCode(OK.value())
+                .body("titles", is(notNullValue()))
+                .body("metadata", is(notNullValue()));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenGettingTitleFromAPlaylistThatDoesNotExists() {
+        given()
+                .cookie("token", this.token)
+                .param("page", 1)
+        .when()
+                .get(PLAYLIST_PATH + UUID.randomUUID() + "/items/")
         .then()
                 .statusCode(NOT_FOUND.value())
                 .body("detail", equalTo("There is no playlist with the given id."));
