@@ -13,8 +13,6 @@ public class UserValidator implements Validator<User> {
     private final static Pattern NON_LETTERS = Pattern.compile("\\W");
 
     private final static String USERNAME_ERROR_KEY = "username";
-    private final static String USERNAME_LENGTH_MESSAGE = "The username must have at least %d characters.";
-    private final static String USERNAME_ERROR_MESSAGE = "The username must include only alphanumeric characters";
 
     private final NotificationHandler handler;
 
@@ -31,18 +29,21 @@ public class UserValidator implements Validator<User> {
         if (username == null || username.isBlank()) {
             this.handler.addError(new Notification(
                     USERNAME_ERROR_KEY,
-                    "The username must be filled in."));
+                    "error.common.null-or-blank", "Username"));
             return;
         }
 
         if (username.length() < MINIMUM_USERNAME_LENGTH)
             handler.addError(new Notification(
                     USERNAME_ERROR_KEY,
-                    String.format(USERNAME_LENGTH_MESSAGE, MINIMUM_USERNAME_LENGTH)));
+                    "error.common.min-length",
+                    "Username", MINIMUM_USERNAME_LENGTH
+            ));
 
         if (NON_LETTERS.matcher(username).find())
             handler.addError(new Notification(
                     USERNAME_ERROR_KEY,
-                    USERNAME_ERROR_MESSAGE));
+                    "error.user.username.invalid-characters"
+            ));
     }
 }

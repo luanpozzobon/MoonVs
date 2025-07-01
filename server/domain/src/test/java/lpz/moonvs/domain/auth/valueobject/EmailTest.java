@@ -38,7 +38,7 @@ class EmailTest {
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("email", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The E-mail must be filled in.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals("error.common.null-or-blank", this.handler.getErrors().getFirst().getMessage());
     }
 
     @ParameterizedTest
@@ -49,6 +49,6 @@ class EmailTest {
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("email", this.handler.getErrors().getFirst().getKey());
-        assertEquals("This doesn't seem to be a valid E-mail.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals("error.user.email.invalid", this.handler.getErrors().getFirst().getMessage());
     }
 }

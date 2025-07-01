@@ -19,13 +19,14 @@ public class EmailValidator implements Validator<Email> {
         if (domain.getValue() == null || domain.getValue().isBlank()) {
             handler.addError(new Notification(
                     EMAIL_ERROR_KEY,
-                    "The E-mail must be filled in."));
+                    "error.common.null-or-blank",
+                    "E-mail"));
             return;
         }
 
         if (!domain.getValue().matches("^[\\w.-]+@[\\w.-]+\\.\\w+$"))
             handler.addError(new Notification(
                     EMAIL_ERROR_KEY,
-                    "This doesn't seem to be a valid E-mail."));
+                    "error.user.email.invalid"));
     }
 }

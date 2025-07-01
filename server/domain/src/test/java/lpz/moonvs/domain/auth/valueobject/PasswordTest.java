@@ -57,16 +57,16 @@ class PasswordTest {
 
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("password", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The password must be filled in.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals("error.common.null-or-blank", this.handler.getErrors().getFirst().getMessage());
     }
 
     @ParameterizedTest
     @CsvSource({
-            "'aA@1', 'The password must include at least 8 characters.'",
-            "'password@1', 'The password must include at least 1 uppercase letter.'",
-            "'PASSWORD@1', 'The password must include at least 1 lowercase letter.'",
-            "'Password@', 'The password must include at least 1 numeric character.'",
-            "'Password1', 'The password must include at least 1 special character.'"
+            "'aA@1', 'error.common.min-length'",
+            "'password@1', 'error.user.password.uppercase'",
+            "'PASSWORD@1', 'error.user.password.lowercase'",
+            "'Password@', 'error.user.password.numeric'",
+            "'Password1', 'error.user.password.special'"
     })
     void shouldAddNotificationWhenPasswordIsInvalid(final String invalidPassword,
                                                     final String errorMessage) {

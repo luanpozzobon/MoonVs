@@ -1,0 +1,25 @@
+error:
+  common:
+    null-or-blank: The {0} must be filled in.
+    min-length: The {0} must contain at least {1} characters
+
+  user:
+    register: Failed to register.
+    invalid: Failed to create an user.
+    already-exists: "There is already an user registered with this {0}: {1}."
+    not-found: There is no user registered with these credentials.
+
+    email:
+      invalid: This doesn't seem to be a valid E-mail.
+
+    password:
+      uppercase: The password must contain at least {0} uppercase letter.
+      lowercase: The password must contain at least {0} lowercase letter.
+      numeric: The password must contain at least {0} numeric character.
+      special: The password must contain at least {0} special character.
+
+    username:
+      invalid-characters: The username must contain only alphanumeric characters.
+
+
+

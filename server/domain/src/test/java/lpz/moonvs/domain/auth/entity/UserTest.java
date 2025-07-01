@@ -67,9 +67,9 @@ class UserTest {
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("username", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The username must be filled in.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals("error.common.null-or-blank", this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("Failed to create an user.", exception.getMessage());
+        assertEquals("error.user.invalid", exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 
@@ -82,9 +82,9 @@ class UserTest {
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("username", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The username must have at least 4 characters.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals("error.common.min-length", this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("Failed to create an user.", exception.getMessage());
+        assertEquals("error.user.invalid", exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 
@@ -97,9 +97,9 @@ class UserTest {
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("username", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The username must include only alphanumeric characters", this.handler.getErrors().getFirst().getMessage());
+        assertEquals("error.user.username.invalid-characters", this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("Failed to create an user.", exception.getMessage());
+        assertEquals("error.user.invalid", exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 

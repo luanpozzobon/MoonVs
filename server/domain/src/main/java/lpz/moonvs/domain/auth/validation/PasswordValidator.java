@@ -9,6 +9,10 @@ import java.util.regex.Pattern;
 
 public class PasswordValidator implements Validator<Password> {
     private final static int MINIMUM_PASSWORD_LENGTH = 8;
+    private final static int MINIMUM_UPPERCASE = 1;
+    private final static int MINIMUM_LOWERCASE = 1;
+    private final static int MINIMUM_NUMERIC = 1;
+    private final static int MINIMUM_SPECIAL = 1;
 
     private final static Pattern UPPERCASE_LETTERS = Pattern.compile("[A-Z]");
     private final static Pattern LOWERCASE_LETTERS = Pattern.compile("[a-z]");
@@ -16,7 +20,6 @@ public class PasswordValidator implements Validator<Password> {
     private final static Pattern SPECIAL_CHARS = Pattern.compile("[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\/-]");
 
     private final static String PASSWORD_ERROR_KEY = "password";
-    private final static String PASSWORD_ERROR_MESSAGE = "The password must include at least %s.";
 
     private final NotificationHandler handler;
 
@@ -29,7 +32,7 @@ public class PasswordValidator implements Validator<Password> {
         if (domain.getRaw() == null || domain.getRaw().isBlank()) {
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    "The password must be filled in."
+                    "error.common.null-or-blank"
             ));
             return;
         }
@@ -45,34 +48,44 @@ public class PasswordValidator implements Validator<Password> {
         if (password.length() < MINIMUM_PASSWORD_LENGTH)
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    String.format("The password must include at least %d characters.", MINIMUM_PASSWORD_LENGTH)));
+                    "error.common.min-length",
+                    "password", MINIMUM_PASSWORD_LENGTH
+            ));
     }
 
     private void validateUppercase(final String password) {
         if (!UPPERCASE_LETTERS.matcher(password).find())
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    String.format(PASSWORD_ERROR_MESSAGE, "1 uppercase letter")));
+                    "error.user.password.uppercase",
+                    MINIMUM_UPPERCASE
+            ));
     }
 
     private void validateLowercase(final String password) {
         if (!LOWERCASE_LETTERS.matcher(password).find())
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    String.format(PASSWORD_ERROR_MESSAGE, "1 lowercase letter")));
+                    "error.user.password.lowercase",
+                    MINIMUM_LOWERCASE
+            ));
     }
 
     private void validateNumeric(final String password) {
         if (!NUMERIC_CHARS.matcher(password).find())
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    String.format(PASSWORD_ERROR_MESSAGE, "1 numeric character")));
+                    "error.user.password.numeric",
+                    MINIMUM_NUMERIC
+            ));
     }
 
     private void validateSpecial(final String password) {
         if (!SPECIAL_CHARS.matcher(password).find())
             this.handler.addError(new Notification(
                     PASSWORD_ERROR_KEY,
-                    String.format(PASSWORD_ERROR_MESSAGE, "1 special character")));
+                    "error.user.password.special",
+                    MINIMUM_SPECIAL
+            ));
     }
 }

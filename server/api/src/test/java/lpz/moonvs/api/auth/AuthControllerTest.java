@@ -105,7 +105,7 @@ class AuthControllerTest {
                 .post("/auth/register")
         .then()
                 .statusCode(CONFLICT.value())
-                .body("detail", equalTo("There is already an user registered with this info"));
+                .body("detail", equalTo("Failed to register."));
 
     }
 
@@ -127,7 +127,7 @@ class AuthControllerTest {
                 .post("/auth/register")
         .then()
                 .statusCode(CONFLICT.value())
-                .body("detail", equalTo("There is already an user registered with this info"));
+                .body("detail", equalTo("Failed to register."));
     }
 
     @ParameterizedTest

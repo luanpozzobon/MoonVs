@@ -63,6 +63,6 @@ public final class User {
         new UserValidator(handler).validate(this);
 
         if (handler.hasError())
-            throw new DomainValidationException("Failed to create an user.", handler.getErrors());
+            throw new DomainValidationException("error.user.invalid", handler.getErrors());
     }
 }
