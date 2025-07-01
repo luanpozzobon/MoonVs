@@ -12,7 +12,7 @@ import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 
 public class RegisterUseCase {
-    private static final String EXISTING_USER = "There is already an user registered with this info";
+    public static final String ALREADY_EXISTS_ERROR_KEY = "error.common.already-exists";
 
     private final IUserRepository repository;
     private final IPasswordEncryptor encryptor;
@@ -37,11 +37,15 @@ public class RegisterUseCase {
     private void validateIfExists(final NotificationHandler handler,
                                   final RegisterCommand command) {
         if (command.email() != null && this.repository.findByEmail(command.email()).isPresent())
-            handler.addError(new Notification("email", command.email()));
+            handler.addError(new Notification(
+                    User.EMAIL_KEY, ALREADY_EXISTS_ERROR_KEY, User.RESOURCE_KEY, User.EMAIL_KEY, command.email()
+            ));
         if (command.username() != null && this.repository.findByUsername(command.username()).isPresent())
-            handler.addError(new Notification("username", command.username()));
+            handler.addError(new Notification(
+                    User.USERNAME_KEY, ALREADY_EXISTS_ERROR_KEY, User.RESOURCE_KEY, User.USERNAME_KEY, command.username()
+            ));
 
         if (handler.hasError())
-            throw new UserAlreadyExistsException(EXISTING_USER, handler.getErrors());
+            throw new UserAlreadyExistsException(handler.getErrors());
     }
 }

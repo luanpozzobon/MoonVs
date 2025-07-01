@@ -1,5 +1,6 @@
 package lpz.moonvs.domain.auth.valueobject;
 
+import lpz.moonvs.domain.auth.validation.EmailValidator;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ class EmailTest {
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("email", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The E-mail must be filled in.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(EmailValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
     }
 
     @ParameterizedTest
@@ -49,6 +50,6 @@ class EmailTest {
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
         assertEquals("email", this.handler.getErrors().getFirst().getKey());
-        assertEquals("This doesn't seem to be a valid E-mail.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(EmailValidator.INVALID_EMAIL_KEY, this.handler.getErrors().getFirst().getMessage());
     }
 }

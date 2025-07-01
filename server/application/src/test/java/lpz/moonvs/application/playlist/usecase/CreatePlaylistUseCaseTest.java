@@ -59,9 +59,9 @@ class CreatePlaylistUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("There is already a playlist created with this title.", exception.getMessage());
+        assertEquals(PlaylistAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
         assertEquals("title", exception.getErrors().getFirst().getKey());
-        assertEquals(VALID_TITLE, exception.getErrors().getFirst().getMessage());
+        assertEquals(CreatePlaylistUseCase.ALREADY_EXISTS_ERROR_KEY, exception.getErrors().getFirst().getMessage());
     }
 }

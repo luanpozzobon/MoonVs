@@ -58,8 +58,8 @@ class RegisterUseCaseTest {
 
         assertNotNull(output);
         assertNotNull(output.id());
-        assertEquals("luanpozzobon@gmail.com", output.email());
-        assertEquals("luanpozzobon", output.username());
+        assertEquals(VALID_EMAIL, output.email());
+        assertEquals(VALID_USERNAME, output.username());
     }
 
     @Test
@@ -73,10 +73,10 @@ class RegisterUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("There is already an user registered with this info", exception.getMessage());
+        assertEquals(UserAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
         assertEquals("email", exception.getErrors().getFirst().getKey());
-        assertEquals(VALID_EMAIL, exception.getErrors().getFirst().getMessage());
+        assertEquals(RegisterUseCase.ALREADY_EXISTS_ERROR_KEY, exception.getErrors().getFirst().getMessage());
     }
 
     @Test
@@ -90,9 +90,9 @@ class RegisterUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("There is already an user registered with this info", exception.getMessage());
+        assertEquals(UserAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
         assertEquals("username", exception.getErrors().getFirst().getKey());
-        assertEquals(VALID_USERNAME, exception.getErrors().getFirst().getMessage());
+        assertEquals(RegisterUseCase.ALREADY_EXISTS_ERROR_KEY, exception.getErrors().getFirst().getMessage());
     }
 }

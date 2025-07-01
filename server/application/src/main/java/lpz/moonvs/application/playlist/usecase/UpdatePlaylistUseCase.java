@@ -15,7 +15,7 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import java.util.List;
 
 public class UpdatePlaylistUseCase {
-    private static final String EXISTING_PLAYLIST = "There is already a playlist created with this title.";
+    public static final String ALREADY_EXISTS_ERROR_KEY = "error.common.already-exists";
 
     private final IPlaylistRepository repository;
 
@@ -38,13 +38,13 @@ public class UpdatePlaylistUseCase {
 
     private Playlist findAndValidatePlaylist(final Id<Playlist> playlistId) {
         return this.repository.findById(playlistId)
-                .orElseThrow(() -> new PlaylistNotFoundException("There is no playlist with the given id."));
+                .orElseThrow(PlaylistNotFoundException::new);
     }
 
     private void validateUserAccess(final Id<User> userId,
                                     final Playlist playlist) {
         if (!userId.equals(playlist.getUserId()))
-            throw new NoAccessToResourceException("The authenticated user doesn't have access to this playlist.");
+            throw new NoAccessToResourceException();
     }
 
     private void validateAndRenamePlaylist(final Id<User> userId,
@@ -56,7 +56,8 @@ public class UpdatePlaylistUseCase {
         if (playlist.getTitle().equals(title)) return;
 
         if (!this.repository.findByTitle(userId, title).isEmpty())
-            throw new PlaylistAlreadyExistsException(EXISTING_PLAYLIST, List.of(new Notification("title", title)));
+            throw new PlaylistAlreadyExistsException(List.of(
+                    new Notification(Playlist.TITLE_KEY, ALREADY_EXISTS_ERROR_KEY, Playlist.RESOURCE_KEY, Playlist.TITLE_KEY, title)));
 
         playlist.rename(handler, title);
     }

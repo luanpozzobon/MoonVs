@@ -8,8 +8,11 @@ import lpz.moonvs.domain.playlist.exception.PlaylistNotFoundException;
 import lpz.moonvs.domain.seedwork.exception.DomainException;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.exception.NoAccessToResourceException;
+import lpz.moonvs.domain.seedwork.notification.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,21 +21,41 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    private static ProblemDetail getBaseProblemDetail(final HttpStatus status, final Exception ex) {
-        final var problemDetail = ProblemDetail.forStatusAndDetail(status, ex.getLocalizedMessage());
+    private final MessageSource messageSource;
+
+    public GlobalExceptionHandler(final MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    private ProblemDetail getBaseProblemDetail(final HttpStatus status,
+                                               final Exception ex) {
+        final String detail = this.messageSource.getMessage(ex.getMessage(), null, LocaleContextHolder.getLocale());
+        final var problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
         problemDetail.setProperty("timestamp", Instant.now());
 
         return problemDetail;
     }
 
-    private static ProblemDetail getDomainProblemDetail(final HttpStatus status, final DomainException ex) {
-        final var problemDetail = getBaseProblemDetail(status, ex);
-        problemDetail.setProperty("errors", ex.getErrors());
+    private List<ExceptionError> translateErrors(final List<Notification> notifications) {
+        if (notifications == null) return List.of();
+
+        return notifications.stream().map(notification -> {
+            String message = this.messageSource.getMessage(
+                    notification.getMessage(), notification.getArgs(), LocaleContextHolder.getLocale());
+            return new ExceptionError(notification.getKey(), message);
+        }).toList();
+    }
+
+    private ProblemDetail getDomainProblemDetail(final HttpStatus status,
+                                                 final DomainException ex) {
+        final var problemDetail = this.getBaseProblemDetail(status, ex);
+        problemDetail.setProperty("errors", translateErrors(ex.getErrors()));
 
         return problemDetail;
     }
@@ -52,7 +75,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ProblemDetail handleUserAlreadyExistsException(final UserAlreadyExistsException ex) {
         final var problemDetail = getDomainProblemDetail(HttpStatus.CONFLICT, ex);
         this.logDomain(problemDetail, ex);
-        
+
         return problemDetail;
     }
 

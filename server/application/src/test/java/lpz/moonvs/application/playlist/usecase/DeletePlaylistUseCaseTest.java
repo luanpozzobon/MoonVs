@@ -49,7 +49,7 @@ class DeletePlaylistUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("There is no playlist with the given id.", exception.getMessage());
+        assertEquals(PlaylistNotFoundException.ERROR_KEY, exception.getMessage());
     }
 
     @Test
@@ -65,6 +65,6 @@ class DeletePlaylistUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("The authenticated user doesn't have access to this playlist.", exception.getMessage());
+        assertEquals(NoAccessToResourceException.ERROR_KEY, exception.getMessage());
     }
 }

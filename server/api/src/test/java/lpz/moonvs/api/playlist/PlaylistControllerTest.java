@@ -140,7 +140,7 @@ class PlaylistControllerTest {
                 .post(PLAYLIST_PATH)
         .then()
                 .statusCode(CONFLICT.value())
-                .body("detail", equalTo("There is already a playlist created with this title."));
+                .body("detail", equalTo("There is already a playlist created with these info"));
     }
 
     @ParameterizedTest
@@ -157,7 +157,7 @@ class PlaylistControllerTest {
                 .post(PLAYLIST_PATH)
         .then()
                 .statusCode(BAD_REQUEST.value())
-                .body("detail", equalTo("Error creating a Playlist"));
+                .body("detail", equalTo("Failed to create"));
     }
 
     @ParameterizedTest
@@ -173,7 +173,7 @@ class PlaylistControllerTest {
                 .post(PLAYLIST_PATH)
         .then()
                 .statusCode(BAD_REQUEST.value())
-                .body("detail", equalTo("Error creating a Playlist"));
+                .body("detail", equalTo("Failed to create"));
     }
 
     @Test
@@ -234,7 +234,7 @@ class PlaylistControllerTest {
                 .get(PLAYLIST_PATH + UUID.randomUUID())
         .then()
                 .statusCode(NOT_FOUND.value())
-                .body("detail", equalTo("There is no playlist with the given id."));
+                .body("detail", equalTo("There is no playlist with the given id"));
     }
 
     @Test
@@ -291,7 +291,7 @@ class PlaylistControllerTest {
                 .put(PLAYLIST_PATH + UUID.randomUUID())
         .then()
                 .statusCode(NOT_FOUND.value())
-                .body("detail", equalTo("There is no playlist with the given id."));
+                .body("detail", equalTo("There is no playlist with the given id"));
     }
 
     @Test
@@ -317,7 +317,7 @@ class PlaylistControllerTest {
                 .put(PLAYLIST_PATH + output.id())
         .then()
                 .statusCode(CONFLICT.value())
-                .body("detail", equalTo("There is already a playlist created with this title."));
+                .body("detail", equalTo("There is already a playlist created with these info"));
     }
 
     @Test
@@ -344,7 +344,7 @@ class PlaylistControllerTest {
                 .delete(PLAYLIST_PATH + UUID.randomUUID())
         .then()
                 .statusCode(NOT_FOUND.value())
-                .body("detail", equalTo("There is no playlist with the given id."));
+                .body("detail", equalTo("There is no playlist with the given id"));
     }
 
     @Test
@@ -377,7 +377,7 @@ class PlaylistControllerTest {
                 .post(PLAYLIST_PATH + UUID.randomUUID() + "/items/")
         .then()
                 .statusCode(NOT_FOUND.value())
-                .body("detail", equalTo("There is no playlist with the given id."));
+                .body("detail", equalTo("There is no playlist with the given id"));
     }
 
     @ParameterizedTest
@@ -424,7 +424,7 @@ class PlaylistControllerTest {
                 .delete(PLAYLIST_PATH + UUID.randomUUID() + "/items/" + 1L)
         .then()
                 .statusCode(NOT_FOUND.value())
-                .body("detail", equalTo("There is no playlist with the given id."));
+                .body("detail", equalTo("There is no playlist with the given id"));
     }
 
     @Test
@@ -441,7 +441,7 @@ class PlaylistControllerTest {
                 .delete(PLAYLIST_PATH + output.id() + "/items/" + 1L)
         .then()
                 .statusCode(NOT_FOUND.value())
-                .body("detail", equalTo("This title is not in the playlist."));
+                .body("detail", equalTo("The title does not exist in the selected playlist"));
     }
 
     @ParameterizedTest
@@ -489,6 +489,6 @@ class PlaylistControllerTest {
                 .get(PLAYLIST_PATH + UUID.randomUUID() + "/items/")
         .then()
                 .statusCode(NOT_FOUND.value())
-                .body("detail", equalTo("There is no playlist with the given id."));
+                .body("detail", equalTo("There is no playlist with the given id"));
     }
 }

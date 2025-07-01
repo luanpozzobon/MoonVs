@@ -105,7 +105,7 @@ class AuthControllerTest {
                 .post("/auth/register")
         .then()
                 .statusCode(CONFLICT.value())
-                .body("detail", equalTo("There is already an user registered with this info"));
+                .body("detail", equalTo("There is already an user registered with these info"));
 
     }
 
@@ -127,7 +127,7 @@ class AuthControllerTest {
                 .post("/auth/register")
         .then()
                 .statusCode(CONFLICT.value())
-                .body("detail", equalTo("There is already an user registered with this info"));
+                .body("detail", equalTo("There is already an user registered with these info"));
     }
 
     @ParameterizedTest
@@ -143,7 +143,7 @@ class AuthControllerTest {
                 .post(REGISTER_PATH)
         .then()
                 .statusCode(BAD_REQUEST.value())
-                .body("detail", equalTo("Failed to create an user."));
+                .body("detail", equalTo("Failed to create"));
     }
 
     @ParameterizedTest
@@ -159,7 +159,7 @@ class AuthControllerTest {
                 .post(REGISTER_PATH)
         .then()
                 .statusCode(BAD_REQUEST.value())
-                .body("detail", equalTo("Failed to create an user."));
+                .body("detail", equalTo("Failed to create"));
     }
 
     @ParameterizedTest
@@ -175,7 +175,7 @@ class AuthControllerTest {
                 .post(REGISTER_PATH)
         .then()
                 .statusCode(BAD_REQUEST.value())
-                .body("detail", equalTo("Failed to create an user."));
+                .body("detail", equalTo("Failed to create"));
     }
 
     @Test

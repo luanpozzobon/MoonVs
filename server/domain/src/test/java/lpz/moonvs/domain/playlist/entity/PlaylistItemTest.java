@@ -1,5 +1,6 @@
 package lpz.moonvs.domain.playlist.entity;
 
+import lpz.moonvs.domain.playlist.validation.PlaylistItemValidator;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
@@ -38,10 +39,10 @@ class PlaylistItemTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("playlist_id", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The playlist id cannot be null.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(PlaylistItem.PLAYLIST_ID_KEY, this.handler.getErrors().getFirst().getKey());
+        assertEquals(PlaylistItemValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("Error creating a PlaylistItem", exception.getMessage());
+        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 
@@ -54,10 +55,10 @@ class PlaylistItemTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("title_id", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The title id cannot be null.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(PlaylistItem.TITLE_ID_KEY, this.handler.getErrors().getFirst().getKey());
+        assertEquals(PlaylistItemValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("Error creating a PlaylistItem", exception.getMessage());
+        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 
@@ -73,10 +74,10 @@ class PlaylistItemTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("type", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The type can only be 'TV' or 'MOVIE'", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(PlaylistItem.TYPE_KEY, this.handler.getErrors().getFirst().getKey());
+        assertEquals(PlaylistItemValidator.INVALID_TYPE_KEY, this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("Error creating a PlaylistItem", exception.getMessage());
+        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 

@@ -8,19 +8,13 @@ import lpz.moonvs.domain.seedwork.validation.Validator;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
 public class PlaylistValidator implements Validator<Playlist> {
-    private final NotificationHandler handler;
-
-    private static final String USER_ID_ERROR_KEY = "user_id";
-    private static final String USER_ID_NULL_MESSAGE = "The user id cannot be null.";
+    public static final String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
+    public static final String MAXIMUM_LENGTH_KEY = "error.common.max-length";
 
     private static final int TITLE_MAXIMUM_LENGTH = 64;
-    private static final String TITLE_ERROR_KEY = "title";
-    private static final String TITLE_NULL_MESSAGE = "The title cannot be null or blank.";
-    private static final String TITLE_MAXIMUM_LENGTH_MESSAGE = "The title length must not be bigger than %d characters.";
-
     private static final int DESCRIPTION_MAXIMUM_LENGTH = 255;
-    private static final String DESCRIPTION_ERROR_KEY = "description";
-    private static final String DESCRIPTION_MAXIMUM_LENGTH_MESSAGE = "The description length must not be bigger than %d characters.";
+
+    private final NotificationHandler handler;
 
     public PlaylistValidator(final NotificationHandler handler) {
         this.handler = handler;
@@ -36,24 +30,24 @@ public class PlaylistValidator implements Validator<Playlist> {
     private void validateUserId(final Id<User> userId) {
         if (userId == null)
             this.handler.addError(new Notification(
-                    USER_ID_ERROR_KEY,
-                    USER_ID_NULL_MESSAGE
+                    Playlist.USER_ID_KEY,
+                    NULL_OR_BLANK_KEY, Playlist.USER_ID_KEY
             ));
     }
 
     private void validateTitle(final String title) {
         if (title == null  || title.isBlank()) {
             this.handler.addError(new Notification(
-                    TITLE_ERROR_KEY,
-                    TITLE_NULL_MESSAGE
+                    Playlist.TITLE_KEY,
+                    NULL_OR_BLANK_KEY, Playlist.TITLE_KEY
             ));
             return;
         }
 
         if (title.length() > TITLE_MAXIMUM_LENGTH)
             this.handler.addError(new Notification(
-                    TITLE_ERROR_KEY,
-                    String.format(TITLE_MAXIMUM_LENGTH_MESSAGE, TITLE_MAXIMUM_LENGTH)
+                    Playlist.TITLE_KEY,
+                    MAXIMUM_LENGTH_KEY, Playlist.TITLE_KEY, TITLE_MAXIMUM_LENGTH
             ));
     }
 
@@ -62,8 +56,8 @@ public class PlaylistValidator implements Validator<Playlist> {
 
         if (description.length() > DESCRIPTION_MAXIMUM_LENGTH)
             this.handler.addError(new Notification(
-                    DESCRIPTION_ERROR_KEY,
-                    String.format(DESCRIPTION_MAXIMUM_LENGTH_MESSAGE, DESCRIPTION_MAXIMUM_LENGTH)
+                    Playlist.DESCRIPTION_KEY,
+                    MAXIMUM_LENGTH_KEY, Playlist.DESCRIPTION_KEY, DESCRIPTION_MAXIMUM_LENGTH
             ));
     }
 }

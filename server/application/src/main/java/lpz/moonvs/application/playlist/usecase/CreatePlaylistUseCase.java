@@ -10,7 +10,7 @@ import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 
 public class CreatePlaylistUseCase {
-    private static final String EXISTING_PLAYLIST = "There is already a playlist created with this title.";
+    public static final String ALREADY_EXISTS_ERROR_KEY = "error.common.already-exists";
 
     private final IPlaylistRepository repository;
 
@@ -31,10 +31,10 @@ public class CreatePlaylistUseCase {
                                   final CreatePlaylistCommand command) throws PlaylistAlreadyExistsException {
         if (command.title() != null && !this.repository.findByTitle(command.userId(), command.title()).isEmpty())
             handler.addError(new Notification(
-                    "title", command.title()
+                    Playlist.TITLE_KEY, ALREADY_EXISTS_ERROR_KEY, Playlist.RESOURCE_KEY, Playlist.TITLE_KEY, command.title()
             ));
 
         if (handler.hasError())
-            throw new PlaylistAlreadyExistsException(EXISTING_PLAYLIST, handler.getErrors());
+            throw new PlaylistAlreadyExistsException(handler.getErrors());
     }
 }

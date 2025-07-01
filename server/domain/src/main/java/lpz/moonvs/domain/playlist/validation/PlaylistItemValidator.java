@@ -9,16 +9,10 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.entity.Title;
 
 public class PlaylistItemValidator implements Validator<PlaylistItem> {
+    public static final String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
+    public static final String INVALID_TYPE_KEY = "error.playlist.item.type.invalid";
+
     private final NotificationHandler handler;
-
-    private static final String PLAYLIST_ID_ERROR_KEY = "playlist_id";
-    private static final String PLAYLIST_ID_NULL_MESSAGE = "The playlist id cannot be null.";
-
-    private static final String TITLE_ID_ERROR_KEY = "title_id";
-    private static final String TITLE_ID_NULL_MESSAGE = "The title id cannot be null.";
-
-    private static final String TYPE_ERROR_KEY = "type";
-    private static final String TYPE_INVALID_MESSAGE = "The type can only be 'TV' or 'MOVIE'";
 
     public PlaylistItemValidator(final NotificationHandler handler) {
         this.handler = handler;
@@ -34,7 +28,8 @@ public class PlaylistItemValidator implements Validator<PlaylistItem> {
     private void validatePlaylistId(final Id<Playlist> playlistId) {
         if (playlistId == null) {
             handler.addError(new Notification(
-                    PLAYLIST_ID_ERROR_KEY, PLAYLIST_ID_NULL_MESSAGE
+                    PlaylistItem.PLAYLIST_ID_KEY,
+                    NULL_OR_BLANK_KEY, PlaylistItem.PLAYLIST_ID_KEY
             ));
         }
     }
@@ -42,7 +37,8 @@ public class PlaylistItemValidator implements Validator<PlaylistItem> {
     private void validateTitleId(final Id<Title> titleId) {
         if (titleId == null) {
             handler.addError(new Notification(
-                    TITLE_ID_ERROR_KEY, TITLE_ID_NULL_MESSAGE
+                    PlaylistItem.TITLE_ID_KEY,
+                    NULL_OR_BLANK_KEY, PlaylistItem.TITLE_ID_KEY
             ));
         }
     }
@@ -50,7 +46,8 @@ public class PlaylistItemValidator implements Validator<PlaylistItem> {
     private void validateType(final String type) {
         if (!"TV".equalsIgnoreCase(type) && !"MOVIE".equalsIgnoreCase(type)) {
             handler.addError(new Notification(
-                    TYPE_ERROR_KEY, TYPE_INVALID_MESSAGE
+                    PlaylistItem.TYPE_KEY,
+                    INVALID_TYPE_KEY, PlaylistItem.TYPE_KEY
             ));
         }
     }

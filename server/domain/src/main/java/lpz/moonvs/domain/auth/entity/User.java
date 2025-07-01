@@ -9,6 +9,11 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 
 
 public final class User {
+    public static final String RESOURCE_KEY = "user";
+    public static final String EMAIL_KEY = "email";
+    public static final String USERNAME_KEY = "username";
+    public static final String PASSWORD_KEY = "password";
+
     private final Id<User> id;
     private String username;
     private Email email;
@@ -63,6 +68,6 @@ public final class User {
         new UserValidator(handler).validate(this);
 
         if (handler.hasError())
-            throw new DomainValidationException("Failed to create an user.", handler.getErrors());
+            throw new DomainValidationException(handler.getErrors());
     }
 }

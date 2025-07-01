@@ -25,12 +25,12 @@ public class GetPlaylistByIdUseCase {
 
     private Playlist findAndValidatePlaylist(final Id<Playlist> playlistId) {
         return this.repository.findById(playlistId)
-                .orElseThrow(() -> new PlaylistNotFoundException("There is no playlist with the given id."));
+                .orElseThrow(PlaylistNotFoundException::new);
     }
 
     private void validateUserAccess(final Id<User> userId,
                                     final Playlist playlist) {
         if (!userId.equals(playlist.getUserId()))
-            throw new NoAccessToResourceException("The authenticated user doesn't have access to this playlist.");
+            throw new NoAccessToResourceException();
     }
 }

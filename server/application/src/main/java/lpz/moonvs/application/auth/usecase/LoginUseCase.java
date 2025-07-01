@@ -8,8 +8,6 @@ import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.auth.exception.UserDoesNotExistsException;
 
 public class LoginUseCase {
-    private final static String NON_EXISTING_USER = "There is no user registered with these credentials.";
-
     private final IUserRepository userRepository;
     private final IPasswordEncryptor passwordEncryptor;
 
@@ -28,7 +26,7 @@ public class LoginUseCase {
 
     private User findAndValidateUser(final String username) {
         return this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserDoesNotExistsException(NON_EXISTING_USER));
+                .orElseThrow(UserDoesNotExistsException::new);
     }
 
     private void validatePassword(final String password,
@@ -36,6 +34,6 @@ public class LoginUseCase {
         final boolean passwordMatches = this.passwordEncryptor.matches(password, user.getPassword().getValue());
 
         if (!passwordMatches)
-            throw new UserDoesNotExistsException(NON_EXISTING_USER);
+            throw new UserDoesNotExistsException();
     }
 }
