@@ -23,6 +23,7 @@ steps:
     - '-Dsonar.pullrequest.key=${_PR_NUMBER}'
     - '-Dsonar.pullrequest.branch=${_HEAD_BRANCH}'
     - '-Dsonar.pullrequest.base=${_BASE_BRANCH}'
+    - '-Dsonar.pullrequest.provider=GitHub'
   secretEnv:
     - 'SONAR_TOKEN'
 

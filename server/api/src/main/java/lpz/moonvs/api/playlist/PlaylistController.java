@@ -157,7 +157,7 @@ public class PlaylistController implements IPlaylistController {
     }
 
     @Override
-    @GetMapping(path = "/{id}/items")
+    @GetMapping(path = "/{id}/items/")
     public ResponseEntity<GetAllTitlesFromPlaylistOutput> getAllTitles(@AuthenticationPrincipal final CustomUserDetails userDetails,
                                                                        @PathVariable("id") final String id,
                                                                        @RequestParam("page") final Integer page) {
