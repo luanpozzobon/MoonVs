@@ -7,10 +7,10 @@ import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
 public class Playlist {
-    public final static String RESOURCE_KEY = "playlist";
-    public final static String USER_ID_KEY = "user_id";
-    public final static String TITLE_KEY = "title";
-    public final static String DESCRIPTION_KEY = "description";
+    public static final String RESOURCE_KEY = "playlist";
+    public static final String USER_ID_KEY = "user_id";
+    public static final String TITLE_KEY = "title";
+    public static final String DESCRIPTION_KEY = "description";
 
     private final Id<Playlist> id;
     private final Id<User> userId;

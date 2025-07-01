@@ -1,5 +1,6 @@
 package lpz.moonvs.domain.auth.validation;
 
+import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.auth.valueobject.Password;
 import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
@@ -8,24 +9,23 @@ import lpz.moonvs.domain.seedwork.validation.Validator;
 import java.util.regex.Pattern;
 
 public class PasswordValidator implements Validator<Password> {
-    private final static int MINIMUM_PASSWORD_LENGTH = 8;
-    private final static int MINIMUM_UPPERCASE = 1;
-    private final static int MINIMUM_LOWERCASE = 1;
-    private final static int MINIMUM_NUMERIC = 1;
-    private final static int MINIMUM_SPECIAL = 1;
+    private static final int MINIMUM_PASSWORD_LENGTH = 8;
+    private static final int MINIMUM_UPPERCASE = 1;
+    private static final int MINIMUM_LOWERCASE = 1;
+    private static final int MINIMUM_NUMERIC = 1;
+    private static final int MINIMUM_SPECIAL = 1;
 
-    private final static Pattern UPPERCASE_LETTERS = Pattern.compile("[A-Z]");
-    private final static Pattern LOWERCASE_LETTERS = Pattern.compile("[a-z]");
-    private final static Pattern NUMERIC_CHARS = Pattern.compile("\\d");
-    private final static Pattern SPECIAL_CHARS = Pattern.compile("[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\/-]");
+    private static final Pattern UPPERCASE_LETTERS = Pattern.compile("[A-Z]");
+    private static final Pattern LOWERCASE_LETTERS = Pattern.compile("[a-z]");
+    private static final Pattern NUMERIC_CHARS = Pattern.compile("\\d");
+    private static final Pattern SPECIAL_CHARS = Pattern.compile("[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\/-]");
 
-    public final static String PASSWORD_ERROR_KEY = "password";
-    public final static String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
-    public final static String MINIMUM_LENGTH_KEY = "error.common.min-length";
-    public final static String UPPERCASE_KEY = "error.user.password.uppercase";
-    public final static String LOWERCASE_KEY = "error.user.password.lowercase";
-    public final static String NUMERIC_KEY = "error.user.password.numeric";
-    public final static String SPECIAL_KEY = "error.user.password.special";
+    public static final String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
+    public static final String MINIMUM_LENGTH_KEY = "error.common.min-length";
+    public static final String UPPERCASE_KEY = "error.user.password.uppercase";
+    public static final String LOWERCASE_KEY = "error.user.password.lowercase";
+    public static final String NUMERIC_KEY = "error.user.password.numeric";
+    public static final String SPECIAL_KEY = "error.user.password.special";
 
     private final NotificationHandler handler;
 
@@ -37,7 +37,7 @@ public class PasswordValidator implements Validator<Password> {
     public void validate(final Password domain) {
         if (domain.getRaw() == null || domain.getRaw().isBlank()) {
             this.handler.addError(new Notification(
-                    PASSWORD_ERROR_KEY,
+                    User.PASSWORD_KEY,
                     NULL_OR_BLANK_KEY
             ));
             return;
@@ -53,16 +53,16 @@ public class PasswordValidator implements Validator<Password> {
     private void validateLength(final String password) {
         if (password.length() < MINIMUM_PASSWORD_LENGTH)
             this.handler.addError(new Notification(
-                    PASSWORD_ERROR_KEY,
+                    User.PASSWORD_KEY,
                     MINIMUM_LENGTH_KEY,
-                    "password", MINIMUM_PASSWORD_LENGTH
+                    User.PASSWORD_KEY, MINIMUM_PASSWORD_LENGTH
             ));
     }
 
     private void validateUppercase(final String password) {
         if (!UPPERCASE_LETTERS.matcher(password).find())
             this.handler.addError(new Notification(
-                    PASSWORD_ERROR_KEY,
+                    User.PASSWORD_KEY,
                     UPPERCASE_KEY,
                     MINIMUM_UPPERCASE
             ));
@@ -71,7 +71,7 @@ public class PasswordValidator implements Validator<Password> {
     private void validateLowercase(final String password) {
         if (!LOWERCASE_LETTERS.matcher(password).find())
             this.handler.addError(new Notification(
-                    PASSWORD_ERROR_KEY,
+                    User.PASSWORD_KEY,
                     LOWERCASE_KEY,
                     MINIMUM_LOWERCASE
             ));
@@ -80,7 +80,7 @@ public class PasswordValidator implements Validator<Password> {
     private void validateNumeric(final String password) {
         if (!NUMERIC_CHARS.matcher(password).find())
             this.handler.addError(new Notification(
-                    PASSWORD_ERROR_KEY,
+                    User.PASSWORD_KEY,
                     NUMERIC_KEY,
                     MINIMUM_NUMERIC
             ));
@@ -89,7 +89,7 @@ public class PasswordValidator implements Validator<Password> {
     private void validateSpecial(final String password) {
         if (!SPECIAL_CHARS.matcher(password).find())
             this.handler.addError(new Notification(
-                    PASSWORD_ERROR_KEY,
+                    User.PASSWORD_KEY,
                     SPECIAL_KEY,
                     MINIMUM_SPECIAL
             ));

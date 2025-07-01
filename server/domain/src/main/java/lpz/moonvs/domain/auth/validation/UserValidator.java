@@ -8,13 +8,13 @@ import lpz.moonvs.domain.seedwork.validation.Validator;
 import java.util.regex.Pattern;
 
 public class UserValidator implements Validator<User> {
-    private final static int MINIMUM_USERNAME_LENGTH = 4;
+    private static final int MINIMUM_USERNAME_LENGTH = 4;
 
-    private final static Pattern NON_LETTERS = Pattern.compile("\\W");
+    private static final Pattern NON_LETTERS = Pattern.compile("\\W");
 
-    public final static String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
-    public final static String MINIMUM_LENGTH_KEY = "error.common.min-length";
-    public final static String INVALID_CHARACTERS_KEY = "error.user.username.invalid-characters";
+    public static final String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
+    public static final String MINIMUM_LENGTH_KEY = "error.common.min-length";
+    public static final String INVALID_CHARACTERS_KEY = "error.user.username.invalid-characters";
 
     private final NotificationHandler handler;
 
@@ -31,7 +31,7 @@ public class UserValidator implements Validator<User> {
         if (username == null || username.isBlank()) {
             this.handler.addError(new Notification(
                     User.USERNAME_KEY,
-                    NULL_OR_BLANK_KEY, "Username"));
+                    NULL_OR_BLANK_KEY, User.USERNAME_KEY));
             return;
         }
 
@@ -39,7 +39,7 @@ public class UserValidator implements Validator<User> {
             handler.addError(new Notification(
                     User.USERNAME_KEY,
                     MINIMUM_LENGTH_KEY,
-                    "Username", MINIMUM_USERNAME_LENGTH
+                    User.USERNAME_KEY, MINIMUM_USERNAME_LENGTH
             ));
 
         if (NON_LETTERS.matcher(username).find())

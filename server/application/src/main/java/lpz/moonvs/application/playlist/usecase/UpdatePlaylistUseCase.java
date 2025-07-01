@@ -15,7 +15,7 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import java.util.List;
 
 public class UpdatePlaylistUseCase {
-    public final static String ALREADY_EXISTS_ERROR_KEY = "error.common.already-exists";
+    public static final String ALREADY_EXISTS_ERROR_KEY = "error.common.already-exists";
 
     private final IPlaylistRepository repository;
 

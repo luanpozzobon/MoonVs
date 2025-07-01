@@ -9,8 +9,8 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.entity.Title;
 
 public class PlaylistItemValidator implements Validator<PlaylistItem> {
-    public final static String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
-    public final static String INVALID_TYPE_KEY = "error.playlist.item.type.invalid";
+    public static final String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
+    public static final String INVALID_TYPE_KEY = "error.playlist.item.type.invalid";
 
     private final NotificationHandler handler;
 

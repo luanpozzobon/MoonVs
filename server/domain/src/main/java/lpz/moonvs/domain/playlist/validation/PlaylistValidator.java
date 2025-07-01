@@ -8,8 +8,8 @@ import lpz.moonvs.domain.seedwork.validation.Validator;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
 public class PlaylistValidator implements Validator<Playlist> {
-    public final static String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
-    public final static String MAXIMUM_LENGTH_KEY = "error.common.max-length";
+    public static final String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
+    public static final String MAXIMUM_LENGTH_KEY = "error.common.max-length";
 
     private static final int TITLE_MAXIMUM_LENGTH = 64;
     private static final int DESCRIPTION_MAXIMUM_LENGTH = 255;
