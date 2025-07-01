@@ -33,18 +33,18 @@ public class RemoveTitleFromPlaylistUseCase {
 
     private Playlist findAndValidatePlaylist(final Id<Playlist> playlistId) {
         return this.playlistRepository.findById(playlistId)
-                .orElseThrow(() -> new PlaylistNotFoundException("There is no playlist with the given id."));
+                .orElseThrow(PlaylistNotFoundException::new);
     }
 
     private void validateUserAccess(final Id<User> userId,
                                     final Playlist playlist) {
         if (!userId.equals(playlist.getUserId()))
-            throw new NoAccessToResourceException("The authenticated user doesn't have access to this playlist.");
+            throw new NoAccessToResourceException();
     }
 
     private PlaylistItem findAndValidatePlaylistItem(final Id<Playlist> playlistId,
                                                      final Id<Title> titleId) {
         return this.repository.findByPlaylistIdAndTitleId(playlistId, titleId)
-                .orElseThrow(() -> new PlaylistItemNotFoundException("This title is not in the playlist."));
+                .orElseThrow(PlaylistItemNotFoundException::new);
     }
 }

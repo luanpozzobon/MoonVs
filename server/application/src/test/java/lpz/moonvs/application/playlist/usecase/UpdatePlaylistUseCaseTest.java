@@ -63,7 +63,7 @@ class UpdatePlaylistUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("There is no playlist with the given id.", exception.getMessage());
+        assertEquals(PlaylistNotFoundException.ERROR_KEY, exception.getMessage());
     }
 
     @Test
@@ -79,7 +79,7 @@ class UpdatePlaylistUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("The authenticated user doesn't have access to this playlist.", exception.getMessage());
+        assertEquals(NoAccessToResourceException.ERROR_KEY, exception.getMessage());
     }
 
     @Test
@@ -131,10 +131,10 @@ class UpdatePlaylistUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("There is already a playlist created with this title.", exception.getMessage());
+        assertEquals(PlaylistAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
-        assertEquals("title", exception.getErrors().getFirst().getKey());
-        assertEquals("New Title", exception.getErrors().getFirst().getMessage());
+        assertEquals(Playlist.TITLE_KEY, exception.getErrors().getFirst().getKey());
+        assertEquals(UpdatePlaylistUseCase.ALREADY_EXISTS_ERROR_KEY, exception.getErrors().getFirst().getMessage());
     }
 
     @Test

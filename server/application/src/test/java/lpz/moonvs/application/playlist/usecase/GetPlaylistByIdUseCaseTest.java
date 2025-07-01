@@ -48,7 +48,7 @@ class GetPlaylistByIdUseCaseTest {
     }
 
     @Test
-    void shouldThrowPlaylistNotFoundExceptionWhenIdDontExists() {
+    void shouldThrowPlaylistNotFoundExceptionWhenIdDoesNotExists() {
         when(this.repository.findById(any(Id.class))).thenReturn(Optional.empty());
 
         final var command = new GetPlaylistByIdCommand(Id.unique(), Id.unique());
@@ -56,7 +56,7 @@ class GetPlaylistByIdUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("There is no playlist with the given id.", exception.getMessage());
+        assertEquals(PlaylistNotFoundException.ERROR_KEY, exception.getMessage());
     }
 
     @Test
@@ -71,6 +71,6 @@ class GetPlaylistByIdUseCaseTest {
                 this.useCase.execute(command)
         );
 
-        assertEquals("The authenticated user doesn't have access to this playlist.", exception.getMessage());
+        assertEquals(NoAccessToResourceException.ERROR_KEY, exception.getMessage());
     }
 }

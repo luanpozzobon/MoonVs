@@ -7,6 +7,11 @@ import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
 public class Playlist {
+    public final static String RESOURCE_KEY = "playlist";
+    public final static String USER_ID_KEY = "user_id";
+    public final static String TITLE_KEY = "title";
+    public final static String DESCRIPTION_KEY = "description";
+
     private final Id<Playlist> id;
     private final Id<User> userId;
     private String title;
@@ -71,6 +76,6 @@ public class Playlist {
         new PlaylistValidator(handler).validate(this);
 
         if (handler.hasError())
-            throw new DomainValidationException("Error creating a Playlist", handler.getErrors());
+            throw new DomainValidationException(handler.getErrors());
     }
 }

@@ -7,6 +7,11 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.entity.Title;
 
 public class PlaylistItem {
+    public final static String RESOURCE_KEY = "playlist_item";
+    public final static String PLAYLIST_ID_KEY = "playlist_id";
+    public final static String TITLE_ID_KEY = "title_id";
+    public final static String TYPE_KEY = "type";
+
     private final Id<Playlist> playlistId;
     private final Id<Title> titleId;
     private final String type;
@@ -53,6 +58,6 @@ public class PlaylistItem {
         new PlaylistItemValidator(handler).validate(this);
 
         if (handler.hasError())
-            throw new DomainValidationException("Error creating a PlaylistItem", handler.getErrors());
+            throw new DomainValidationException(handler.getErrors());
     }
 }

@@ -2,11 +2,12 @@ error:
   common:
     null-or-blank: The {0} must be filled in.
     min-length: The {0} must contain at least {1} characters
+    max-length: The {0} must contain at most {1} characters
     already-exists: "There is already another {0} saved with this {1}: {2}"
     invalid: Failed to create
+    no-access: You don't have access to this resource
 
   user:
-    invalid: Failed to create an user.
     already-exists: There is already an user registered with these info
     not-found: There is no user registered with these credentials.
 
@@ -22,5 +23,14 @@ error:
     username:
       invalid-characters: The username must contain only alphanumeric characters.
 
+  playlist:
+    already-exists: There is already a playlist created with these info
+    not-found: There is no playlist with the given id
+
+    item:
+      not-found: The title does not exist in the selected playlist
+
+      type:
+        invalid: The type can only be 'TV' or 'MOVIE'
 
 

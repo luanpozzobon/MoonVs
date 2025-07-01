@@ -10,6 +10,8 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 
 public final class User {
     public final static String RESOURCE_KEY = "user";
+    public final static String EMAIL_KEY = "email";
+    public final static String USERNAME_KEY = "username";
 
     private final Id<User> id;
     private String username;

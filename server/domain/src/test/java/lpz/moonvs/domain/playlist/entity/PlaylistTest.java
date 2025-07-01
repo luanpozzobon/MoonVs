@@ -1,6 +1,7 @@
 package lpz.moonvs.domain.playlist.entity;
 
 import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.playlist.validation.PlaylistValidator;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
@@ -44,10 +45,10 @@ class PlaylistTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("user_id", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The user id cannot be null.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(Playlist.USER_ID_KEY, this.handler.getErrors().getFirst().getKey());
+        assertEquals(PlaylistValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("Error creating a Playlist", exception.getMessage());
+        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 
@@ -61,10 +62,10 @@ class PlaylistTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("title", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The title cannot be null or blank.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(Playlist.TITLE_KEY, this.handler.getErrors().getFirst().getKey());
+        assertEquals(PlaylistValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("Error creating a Playlist", exception.getMessage());
+        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 
@@ -77,10 +78,10 @@ class PlaylistTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("title", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The title length must not be bigger than 64 characters.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(Playlist.TITLE_KEY, this.handler.getErrors().getFirst().getKey());
+        assertEquals(PlaylistValidator.MAXIMUM_LENGTH_KEY, this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("Error creating a Playlist", exception.getMessage());
+        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 
@@ -93,10 +94,10 @@ class PlaylistTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("description", this.handler.getErrors().getFirst().getKey());
-        assertEquals("The description length must not be bigger than 255 characters.", this.handler.getErrors().getFirst().getMessage());
+        assertEquals(Playlist.DESCRIPTION_KEY, this.handler.getErrors().getFirst().getKey());
+        assertEquals(PlaylistValidator.MAXIMUM_LENGTH_KEY, this.handler.getErrors().getFirst().getMessage());
 
-        assertEquals("Error creating a Playlist", exception.getMessage());
+        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
     }
 
