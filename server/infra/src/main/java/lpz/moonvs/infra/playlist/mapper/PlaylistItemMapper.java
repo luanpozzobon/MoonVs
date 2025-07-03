@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class PlaylistItemMapper {
+    private PlaylistItemMapper() {}
+
     public static PlaylistItemEntity from(final PlaylistItem playlistItem) {
         if (playlistItem == null) return null;
 

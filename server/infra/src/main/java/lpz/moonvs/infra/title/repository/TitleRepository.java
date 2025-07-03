@@ -3,6 +3,7 @@ package lpz.moonvs.infra.title.repository;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.contracts.ITitleRepository;
 import lpz.moonvs.domain.title.entity.Title;
+import lpz.moonvs.infra.exception.DataAccessException;
 import lpz.moonvs.infra.title.entity.TitleEntity;
 import lpz.moonvs.infra.title.mapper.TitleMapper;
 import lpz.utils.dao.postgresql.CRUDBuilderFactory;
@@ -37,7 +38,7 @@ public class TitleRepository implements ITitleRepository {
                     .map(TitleMapper::to).findFirst()
                     .orElse(null);
         } catch (final SQLException e) {
-            throw new RuntimeException("Error retrieving title from database.", e);
+            throw new DataAccessException("Error retrieving title from database.", e);
         }
     }
 

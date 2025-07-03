@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Notification {
     private final String key;
     private final String message;
-    private final transient Object[] args;
+    private final Object[] args;
 
     public Notification(final String key,
                         final String message,
