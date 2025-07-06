@@ -10,6 +10,7 @@ import lpz.moonvs.domain.playlist.entity.Playlist;
 import lpz.moonvs.domain.playlist.entity.PlaylistItem;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.entity.Title;
+import lpz.moonvs.infra.MoonVsTest;
 import lpz.moonvs.infra.exception.DataAccessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,10 +29,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = MoonVsTest.class)
 @Testcontainers
 @ActiveProfiles("test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class PlaylistItemRepositoryIntegrationTest {
     private static final Long TITLE_ID = 1L;
     private static final String TYPE = "TV";

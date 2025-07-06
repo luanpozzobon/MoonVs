@@ -56,9 +56,8 @@ public class UpdatePlaylistUseCase {
         if (playlist.getTitle().equals(title)) return;
 
         if (!this.repository.findByTitle(userId, title).isEmpty())
-            throw new PlaylistAlreadyExistsException(List.of(
-                    new Notification(Playlist.TITLE_KEY, ALREADY_EXISTS_ERROR_KEY, Playlist.RESOURCE_KEY, Playlist.TITLE_KEY, title)));
-
+            throw new PlaylistAlreadyExistsException(List.of(Notification.alreadyExists(
+                    Playlist.Schema.TITLE, Playlist.Schema.RESOURCE, Playlist.Schema.TITLE, title)));
         playlist.rename(handler, title);
     }
 

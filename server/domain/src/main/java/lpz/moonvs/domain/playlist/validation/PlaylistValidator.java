@@ -8,9 +8,6 @@ import lpz.moonvs.domain.seedwork.validation.Validator;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
 public class PlaylistValidator implements Validator<Playlist> {
-    public static final String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
-    public static final String MAXIMUM_LENGTH_KEY = "error.common.max-length";
-
     private static final int TITLE_MAXIMUM_LENGTH = 64;
     private static final int DESCRIPTION_MAXIMUM_LENGTH = 255;
 
@@ -22,32 +19,22 @@ public class PlaylistValidator implements Validator<Playlist> {
 
     @Override
     public void validate(final Playlist domain) {
-        this.validateUserId(domain.getUserId());
         this.validateTitle(domain.getTitle());
         this.validateDescription(domain.getDescription());
     }
 
-    private void validateUserId(final Id<User> userId) {
-        if (userId == null)
-            this.handler.addError(new Notification(
-                    Playlist.USER_ID_KEY,
-                    NULL_OR_BLANK_KEY, Playlist.USER_ID_KEY
-            ));
-    }
-
     private void validateTitle(final String title) {
-        if (title == null  || title.isBlank()) {
-            this.handler.addError(new Notification(
-                    Playlist.TITLE_KEY,
-                    NULL_OR_BLANK_KEY, Playlist.TITLE_KEY
+        if (title == null || title.isBlank()) {
+            this.handler.addError(Notification.nullOrBlank(
+                    Playlist.Schema.TITLE
             ));
             return;
         }
 
         if (title.length() > TITLE_MAXIMUM_LENGTH)
-            this.handler.addError(new Notification(
-                    Playlist.TITLE_KEY,
-                    MAXIMUM_LENGTH_KEY, Playlist.TITLE_KEY, TITLE_MAXIMUM_LENGTH
+            this.handler.addError(Notification.maxLength(
+                    Playlist.Schema.TITLE,
+                    Playlist.Schema.TITLE, TITLE_MAXIMUM_LENGTH
             ));
     }
 
@@ -55,9 +42,9 @@ public class PlaylistValidator implements Validator<Playlist> {
         if (description == null || description.isBlank()) return;
 
         if (description.length() > DESCRIPTION_MAXIMUM_LENGTH)
-            this.handler.addError(new Notification(
-                    Playlist.DESCRIPTION_KEY,
-                    MAXIMUM_LENGTH_KEY, Playlist.DESCRIPTION_KEY, DESCRIPTION_MAXIMUM_LENGTH
+            this.handler.addError(Notification.maxLength(
+                    Playlist.Schema.DESCRIPTION,
+                    Playlist.Schema.DESCRIPTION, DESCRIPTION_MAXIMUM_LENGTH
             ));
     }
 }

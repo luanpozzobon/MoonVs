@@ -133,8 +133,8 @@ class UpdatePlaylistUseCaseTest {
 
         assertEquals(PlaylistAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
-        assertEquals(Playlist.TITLE_KEY, exception.getErrors().getFirst().getKey());
-        assertEquals(UpdatePlaylistUseCase.ALREADY_EXISTS_ERROR_KEY, exception.getErrors().getFirst().getMessage());
+        assertEquals(Playlist.Schema.TITLE, exception.getErrors().getFirst().key());
+        assertEquals(UpdatePlaylistUseCase.ALREADY_EXISTS_ERROR_KEY, exception.getErrors().getFirst().message());
     }
 
     @Test

@@ -1,19 +1,21 @@
 package lpz.moonvs.domain.playlist.entity;
 
 import lpz.moonvs.domain.auth.entity.User;
-import lpz.moonvs.domain.playlist.validation.PlaylistValidator;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
+import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlaylistTest {
+    private static final String VALID_TITLE = "Playlist";
+
     private Id<User> userId;
     private NotificationHandler handler;
 
@@ -26,7 +28,7 @@ class PlaylistTest {
     @Test
     void shouldCreatePlaylist() {
         final Playlist playlist = assertDoesNotThrow(() ->
-                Playlist.create(this.handler, this.userId, "Playlist", "")
+                Playlist.create(this.handler, this.userId, VALID_TITLE, "")
         );
 
         assertNotNull(playlist);
@@ -38,32 +40,24 @@ class PlaylistTest {
     }
 
     @Test
-    void shouldThrowDomainValidationExceptionWhenUserIdIsNull() {
-        final var exception = assertThrows(DomainValidationException.class, () ->
-                Playlist.create(this.handler, null, "Playlist", null)
+    void shouldThrowNullPointerExceptionWhenUserIdIsNull() {
+        assertThrows(NullPointerException.class, () ->
+                Playlist.create(this.handler, null, VALID_TITLE, null)
         );
-
-        assertTrue(this.handler.hasError());
-        assertEquals(1, this.handler.getErrors().size());
-        assertEquals(Playlist.USER_ID_KEY, this.handler.getErrors().getFirst().getKey());
-        assertEquals(PlaylistValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
-
-        assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
-        assertNotNull(exception.getErrors());
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
+    @EmptySource
     @ValueSource(strings = {" ", "  ", "\t", "\n"})
-    void shouldThrowDomainValidationExceptionWhenTitleIsNullOrBlank(String invalidTitle) {
+    void shouldThrowDomainValidationExceptionWhenTitleIsBlank(String invalidTitle) {
         final var exception = assertThrows(DomainValidationException.class, () ->
                 Playlist.create(this.handler, this.userId, invalidTitle, null)
         );
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(Playlist.TITLE_KEY, this.handler.getErrors().getFirst().getKey());
-        assertEquals(PlaylistValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(Playlist.Schema.TITLE, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.Schema.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -78,8 +72,8 @@ class PlaylistTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(Playlist.TITLE_KEY, this.handler.getErrors().getFirst().getKey());
-        assertEquals(PlaylistValidator.MAXIMUM_LENGTH_KEY, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(Playlist.Schema.TITLE, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.Schema.MAX_LENGTH, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -89,13 +83,13 @@ class PlaylistTest {
     void shouldThrowDomainValidationExceptionWhenDescriptionIsTooLarge() {
         final String description = "a".repeat(256);
         final var exception = assertThrows(DomainValidationException.class, () ->
-                Playlist.create(this.handler, this.userId, "Playlist", description)
+                Playlist.create(this.handler, this.userId, VALID_TITLE, description)
         );
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(Playlist.DESCRIPTION_KEY, this.handler.getErrors().getFirst().getKey());
-        assertEquals(PlaylistValidator.MAXIMUM_LENGTH_KEY, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(Playlist.Schema.DESCRIPTION, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.Schema.MAX_LENGTH, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -103,23 +97,25 @@ class PlaylistTest {
 
     @Test
     void shouldRename() {
-        final Playlist playlist = Playlist.create(this.handler, this.userId, "Playlist", null);
-        playlist.rename(this.handler, "Watchlist");
+        final Playlist playlist = Playlist.create(this.handler, this.userId, VALID_TITLE, null);
+        final String newTitle = "New Title";
+        playlist.rename(this.handler, newTitle);
 
-        assertEquals("Watchlist", playlist.getTitle());
+        assertEquals(newTitle, playlist.getTitle());
     }
 
     @Test
     void shouldChangeDescription() {
-        final Playlist playlist = Playlist.create(this.handler, this.userId, "Playlist", null);
-        playlist.updateDescription(this.handler, "New Description");
+        final Playlist playlist = Playlist.create(this.handler, this.userId, VALID_TITLE, null);
+        final String newDescription = "New Description";
+        playlist.updateDescription(this.handler, newDescription);
 
-        assertEquals("New Description", playlist.getDescription());
+        assertEquals(newDescription, playlist.getDescription());
     }
 
     @Test
     void shouldLoadExisting() {
-        final Playlist playlist = Playlist.load(Id.unique(), Id.unique(), "Playlist", null);
+        final Playlist playlist = Playlist.load(Id.unique(), Id.unique(), VALID_TITLE, null);
 
         assertNotNull(playlist);
         assertFalse(this.handler.hasError());

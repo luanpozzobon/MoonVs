@@ -144,7 +144,7 @@ class PlaylistControllerTest {
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
+    @EmptySource
     @MethodSource("invalidTitleProvider")
     void shouldReturnBadRequestWhenTitleIsInvalid(final String invalidTitle) {
         final var input = new CreatePlaylistInput(invalidTitle, VALID_DESCRIPTION);

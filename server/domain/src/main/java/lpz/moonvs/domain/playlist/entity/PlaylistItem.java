@@ -7,10 +7,12 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.entity.Title;
 
 public class PlaylistItem {
-    public static final String RESOURCE_KEY = "playlist_item";
-    public static final String PLAYLIST_ID_KEY = "playlist_id";
-    public static final String TITLE_ID_KEY = "title_id";
-    public static final String TYPE_KEY = "type";
+    public interface Schema {
+        String RESOURCE = "playlist_item";
+        String PLAYLIST_ID = "playlist_id";
+        String TITLE_ID = "title_id";
+        String TYPE = "type";
+    }
 
     private final Id<Playlist> playlistId;
     private final Id<Title> titleId;
