@@ -2,29 +2,38 @@ package lpz.moonvs.domain.seedwork.notification;
 
 import java.util.Arrays;
 
-public class Notification {
-    private final String key;
-    private final String message;
-    private final Object[] args;
-
-    public Notification(final String key,
-                        final String message,
-                        final Object... args) {
-        this.key = key;
-        this.message = message;
-        this.args = args;
+public record Notification(String key, String message, Object... args) {
+    public interface Schema {
+        String NULL_OR_BLANK = "error.common.null-or-blank";
+        String MAX_LENGTH = "error.common.max-length";
+        String MIN_LENGTH = "error.common.min-length";
+        String ALREADY_EXISTS = "error.common.already-exists";
     }
 
-    public String getKey() {
-        return key;
+    public static Notification nullOrBlank(final String key,
+                                           final Object... args) {
+        return new Notification(key, Schema.NULL_OR_BLANK, args);
     }
 
-    public String getMessage() {
-        return message;
+    public static Notification minLength(final String key,
+                                         final Object... args) {
+        return new Notification(key, Schema.MIN_LENGTH, args);
     }
 
-    public Object[] getArgs() {
-        return args;
+    public static Notification maxLength(final String key,
+                                         final Object... args) {
+        return new Notification(key, Schema.MAX_LENGTH, args);
+    }
+
+    public static Notification alreadyExists(final String key,
+                                             final Object... args) {
+        return new Notification(key, Schema.ALREADY_EXISTS, args);
+    }
+
+    public static Notification of(final String key,
+                                  final String context,
+                                  final Object... args) {
+        return new Notification(key, context, args);
     }
 
     @Override

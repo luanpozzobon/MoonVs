@@ -47,8 +47,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return notifications.stream().map(notification -> {
             String message = this.messageSource.getMessage(
-                    notification.getMessage(), notification.getArgs(), LocaleContextHolder.getLocale());
-            return new ExceptionError(notification.getKey(), message);
+                    notification.message(), notification.args(), LocaleContextHolder.getLocale());
+            return new ExceptionError(notification.key(), message);
         }).toList();
     }
 

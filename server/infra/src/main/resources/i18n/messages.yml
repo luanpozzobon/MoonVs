@@ -1,9 +1,18 @@
 error:
+  data:
+    insert: Error saving to database.
+    select: Error retrieving from database.
+    update: Error updating in database.
+    delete: Error deleting in database.
+
   common:
+    # Notifications
     null-or-blank: The {0} must be filled in.
     min-length: The {0} must contain at least {1} characters
     max-length: The {0} must contain at most {1} characters
     already-exists: "There is already another {0} saved with this {1}: {2}"
+
+    # Exceptions
     invalid: Failed to create
     no-access: You don't have access to this resource
 

@@ -11,6 +11,7 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,9 +79,9 @@ class AuthControllerTest {
                 .then()
                         .statusCode(CREATED.value())
                         .header("Set-Cookie", containsString("token="))
-                        .body("id", is(notNullValue()))
-                        .body("username", equalTo(VALID_USERNAME))
-                        .body("email", equalTo(VALID_EMAIL))
+                        .body(User.Schema.ID, is(notNullValue()))
+                        .body(User.Schema.USERNAME, equalTo(VALID_USERNAME))
+                        .body(User.Schema.EMAIL, equalTo(VALID_EMAIL))
                         .extract().body().as(RegisterOutput.class);
 
         final Optional<User> userOpt = this.repository.findById(Id.from(output.id()));
@@ -147,7 +148,7 @@ class AuthControllerTest {
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
+    @EmptySource
     @ValueSource(strings = {" ", "  ", "\t", "\n", "l", "lp", "lpz", "luan@pozzobon"})
     void shouldReturnBadRequestWhenUsernameIsInvalid(String invalidUsernam) {
         final var input = new RegisterInput(VALID_EMAIL, invalidUsernam, VALID_PASSWORD);
@@ -197,9 +198,9 @@ class AuthControllerTest {
         .then()
                 .statusCode(OK.value())
                 .header("Set-Cookie", containsString("token="))
-                .body("id", is(notNullValue()))
-                .body("username", equalTo(VALID_USERNAME))
-                .body("email", equalTo(VALID_EMAIL));
+                .body(User.Schema.ID, is(notNullValue()))
+                .body(User.Schema.USERNAME, equalTo(VALID_USERNAME))
+                .body(User.Schema.EMAIL, equalTo(VALID_EMAIL));
     }
 
     @Test

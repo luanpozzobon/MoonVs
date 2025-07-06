@@ -2,7 +2,8 @@ package lpz.moonvs.domain.auth.valueobject;
 
 
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
-import lpz.moonvs.domain.auth.validation.PasswordValidator;
+import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,10 +40,9 @@ class PasswordTest {
         final Password password = Password.create(this.encryptor, this.handler, VALID_PASSWORD);
 
         assertNotNull(password);
-        assertNotNull(password.getRaw());
         assertNotNull(password.getValue());
+        assertNull(password.getRaw());
 
-        assertEquals(VALID_PASSWORD, password.getRaw());
         assertEquals(ENCRYPTED_PASSWORD, password.getValue());
 
         assertFalse(this.handler.hasError());
@@ -57,8 +57,8 @@ class PasswordTest {
         assertTrue(this.handler.hasError());
 
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("password", this.handler.getErrors().getFirst().getKey());
-        assertEquals(PasswordValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(User.Schema.PASSWORD, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.Schema.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
     }
 
     @ParameterizedTest
@@ -75,8 +75,8 @@ class PasswordTest {
         assertTrue(this.handler.hasError());
 
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("password", this.handler.getErrors().getFirst().getKey());
-        assertEquals(errorMessage, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(User.Schema.PASSWORD, this.handler.getErrors().getFirst().key());
+        assertEquals(errorMessage, this.handler.getErrors().getFirst().message());
     }
 
     @Test

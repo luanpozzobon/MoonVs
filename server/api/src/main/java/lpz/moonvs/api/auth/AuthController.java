@@ -45,7 +45,7 @@ class AuthController implements IAuthController {
         );
         final URI uri = URI.create("/users/" + output.id());
 
-        final var cookie = tokenService.generateCookieToken(User.load(Id.from(output.id()), null, null, null));
+        final var cookie = tokenService.generateCookieToken(Id.from(output.id()));
 
         return ResponseEntity
                 .created(uri)
@@ -60,7 +60,7 @@ class AuthController implements IAuthController {
                 new LoginCommand(input.username(), input.password())
         );
 
-        final var cookie = tokenService.generateCookieToken(User.load(Id.from(output.id()), null, null, null));
+        final var cookie = tokenService.generateCookieToken(Id.from(output.id()));
 
         return ResponseEntity
                 .ok()

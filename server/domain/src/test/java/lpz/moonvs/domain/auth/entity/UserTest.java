@@ -5,12 +5,14 @@ import lpz.moonvs.domain.auth.validation.UserValidator;
 import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.auth.valueobject.Password;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
+import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
@@ -58,17 +60,17 @@ class UserTest {
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
+    @EmptySource
     @ValueSource(strings = {" ", "  ", "\t", "\n"})
-    void shouldThrowDomainValidationExceptionWhenUsernameIsNullOrBlank(String invalidUsername) {
+    void shouldThrowDomainValidationExceptionWhenUsernameIsBlank(String invalidUsername) {
         final var exception = assertThrows(DomainValidationException.class, () ->
                 User.create(this.handler, invalidUsername, this.email, this.password)
         );
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("username", this.handler.getErrors().getFirst().getKey());
-        assertEquals(UserValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(User.Schema.USERNAME, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.Schema.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -82,8 +84,8 @@ class UserTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("username", this.handler.getErrors().getFirst().getKey());
-        assertEquals(UserValidator.MINIMUM_LENGTH_KEY, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(User.Schema.USERNAME, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.Schema.MIN_LENGTH, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -97,8 +99,8 @@ class UserTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals("username", this.handler.getErrors().getFirst().getKey());
-        assertEquals(UserValidator.INVALID_CHARACTERS_KEY, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(User.Schema.USERNAME, this.handler.getErrors().getFirst().key());
+        assertEquals(UserValidator.Schema.INVALID_CHARACTERS, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());

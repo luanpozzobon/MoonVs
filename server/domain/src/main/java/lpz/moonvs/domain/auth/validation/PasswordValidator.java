@@ -9,6 +9,13 @@ import lpz.moonvs.domain.seedwork.validation.Validator;
 import java.util.regex.Pattern;
 
 public class PasswordValidator implements Validator<Password> {
+    public interface Schema {
+        String UPPERCASE = "error.user.password.uppercase";
+        String LOWERCASE = "error.user.password.lowercase";
+        String NUMERIC = "error.user.password.numeric";
+        String SPECIAL = "error.user.password.special";
+    }
+
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
     private static final int MINIMUM_UPPERCASE = 1;
     private static final int MINIMUM_LOWERCASE = 1;
@@ -20,13 +27,6 @@ public class PasswordValidator implements Validator<Password> {
     private static final Pattern NUMERIC_CHARS = Pattern.compile("\\d");
     private static final Pattern SPECIAL_CHARS = Pattern.compile("[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\/-]");
 
-    public static final String NULL_OR_BLANK_KEY = "error.common.null-or-blank";
-    public static final String MINIMUM_LENGTH_KEY = "error.common.min-length";
-    public static final String UPPERCASE_KEY = "error.user.password.uppercase";
-    public static final String LOWERCASE_KEY = "error.user.password.lowercase";
-    public static final String NUMERIC_KEY = "error.user.password.numeric";
-    public static final String SPECIAL_KEY = "error.user.password.special";
-
     private final NotificationHandler handler;
 
     public PasswordValidator(final NotificationHandler handler) {
@@ -36,10 +36,9 @@ public class PasswordValidator implements Validator<Password> {
     @Override
     public void validate(final Password domain) {
         if (domain.getRaw() == null || domain.getRaw().isBlank()) {
-            this.handler.addError(new Notification(
-                    User.PASSWORD_KEY,
-                    NULL_OR_BLANK_KEY
-            ));
+            this.handler.addError(
+                    Notification.nullOrBlank(User.Schema.PASSWORD)
+            );
             return;
         }
 
@@ -52,46 +51,41 @@ public class PasswordValidator implements Validator<Password> {
 
     private void validateLength(final String password) {
         if (password.length() < MINIMUM_PASSWORD_LENGTH)
-            this.handler.addError(new Notification(
-                    User.PASSWORD_KEY,
-                    MINIMUM_LENGTH_KEY,
-                    User.PASSWORD_KEY, MINIMUM_PASSWORD_LENGTH
+            this.handler.addError(Notification.minLength(
+                    User.Schema.PASSWORD,
+                    User.Schema.PASSWORD, MINIMUM_PASSWORD_LENGTH
             ));
     }
 
     private void validateUppercase(final String password) {
         if (!UPPERCASE_LETTERS.matcher(password).find())
-            this.handler.addError(new Notification(
-                    User.PASSWORD_KEY,
-                    UPPERCASE_KEY,
-                    MINIMUM_UPPERCASE
+            this.handler.addError(Notification.of(
+                    User.Schema.PASSWORD,
+                    Schema.UPPERCASE, MINIMUM_UPPERCASE
             ));
     }
 
     private void validateLowercase(final String password) {
         if (!LOWERCASE_LETTERS.matcher(password).find())
-            this.handler.addError(new Notification(
-                    User.PASSWORD_KEY,
-                    LOWERCASE_KEY,
-                    MINIMUM_LOWERCASE
+            this.handler.addError(Notification.of(
+                    User.Schema.PASSWORD,
+                    Schema.LOWERCASE, MINIMUM_LOWERCASE
             ));
     }
 
     private void validateNumeric(final String password) {
         if (!NUMERIC_CHARS.matcher(password).find())
-            this.handler.addError(new Notification(
-                    User.PASSWORD_KEY,
-                    NUMERIC_KEY,
-                    MINIMUM_NUMERIC
+            this.handler.addError(Notification.of(
+                    User.Schema.PASSWORD,
+                    Schema.NUMERIC, MINIMUM_NUMERIC
             ));
     }
 
     private void validateSpecial(final String password) {
         if (!SPECIAL_CHARS.matcher(password).find())
-            this.handler.addError(new Notification(
-                    User.PASSWORD_KEY,
-                    SPECIAL_KEY,
-                    MINIMUM_SPECIAL
+            this.handler.addError(Notification.of(
+                    User.Schema.PASSWORD,
+                    Schema.SPECIAL, MINIMUM_SPECIAL
             ));
     }
 }

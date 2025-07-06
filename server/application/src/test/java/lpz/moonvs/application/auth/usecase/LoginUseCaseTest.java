@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class LoginUseCaseTest {
     private static final String VALID_USERNAME = "luanpozzobon";
+    private static final String VALID_EMAIL = "luanpozzobon@gmail.com";
     private static final String VALID_PASSWORD = "M00n_Vs.";
     private static LoginCommand command;
 
@@ -44,7 +45,7 @@ class LoginUseCaseTest {
 
     @Test
     void shouldExecuteSuccessfully() {
-        final Email email = Email.load("luanpozzobon@gmail.com");
+        final Email email = Email.load(VALID_EMAIL);
         final Password password = Password.encrypted(VALID_PASSWORD);
         final User anUser = User.load(Id.unique(), VALID_USERNAME, email, password);
 
@@ -72,8 +73,9 @@ class LoginUseCaseTest {
 
     @Test
     void shouldThrowUserDoesNotExistsExceptionWhenPasswordIsDifferent() {
+        final Email email = Email.load(VALID_EMAIL);
         final Password password = Password.encrypted(VALID_PASSWORD);
-        final User anUser = User.load(Id.unique(), VALID_USERNAME, null, password);
+        final User anUser = User.load(Id.unique(), VALID_USERNAME, email, password);
 
         when(this.repository.findByUsername(anyString())).thenReturn(Optional.of(anUser));
         when(this.encryptor.matches(anyString(), anyString())).thenReturn(false);
