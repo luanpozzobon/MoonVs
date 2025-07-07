@@ -2,7 +2,6 @@ package lpz.moonvs.domain.auth.valueobject;
 
 
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
-import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.auth.entity.UserSchema;
 import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;

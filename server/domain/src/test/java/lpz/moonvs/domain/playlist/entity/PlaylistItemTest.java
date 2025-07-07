@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlaylistItemTest {
-    final String VALID_TYPE = "TV";
+    private static final String VALID_TYPE = "TV";
 
     private NotificationHandler handler;
 
