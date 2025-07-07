@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.seedwork.valueobject.Id;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
@@ -18,23 +19,23 @@ public class TokenService {
 
     private Instant expiration;
 
-    private String generateToken(final User user) {
+    private String generateToken(final Id<User> userId) {
         try {
             final Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("moonvs")
-                    .withSubject(user.getId().getValue())
+                    .withSubject(userId.getValue())
                     .withExpiresAt(this.expiration)
                     .sign(algorithm);
         } catch (final JWTCreationException e) {
-            throw new RuntimeException("Erro ao gerar o token: ", e);
+            throw new RuntimeException("Error generating JWT Token!", e);
         }
     }
 
-    public ResponseCookie generateCookieToken(final User user) {
+    public ResponseCookie generateCookieToken(final Id<User> userId) {
         this.expiration = generateExpirationDate();
         final Instant now = Instant.now(Clock.system(ZoneId.of("-03:00")));
-        final String token = this.generateToken(user);
+        final String token = this.generateToken(userId);
 
         return ResponseCookie.from("token", token)
                 .httpOnly(Boolean.TRUE)

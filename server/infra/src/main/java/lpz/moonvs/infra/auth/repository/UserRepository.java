@@ -2,6 +2,7 @@ package lpz.moonvs.infra.auth.repository;
 
 import lpz.moonvs.domain.auth.contracts.IUserRepository;
 import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.auth.entity.UserSchema;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.infra.auth.entity.UserEntity;
 import lpz.moonvs.infra.auth.mapper.UserMapper;
@@ -34,7 +35,7 @@ public class UserRepository implements IUserRepository {
                             .execute(entity).entities().get(0)
             );
         } catch (final SQLException e) {
-            throw new DataAccessException("Error saving user to database.", e);
+            throw DataAccessException.save(e);
         }
     }
 
@@ -46,13 +47,13 @@ public class UserRepository implements IUserRepository {
                     .where(field).equal(value)
                     .execute();
         } catch (final SQLException e) {
-            throw new DataAccessException("Error retrieving user from database.", e);
+            throw DataAccessException.select(e);
         }
     }
 
     @Override
     public Optional<User> findById(final Id<User> id) {
-        final List<UserEntity> entities = this.findBy("id", UUID.fromString(id.getValue())).entities();
+        final List<UserEntity> entities = this.findBy(UserSchema.ID, UUID.fromString(id.getValue())).entities();
 
         return entities.stream().findFirst()
                 .map(UserMapper::to);
@@ -60,7 +61,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public Optional<User> findByEmail(final String email) {
-        final List<UserEntity> entities = this.findBy("email", email).entities();
+        final List<UserEntity> entities = this.findBy(UserSchema.EMAIL, email).entities();
 
         return entities.stream().findFirst()
                 .map(UserMapper::to);
@@ -68,7 +69,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public Optional<User> findByUsername(final String username) {
-        final List<UserEntity> entities = this.findBy("username", username).entities();
+        final List<UserEntity> entities = this.findBy(UserSchema.USERNAME, username).entities();
 
         return entities.stream().findFirst()
                 .map(UserMapper::to);

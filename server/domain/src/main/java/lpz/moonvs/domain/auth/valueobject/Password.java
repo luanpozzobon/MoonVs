@@ -7,27 +7,21 @@ import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 public class Password  {
     private String raw;
     private String encrypted;
-    private IPasswordEncryptor encryptor;
 
     private Password(final IPasswordEncryptor encryptor,
                      final NotificationHandler handler,
                      final String raw) {
         this.raw = raw;
-        this.selfValidate(handler);
+        new PasswordValidator(handler).validate(this);
 
-        if (handler.hasError())
-            return;
+        if (!handler.hasError())
+            this.encrypted = encryptor.encrypt(raw);
 
-        this.encryptor = encryptor;
-        this.encrypted = this.encryptor.encrypt(this.raw);
+        this.raw = null;
     }
 
     private Password(final String encrypted) {
         this.encrypted = encrypted;
-    }
-
-    private void selfValidate(final NotificationHandler handler) {
-        new PasswordValidator(handler).validate(this);
     }
 
     public static Password create(final IPasswordEncryptor encryptor,

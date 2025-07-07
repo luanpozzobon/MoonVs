@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class UserMapper {
+    private UserMapper() {}
+
     public static UserEntity from(final User user) {
         if (user == null) return null;
 

@@ -7,7 +7,9 @@ import lpz.moonvs.domain.auth.valueobject.Password;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistRepository;
 import lpz.moonvs.domain.playlist.contracts.model.PlaylistSearchQuery;
 import lpz.moonvs.domain.playlist.entity.Playlist;
+import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
+import lpz.moonvs.infra.MoonVsTest;
 import lpz.moonvs.infra.exception.DataAccessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,10 +31,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = MoonVsTest.class)
 @Testcontainers
 @ActiveProfiles("test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class PlaylistRepositoryIntegrationTest {
     private static final String TITLE = "Playlist";
     private static final String DESCRIPTION = "Description";
@@ -126,25 +128,6 @@ class PlaylistRepositoryIntegrationTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenIdIsNull() {
-        final Playlist playlist = Playlist.load(null, this.user.getId(), TITLE, DESCRIPTION);
-
-        assertThrows(NullPointerException.class, () ->
-                this.repository.save(playlist)
-        );
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUserIdIsNull() {
-        final Id<Playlist> playlistId = Id.unique();
-        final Playlist playlist = Playlist.load(playlistId, null, TITLE, DESCRIPTION);
-
-        assertThrows(NullPointerException.class, () ->
-                this.repository.save(playlist)
-        );
-    }
-
-    @Test
     void shouldThrowExceptionWhenUserIdDoesNotExist() {
         final Id<Playlist> playlistId = Id.unique();
         final Id<User> userId = Id.unique();
@@ -155,16 +138,6 @@ class PlaylistRepositoryIntegrationTest {
         );
 
         assertEquals("Error saving playlist to database.", exception.getMessage());
-    }
-
-    @Test
-    void shouldThrowExceptionWhenTitleIsNull() {
-        final Id<Playlist> playlistId = Id.unique();
-        final Playlist playlist = Playlist.load(playlistId, this.user.getId(), null, DESCRIPTION);
-
-        assertThrows(NullPointerException.class, () ->
-                this.repository.save(playlist)
-        );
     }
 
     @Test
@@ -360,8 +333,9 @@ class PlaylistRepositoryIntegrationTest {
 
         final String title = "New Title";
         final String description = "New Description";
-        playlist.rename(null, title);
-        playlist.updateDescription(null, description);
+        final var handler = NotificationHandler.create();
+        playlist.rename(handler, title);
+        playlist.updateDescription(handler, description);
 
         final int lines = assertDoesNotThrow(() -> this.repository.update(playlist));
         assertEquals(1, lines);

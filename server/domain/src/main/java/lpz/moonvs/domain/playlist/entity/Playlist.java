@@ -6,12 +6,9 @@ import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
-public class Playlist {
-    public static final String RESOURCE_KEY = "playlist";
-    public static final String USER_ID_KEY = "user_id";
-    public static final String TITLE_KEY = "title";
-    public static final String DESCRIPTION_KEY = "description";
+import java.util.Objects;
 
+public class Playlist {
     private final Id<Playlist> id;
     private final Id<User> userId;
     private String title;
@@ -33,31 +30,30 @@ public class Playlist {
         return this.description;
     }
 
-    private Playlist(final NotificationHandler handler,
-                     final Id<Playlist> id,
+    private Playlist(final Id<Playlist> id,
                      final Id<User> userId,
                      final String title,
                      final String description) {
-        this.id = id;
-        this.userId = userId;
-        this.title = title;
+        final String message = "'%s' cannot be null.";
+        this.id = Objects.requireNonNull(id, String.format(message, PlaylistSchema.ID));
+        this.userId = Objects.requireNonNull(userId, String.format(message, PlaylistSchema.USER_ID));
+        this.title = Objects.requireNonNull(title, String.format(message, PlaylistSchema.TITLE));
         this.description = description;
-
-        this.selfValidate(handler);
     }
 
     public static Playlist create(final NotificationHandler handler,
                                   final Id<User> userId,
                                   final String title,
                                   final String description) {
-        return new Playlist(handler, Id.unique(), userId, title, description);
+        return new Playlist(Id.unique(), userId, title, description)
+                .selfValidate(handler);
     }
 
     public static Playlist load(final Id<Playlist> id,
                                 final Id<User> userId,
                                 final String title,
                                 final String description) {
-        return new Playlist(null, id, userId, title, description);
+        return new Playlist(id, userId, title, description);
     }
 
     public void rename(final NotificationHandler handler, final String title) {
@@ -70,12 +66,12 @@ public class Playlist {
         this.selfValidate(handler);
     }
 
-    private void selfValidate(final NotificationHandler handler) {
-        if (handler == null) return;
-
+    private Playlist selfValidate(final NotificationHandler handler) {
         new PlaylistValidator(handler).validate(this);
 
         if (handler.hasError())
             throw new DomainValidationException(handler.getErrors());
+
+        return this;
     }
 }

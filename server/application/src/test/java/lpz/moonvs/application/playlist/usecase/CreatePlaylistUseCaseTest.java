@@ -4,7 +4,9 @@ import lpz.moonvs.application.playlist.command.CreatePlaylistCommand;
 import lpz.moonvs.application.playlist.output.CreatePlaylistOutput;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistRepository;
 import lpz.moonvs.domain.playlist.entity.Playlist;
+import lpz.moonvs.domain.playlist.entity.PlaylistSchema;
 import lpz.moonvs.domain.playlist.exception.PlaylistAlreadyExistsException;
+import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -61,7 +63,7 @@ class CreatePlaylistUseCaseTest {
 
         assertEquals(PlaylistAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
-        assertEquals("title", exception.getErrors().getFirst().getKey());
-        assertEquals(CreatePlaylistUseCase.ALREADY_EXISTS_ERROR_KEY, exception.getErrors().getFirst().getMessage());
+        assertEquals(PlaylistSchema.TITLE, exception.getErrors().getFirst().key());
+        assertEquals(Notification.ALREADY_EXISTS, exception.getErrors().getFirst().message());
     }
 }

@@ -11,6 +11,7 @@ import lpz.moonvs.application.auth.usecase.RegisterUseCase;
 import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.infra.config.security.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ class AuthController implements IAuthController {
     private final RegisterUseCase registerUseCase;
     private final LoginUseCase loginUseCase;
 
+    @Autowired
     public AuthController(final TokenService tokenService,
                           final RegisterUseCase registerUseCase,
                           final LoginUseCase loginUseCase) {
@@ -43,7 +45,7 @@ class AuthController implements IAuthController {
         );
         final URI uri = URI.create("/users/" + output.id());
 
-        final var cookie = tokenService.generateCookieToken(User.load(Id.from(output.id()), null, null, null));
+        final var cookie = tokenService.generateCookieToken(Id.from(output.id()));
 
         return ResponseEntity
                 .created(uri)
@@ -58,7 +60,7 @@ class AuthController implements IAuthController {
                 new LoginCommand(input.username(), input.password())
         );
 
-        final var cookie = tokenService.generateCookieToken(User.load(Id.from(output.id()), null, null, null));
+        final var cookie = tokenService.generateCookieToken(Id.from(output.id()));
 
         return ResponseEntity
                 .ok()

@@ -2,6 +2,7 @@ package lpz.moonvs.domain.playlist.entity;
 
 import lpz.moonvs.domain.playlist.validation.PlaylistItemValidator;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
+import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.entity.Title;
@@ -14,6 +15,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlaylistItemTest {
+    private static final String VALID_TYPE = "TV";
+
     private NotificationHandler handler;
 
     @BeforeEach
@@ -34,13 +37,13 @@ class PlaylistItemTest {
     void shouldThrowDomainValidationExceptionWhenPlaylistIdIsNull() {
         final Id<Title> titleId = Id.unique();
         final var exception = assertThrows(DomainValidationException.class, () ->
-                PlaylistItem.create(this.handler, null, titleId, "TV")
+                PlaylistItem.create(this.handler, null, titleId, VALID_TYPE)
         );
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(PlaylistItem.PLAYLIST_ID_KEY, this.handler.getErrors().getFirst().getKey());
-        assertEquals(PlaylistItemValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(PlaylistItemSchema.PLAYLIST_ID, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -50,13 +53,13 @@ class PlaylistItemTest {
     void shouldThrowDomainValidationExceptionWhenTitleIdIsNull() {
         final Id<Playlist> playlistId = Id.unique();
         final var exception = assertThrows(DomainValidationException.class, () ->
-                PlaylistItem.create(this.handler, playlistId, null, "TV")
+                PlaylistItem.create(this.handler, playlistId, null, VALID_TYPE)
         );
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(PlaylistItem.TITLE_ID_KEY, this.handler.getErrors().getFirst().getKey());
-        assertEquals(PlaylistItemValidator.NULL_OR_BLANK_KEY, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(PlaylistItemSchema.TITLE_ID, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -74,8 +77,8 @@ class PlaylistItemTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(PlaylistItem.TYPE_KEY, this.handler.getErrors().getFirst().getKey());
-        assertEquals(PlaylistItemValidator.INVALID_TYPE_KEY, this.handler.getErrors().getFirst().getMessage());
+        assertEquals(PlaylistItemSchema.TYPE, this.handler.getErrors().getFirst().key());
+        assertEquals(PlaylistItemValidator.INVALID_TYPE, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -83,7 +86,7 @@ class PlaylistItemTest {
 
     @Test
     void shouldLoadExisting() {
-        final PlaylistItem item = PlaylistItem.load(Id.unique(), Id.unique(), "TV");
+        final PlaylistItem item = PlaylistItem.load(Id.unique(), Id.unique(), VALID_TYPE);
 
         assertNotNull(item);
         assertFalse(this.handler.hasError());

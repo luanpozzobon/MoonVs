@@ -4,14 +4,13 @@ import lpz.moonvs.application.playlist.command.CreatePlaylistCommand;
 import lpz.moonvs.application.playlist.output.CreatePlaylistOutput;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistRepository;
 import lpz.moonvs.domain.playlist.entity.Playlist;
+import lpz.moonvs.domain.playlist.entity.PlaylistSchema;
 import lpz.moonvs.domain.playlist.exception.PlaylistAlreadyExistsException;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 
 public class CreatePlaylistUseCase {
-    public static final String ALREADY_EXISTS_ERROR_KEY = "error.common.already-exists";
-
     private final IPlaylistRepository repository;
 
     public CreatePlaylistUseCase(final IPlaylistRepository repository) {
@@ -30,8 +29,9 @@ public class CreatePlaylistUseCase {
     private void validateIfExists(final NotificationHandler handler,
                                   final CreatePlaylistCommand command) throws PlaylistAlreadyExistsException {
         if (command.title() != null && !this.repository.findByTitle(command.userId(), command.title()).isEmpty())
-            handler.addError(new Notification(
-                    Playlist.TITLE_KEY, ALREADY_EXISTS_ERROR_KEY, Playlist.RESOURCE_KEY, Playlist.TITLE_KEY, command.title()
+            handler.addError(Notification.alreadyExists(
+                    PlaylistSchema.TITLE,
+                    PlaylistSchema.RESOURCE, PlaylistSchema.TITLE, command.title()
             ));
 
         if (handler.hasError())

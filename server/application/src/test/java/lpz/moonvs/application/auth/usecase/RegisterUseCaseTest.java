@@ -5,10 +5,15 @@ import lpz.moonvs.application.auth.output.RegisterOutput;
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
 import lpz.moonvs.domain.auth.contracts.IUserRepository;
 import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.auth.entity.UserSchema;
 import lpz.moonvs.domain.auth.exception.UserAlreadyExistsException;
 import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.auth.valueobject.Password;
+import lpz.moonvs.domain.seedwork.notification.Notification;
+import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
+import lpz.moonvs.domain.seedwork.valueobject.Id;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,12 +48,19 @@ class RegisterUseCaseTest {
     @InjectMocks
     private RegisterUseCase useCase;
 
+    private Email email;
+    private Password password;
+
+    @BeforeEach
+    void setUp() {
+        this.email = Email.load(VALID_EMAIL);
+        this.password = Password.encrypted(VALID_PASSWORD);
+    }
 
     @Test
     void shouldExecuteSuccessfully() {
-        final Email email = Email.load(VALID_EMAIL);
-        final Password password = Password.encrypted(VALID_PASSWORD);
-        final User anUser = User.create(null, VALID_USERNAME, email, password);
+        final var handler = NotificationHandler.create();
+        final User anUser = User.create(handler, VALID_USERNAME, this.email, this.password);
 
         when(this.repository.findByEmail(anyString())).thenReturn(Optional.empty());
         when(this.repository.findByUsername(anyString())).thenReturn(Optional.empty());
@@ -64,7 +76,8 @@ class RegisterUseCaseTest {
 
     @Test
     void shouldThrowUserAlreadyExistsExceptionWhenEmailExists() {
-        final User existingUser = User.load(null, null, null, null);
+        final Id<User> id = Id.unique();
+        final User existingUser = User.load(id, VALID_USERNAME, this.email, this.password);
 
         when(this.repository.findByEmail(anyString())).thenReturn(Optional.of(existingUser));
         when(this.repository.findByUsername(anyString())).thenReturn(Optional.empty());
@@ -75,13 +88,14 @@ class RegisterUseCaseTest {
 
         assertEquals(UserAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
-        assertEquals("email", exception.getErrors().getFirst().getKey());
-        assertEquals(RegisterUseCase.ALREADY_EXISTS_ERROR_KEY, exception.getErrors().getFirst().getMessage());
+        assertEquals(UserSchema.EMAIL, exception.getErrors().getFirst().key());
+        assertEquals(Notification.ALREADY_EXISTS, exception.getErrors().getFirst().message());
     }
 
     @Test
     void shouldThrowUserAlreadyExistsExceptionWhenUsernameExists() {
-        final User existingUser = User.load(null, null, null, null);
+        final Id<User> id = Id.unique();
+        final User existingUser = User.load(id, VALID_USERNAME, this.email, this.password);
 
         when(this.repository.findByEmail(anyString())).thenReturn(Optional.empty());
         when(this.repository.findByUsername(anyString())).thenReturn(Optional.of(existingUser));
@@ -92,7 +106,7 @@ class RegisterUseCaseTest {
 
         assertEquals(UserAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
-        assertEquals("username", exception.getErrors().getFirst().getKey());
-        assertEquals(RegisterUseCase.ALREADY_EXISTS_ERROR_KEY, exception.getErrors().getFirst().getMessage());
+        assertEquals(UserSchema.USERNAME, exception.getErrors().getFirst().key());
+        assertEquals(Notification.ALREADY_EXISTS, exception.getErrors().getFirst().message());
     }
 }

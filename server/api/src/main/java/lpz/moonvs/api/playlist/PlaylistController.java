@@ -9,6 +9,7 @@ import lpz.moonvs.application.playlist.output.*;
 import lpz.moonvs.application.playlist.usecase.*;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.infra.config.security.CustomUserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class PlaylistController implements IPlaylistController {
     private final RemoveTitleFromPlaylistUseCase removeTitleFromPlaylistUseCase;
     private final GetAllTitlesFromPlaylistUseCase getAllTitlesFromPlaylistUseCase;
 
+    @Autowired
     public PlaylistController(final CreatePlaylistUseCase createPlaylistUseCase,
                               final GetAllPlaylistsUseCase getAllPlaylistsUseCase,
                               final GetPlaylistByIdUseCase getPlaylistByIdUseCase,

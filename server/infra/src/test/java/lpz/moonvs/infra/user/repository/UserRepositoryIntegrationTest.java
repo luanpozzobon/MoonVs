@@ -91,7 +91,7 @@ class UserRepositoryIntegrationTest {
                 this.repository.save(otherUser)
         );
 
-        assertEquals("Error saving user to database.", exception.getMessage());
+        assertEquals(DataAccessException.SAVE, exception.getMessage());
     }
 
     @Test
@@ -108,7 +108,7 @@ class UserRepositoryIntegrationTest {
                 this.repository.save(otherUser)
         );
 
-        assertEquals("Error saving user to database.", exception.getMessage());
+        assertEquals(DataAccessException.SAVE, exception.getMessage());
     }
 
     @Test
@@ -125,7 +125,7 @@ class UserRepositoryIntegrationTest {
                 this.repository.save(otherUser)
         );
 
-        assertEquals("Error saving user to database.", exception.getMessage());
+        assertEquals(DataAccessException.SAVE, exception.getMessage());
     }
 
     @Test

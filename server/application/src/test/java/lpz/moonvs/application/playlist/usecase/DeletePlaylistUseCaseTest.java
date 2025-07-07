@@ -21,6 +21,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class DeletePlaylistUseCaseTest {
+    private static final String VALID_TITLE = "Playlist";
+
     @Mock
     private IPlaylistRepository repository;
 
@@ -31,7 +33,7 @@ class DeletePlaylistUseCaseTest {
     void shouldExecuteSuccessfully() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
-        final Playlist aPlaylist = Playlist.load(playlistId, userId, null, null);
+        final Playlist aPlaylist = Playlist.load(playlistId, userId, VALID_TITLE, null);
 
         when(this.repository.findById(any(Id.class))).thenReturn(Optional.of(aPlaylist));
 
@@ -56,7 +58,7 @@ class DeletePlaylistUseCaseTest {
     void shouldThrowNoAccessToResourceExceptionWhenDifferentUserId() {
         final Id<User> userId = Id.unique();
         final Id<Playlist> playlistId = Id.unique();
-        final Playlist aPlaylist = Playlist.load(playlistId, userId, null, null);
+        final Playlist aPlaylist = Playlist.load(playlistId, userId, VALID_TITLE, null);
 
         when(this.repository.findById(any(Id.class))).thenReturn(Optional.of(aPlaylist));
 

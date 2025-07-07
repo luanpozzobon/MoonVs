@@ -7,13 +7,9 @@ import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 
+import java.util.Objects;
 
 public final class User {
-    public static final String RESOURCE_KEY = "user";
-    public static final String EMAIL_KEY = "email";
-    public static final String USERNAME_KEY = "username";
-    public static final String PASSWORD_KEY = "password";
-
     private final Id<User> id;
     private String username;
     private Email email;
@@ -35,39 +31,41 @@ public final class User {
         return password;
     }
 
-    private User(final NotificationHandler handler,
-                 final Id<User> id,
+    private User(final Id<User> id,
                  final String username,
                  final Email email,
                  final Password password) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
+        final String message = "'%s' cannot be null.";
+        this.id = Objects.requireNonNull(id, String.format(message, UserSchema.ID));
+        this.username = Objects.requireNonNull(username, String.format(message, UserSchema.USERNAME));
+        this.email = Objects.requireNonNull(email, String.format(message, UserSchema.EMAIL));
+        this.password = Objects.requireNonNull(password, String.format(message, UserSchema.PASSWORD));
 
-        this.selfValidate(handler);
     }
 
     public static User create(final NotificationHandler handler,
                               final String username,
                               final Email email,
                               final Password password) {
-        return new User(handler, Id.unique(), username, email, password);
+        return new User(Id.unique(), username, email, password)
+                .selfValidate(handler);
     }
 
     public static User load(final Id<User> id,
                             final String username,
                             final Email email,
                             final Password password) {
-        return new User(null, id, username, email, password);
+        return new User(id, username, email, password);
     }
 
-    private void selfValidate(final NotificationHandler handler) {
-        if (handler == null) return;
-
+    private User selfValidate(final NotificationHandler handler) {
+        Objects.requireNonNull(handler, "Notification handler cannot be null");
         new UserValidator(handler).validate(this);
 
-        if (handler.hasError())
+        if (handler.hasError()) {
             throw new DomainValidationException(handler.getErrors());
+        }
+
+        return this;
     }
 }

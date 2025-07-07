@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class PlaylistMapper {
+    private PlaylistMapper() {}
+
     public static PlaylistEntity from(final Playlist playlist) {
         if (playlist == null) return null;
 
