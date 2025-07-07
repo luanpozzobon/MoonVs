@@ -56,8 +56,8 @@ class PlaylistTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(Playlist.Schema.TITLE, this.handler.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
+        assertEquals(PlaylistSchema.TITLE, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -72,8 +72,8 @@ class PlaylistTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(Playlist.Schema.TITLE, this.handler.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.MAX_LENGTH, this.handler.getErrors().getFirst().message());
+        assertEquals(PlaylistSchema.TITLE, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.MAX_LENGTH, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -88,8 +88,8 @@ class PlaylistTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(Playlist.Schema.DESCRIPTION, this.handler.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.MAX_LENGTH, this.handler.getErrors().getFirst().message());
+        assertEquals(PlaylistSchema.DESCRIPTION, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.MAX_LENGTH, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());

@@ -7,13 +7,6 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.entity.Title;
 
 public class PlaylistItem {
-    public interface Schema {
-        String RESOURCE = "playlist_item";
-        String PLAYLIST_ID = "playlist_id";
-        String TITLE_ID = "title_id";
-        String TYPE = "type";
-    }
-
     private final Id<Playlist> playlistId;
     private final Id<Title> titleId;
     private final String type;

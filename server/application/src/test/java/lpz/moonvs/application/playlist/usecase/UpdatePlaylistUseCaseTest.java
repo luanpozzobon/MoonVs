@@ -5,6 +5,7 @@ import lpz.moonvs.application.playlist.output.UpdatePlaylistOutput;
 import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistRepository;
 import lpz.moonvs.domain.playlist.entity.Playlist;
+import lpz.moonvs.domain.playlist.entity.PlaylistSchema;
 import lpz.moonvs.domain.playlist.exception.PlaylistAlreadyExistsException;
 import lpz.moonvs.domain.playlist.exception.PlaylistNotFoundException;
 import lpz.moonvs.domain.seedwork.exception.NoAccessToResourceException;
@@ -133,7 +134,7 @@ class UpdatePlaylistUseCaseTest {
 
         assertEquals(PlaylistAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
-        assertEquals(Playlist.Schema.TITLE, exception.getErrors().getFirst().key());
+        assertEquals(PlaylistSchema.TITLE, exception.getErrors().getFirst().key());
         assertEquals(UpdatePlaylistUseCase.ALREADY_EXISTS_ERROR_KEY, exception.getErrors().getFirst().message());
     }
 

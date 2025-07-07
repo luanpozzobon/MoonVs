@@ -42,8 +42,8 @@ class PlaylistItemTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(PlaylistItem.Schema.PLAYLIST_ID, this.handler.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
+        assertEquals(PlaylistItemSchema.PLAYLIST_ID, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -58,8 +58,8 @@ class PlaylistItemTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(PlaylistItem.Schema.TITLE_ID, this.handler.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
+        assertEquals(PlaylistItemSchema.TITLE_ID, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -77,8 +77,8 @@ class PlaylistItemTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(PlaylistItem.Schema.TYPE, this.handler.getErrors().getFirst().key());
-        assertEquals(PlaylistItemValidator.Schema.INVALID_TYPE, this.handler.getErrors().getFirst().message());
+        assertEquals(PlaylistItemSchema.TYPE, this.handler.getErrors().getFirst().key());
+        assertEquals(PlaylistItemValidator.INVALID_TYPE, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());

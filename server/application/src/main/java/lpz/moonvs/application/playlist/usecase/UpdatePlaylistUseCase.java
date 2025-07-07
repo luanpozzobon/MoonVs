@@ -5,6 +5,7 @@ import lpz.moonvs.application.playlist.output.UpdatePlaylistOutput;
 import lpz.moonvs.domain.auth.entity.User;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistRepository;
 import lpz.moonvs.domain.playlist.entity.Playlist;
+import lpz.moonvs.domain.playlist.entity.PlaylistSchema;
 import lpz.moonvs.domain.playlist.exception.PlaylistAlreadyExistsException;
 import lpz.moonvs.domain.playlist.exception.PlaylistNotFoundException;
 import lpz.moonvs.domain.seedwork.exception.NoAccessToResourceException;
@@ -57,7 +58,7 @@ public class UpdatePlaylistUseCase {
 
         if (!this.repository.findByTitle(userId, title).isEmpty())
             throw new PlaylistAlreadyExistsException(List.of(Notification.alreadyExists(
-                    Playlist.Schema.TITLE, Playlist.Schema.RESOURCE, Playlist.Schema.TITLE, title)));
+                    PlaylistSchema.TITLE, PlaylistSchema.RESOURCE, PlaylistSchema.TITLE, title)));
         playlist.rename(handler, title);
     }
 

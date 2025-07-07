@@ -9,14 +9,6 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import java.util.Objects;
 
 public class Playlist {
-    public interface Schema {
-        String RESOURCE = "playlist";
-        String ID = "id";
-        String USER_ID = "user_id";
-        String TITLE = "title";
-        String DESCRIPTION = "description";
-    }
-
     private final Id<Playlist> id;
     private final Id<User> userId;
     private String title;
@@ -43,9 +35,9 @@ public class Playlist {
                      final String title,
                      final String description) {
         final String message = "'%s' cannot be null.";
-        this.id = Objects.requireNonNull(id, String.format(message, Schema.ID));
-        this.userId = Objects.requireNonNull(userId, String.format(message, Schema.USER_ID));
-        this.title = Objects.requireNonNull(title, String.format(message, Schema.TITLE));
+        this.id = Objects.requireNonNull(id, String.format(message, PlaylistSchema.ID));
+        this.userId = Objects.requireNonNull(userId, String.format(message, PlaylistSchema.USER_ID));
+        this.title = Objects.requireNonNull(title, String.format(message, PlaylistSchema.TITLE));
         this.description = description;
     }
 

@@ -4,6 +4,7 @@ import lpz.moonvs.application.playlist.command.CreatePlaylistCommand;
 import lpz.moonvs.application.playlist.output.CreatePlaylistOutput;
 import lpz.moonvs.domain.playlist.contracts.IPlaylistRepository;
 import lpz.moonvs.domain.playlist.entity.Playlist;
+import lpz.moonvs.domain.playlist.entity.PlaylistSchema;
 import lpz.moonvs.domain.playlist.exception.PlaylistAlreadyExistsException;
 import lpz.moonvs.domain.seedwork.exception.DomainValidationException;
 import lpz.moonvs.domain.seedwork.notification.Notification;
@@ -29,8 +30,8 @@ public class CreatePlaylistUseCase {
                                   final CreatePlaylistCommand command) throws PlaylistAlreadyExistsException {
         if (command.title() != null && !this.repository.findByTitle(command.userId(), command.title()).isEmpty())
             handler.addError(Notification.alreadyExists(
-                    Playlist.Schema.TITLE,
-                    Playlist.Schema.RESOURCE, Playlist.Schema.TITLE, command.title()
+                    PlaylistSchema.TITLE,
+                    PlaylistSchema.RESOURCE, PlaylistSchema.TITLE, command.title()
             ));
 
         if (handler.hasError())
