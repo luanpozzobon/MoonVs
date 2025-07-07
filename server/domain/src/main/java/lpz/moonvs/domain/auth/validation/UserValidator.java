@@ -1,6 +1,7 @@
 package lpz.moonvs.domain.auth.validation;
 
 import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.auth.entity.UserSchema;
 import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import lpz.moonvs.domain.seedwork.validation.Validator;
@@ -8,9 +9,7 @@ import lpz.moonvs.domain.seedwork.validation.Validator;
 import java.util.regex.Pattern;
 
 public class UserValidator implements Validator<User> {
-    public interface Schema {
-        String INVALID_CHARACTERS = "error.user.username.invalid-characters";
-    }
+    public static final String INVALID_CHARACTERS = "error.user.username.invalid-characters";
 
     private static final int MINIMUM_USERNAME_LENGTH = 4;
     private static final Pattern NON_LETTERS = Pattern.compile("\\W");
@@ -29,22 +28,22 @@ public class UserValidator implements Validator<User> {
     private void validateUsername(final String username) {
         if (username == null || username.isBlank()) {
             this.handler.addError(
-                    Notification.nullOrBlank(User.Schema.USERNAME)
+                    Notification.nullOrBlank(UserSchema.USERNAME)
             );
             return;
         }
 
         if (username.length() < MINIMUM_USERNAME_LENGTH)
             this.handler.addError(
-                    Notification.minLength(User.Schema.USERNAME,
-                            User.Schema.USERNAME, MINIMUM_USERNAME_LENGTH
+                    Notification.minLength(UserSchema.USERNAME,
+                            UserSchema.USERNAME, MINIMUM_USERNAME_LENGTH
                     )
             );
 
         if (NON_LETTERS.matcher(username).find())
             handler.addError(Notification.of(
-                    User.Schema.USERNAME,
-                    Schema.INVALID_CHARACTERS
+                    UserSchema.USERNAME,
+                    INVALID_CHARACTERS
             ));
     }
 }

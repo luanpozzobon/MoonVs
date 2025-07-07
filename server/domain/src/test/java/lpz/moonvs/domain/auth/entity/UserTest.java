@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -69,8 +68,8 @@ class UserTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(User.Schema.USERNAME, this.handler.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
+        assertEquals(UserSchema.USERNAME, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -84,8 +83,8 @@ class UserTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(User.Schema.USERNAME, this.handler.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.MIN_LENGTH, this.handler.getErrors().getFirst().message());
+        assertEquals(UserSchema.USERNAME, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.MIN_LENGTH, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());
@@ -99,8 +98,8 @@ class UserTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(User.Schema.USERNAME, this.handler.getErrors().getFirst().key());
-        assertEquals(UserValidator.Schema.INVALID_CHARACTERS, this.handler.getErrors().getFirst().message());
+        assertEquals(UserSchema.USERNAME, this.handler.getErrors().getFirst().key());
+        assertEquals(UserValidator.INVALID_CHARACTERS, this.handler.getErrors().getFirst().message());
 
         assertEquals(DomainValidationException.ERROR_KEY, exception.getMessage());
         assertNotNull(exception.getErrors());

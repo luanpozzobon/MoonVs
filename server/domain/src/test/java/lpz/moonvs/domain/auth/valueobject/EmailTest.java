@@ -1,6 +1,6 @@
 package lpz.moonvs.domain.auth.valueobject;
 
-import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.auth.entity.UserSchema;
 import lpz.moonvs.domain.auth.validation.EmailValidator;
 import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
@@ -40,8 +40,8 @@ class EmailTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(User.Schema.EMAIL, this.handler.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
+        assertEquals(UserSchema.EMAIL, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
     }
 
     @ParameterizedTest
@@ -51,7 +51,7 @@ class EmailTest {
 
         assertTrue(this.handler.hasError());
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(User.Schema.EMAIL, this.handler.getErrors().getFirst().key());
-        assertEquals(EmailValidator.Schema.INVALID, this.handler.getErrors().getFirst().message());
+        assertEquals(UserSchema.EMAIL, this.handler.getErrors().getFirst().key());
+        assertEquals(EmailValidator.INVALID, this.handler.getErrors().getFirst().message());
     }
 }

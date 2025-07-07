@@ -5,6 +5,7 @@ import lpz.moonvs.application.auth.output.RegisterOutput;
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
 import lpz.moonvs.domain.auth.contracts.IUserRepository;
 import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.auth.entity.UserSchema;
 import lpz.moonvs.domain.auth.exception.UserAlreadyExistsException;
 import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.auth.valueobject.Password;
@@ -87,8 +88,8 @@ class RegisterUseCaseTest {
 
         assertEquals(UserAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
-        assertEquals(User.Schema.EMAIL, exception.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.ALREADY_EXISTS, exception.getErrors().getFirst().message());
+        assertEquals(UserSchema.EMAIL, exception.getErrors().getFirst().key());
+        assertEquals(Notification.ALREADY_EXISTS, exception.getErrors().getFirst().message());
     }
 
     @Test
@@ -105,7 +106,7 @@ class RegisterUseCaseTest {
 
         assertEquals(UserAlreadyExistsException.ERROR_KEY, exception.getMessage());
         assertEquals(1, exception.getErrors().size());
-        assertEquals(User.Schema.USERNAME, exception.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.ALREADY_EXISTS, exception.getErrors().getFirst().message());
+        assertEquals(UserSchema.USERNAME, exception.getErrors().getFirst().key());
+        assertEquals(Notification.ALREADY_EXISTS, exception.getErrors().getFirst().message());
     }
 }

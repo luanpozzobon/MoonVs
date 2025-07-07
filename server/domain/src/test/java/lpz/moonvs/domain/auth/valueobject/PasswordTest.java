@@ -3,6 +3,7 @@ package lpz.moonvs.domain.auth.valueobject;
 
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
 import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.auth.entity.UserSchema;
 import lpz.moonvs.domain.seedwork.notification.Notification;
 import lpz.moonvs.domain.seedwork.notification.NotificationHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,8 +58,8 @@ class PasswordTest {
         assertTrue(this.handler.hasError());
 
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(User.Schema.PASSWORD, this.handler.getErrors().getFirst().key());
-        assertEquals(Notification.Schema.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
+        assertEquals(UserSchema.PASSWORD, this.handler.getErrors().getFirst().key());
+        assertEquals(Notification.NULL_OR_BLANK, this.handler.getErrors().getFirst().message());
     }
 
     @ParameterizedTest
@@ -75,7 +76,7 @@ class PasswordTest {
         assertTrue(this.handler.hasError());
 
         assertEquals(1, this.handler.getErrors().size());
-        assertEquals(User.Schema.PASSWORD, this.handler.getErrors().getFirst().key());
+        assertEquals(UserSchema.PASSWORD, this.handler.getErrors().getFirst().key());
         assertEquals(errorMessage, this.handler.getErrors().getFirst().message());
     }
 

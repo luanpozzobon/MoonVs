@@ -10,14 +10,6 @@ import lpz.moonvs.domain.seedwork.valueobject.Id;
 import java.util.Objects;
 
 public final class User {
-    public interface Schema {
-        String RESOURCE = "user";
-        String ID = "id";
-        String USERNAME = "username";
-        String EMAIL = "email";
-        String PASSWORD = "password";
-    }
-
     private final Id<User> id;
     private String username;
     private Email email;
@@ -44,10 +36,10 @@ public final class User {
                  final Email email,
                  final Password password) {
         final String message = "'%s' cannot be null.";
-        this.id = Objects.requireNonNull(id, String.format(message, Schema.ID));
-        this.username = Objects.requireNonNull(username, String.format(message, Schema.USERNAME));
-        this.email = Objects.requireNonNull(email, String.format(message, Schema.EMAIL));
-        this.password = Objects.requireNonNull(password, String.format(message, Schema.PASSWORD));
+        this.id = Objects.requireNonNull(id, String.format(message, UserSchema.ID));
+        this.username = Objects.requireNonNull(username, String.format(message, UserSchema.USERNAME));
+        this.email = Objects.requireNonNull(email, String.format(message, UserSchema.EMAIL));
+        this.password = Objects.requireNonNull(password, String.format(message, UserSchema.PASSWORD));
 
     }
 

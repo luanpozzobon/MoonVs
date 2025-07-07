@@ -7,6 +7,7 @@ import lpz.moonvs.api.auth.input.RegisterInput;
 import lpz.moonvs.application.auth.output.RegisterOutput;
 import lpz.moonvs.domain.auth.contracts.IUserRepository;
 import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.auth.entity.UserSchema;
 import lpz.moonvs.domain.seedwork.valueobject.Id;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -79,9 +80,9 @@ class AuthControllerTest {
                 .then()
                         .statusCode(CREATED.value())
                         .header("Set-Cookie", containsString("token="))
-                        .body(User.Schema.ID, is(notNullValue()))
-                        .body(User.Schema.USERNAME, equalTo(VALID_USERNAME))
-                        .body(User.Schema.EMAIL, equalTo(VALID_EMAIL))
+                        .body(UserSchema.ID, is(notNullValue()))
+                        .body(UserSchema.USERNAME, equalTo(VALID_USERNAME))
+                        .body(UserSchema.EMAIL, equalTo(VALID_EMAIL))
                         .extract().body().as(RegisterOutput.class);
 
         final Optional<User> userOpt = this.repository.findById(Id.from(output.id()));
@@ -198,9 +199,9 @@ class AuthControllerTest {
         .then()
                 .statusCode(OK.value())
                 .header("Set-Cookie", containsString("token="))
-                .body(User.Schema.ID, is(notNullValue()))
-                .body(User.Schema.USERNAME, equalTo(VALID_USERNAME))
-                .body(User.Schema.EMAIL, equalTo(VALID_EMAIL));
+                .body(UserSchema.ID, is(notNullValue()))
+                .body(UserSchema.USERNAME, equalTo(VALID_USERNAME))
+                .body(UserSchema.EMAIL, equalTo(VALID_EMAIL));
     }
 
     @Test

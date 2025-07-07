@@ -5,6 +5,7 @@ import lpz.moonvs.application.auth.output.RegisterOutput;
 import lpz.moonvs.domain.auth.contracts.IPasswordEncryptor;
 import lpz.moonvs.domain.auth.contracts.IUserRepository;
 import lpz.moonvs.domain.auth.entity.User;
+import lpz.moonvs.domain.auth.entity.UserSchema;
 import lpz.moonvs.domain.auth.exception.UserAlreadyExistsException;
 import lpz.moonvs.domain.auth.valueobject.Email;
 import lpz.moonvs.domain.auth.valueobject.Password;
@@ -36,13 +37,13 @@ public class RegisterUseCase {
                                   final RegisterCommand command) {
         if (command.email() != null && this.repository.findByEmail(command.email()).isPresent())
             handler.addError(Notification.alreadyExists(
-                    User.Schema.EMAIL,
-                    User.Schema.RESOURCE, User.Schema.EMAIL, command.email())
+                    UserSchema.EMAIL,
+                    UserSchema.RESOURCE, UserSchema.EMAIL, command.email())
             );
         if (command.username() != null && this.repository.findByUsername(command.username()).isPresent())
             handler.addError(Notification.alreadyExists(
-                    User.Schema.USERNAME,
-                    User.Schema.RESOURCE, User.Schema.USERNAME, command.username())
+                    UserSchema.USERNAME,
+                    UserSchema.RESOURCE, UserSchema.USERNAME, command.username())
             );
 
         if (handler.hasError())
