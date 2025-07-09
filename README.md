@@ -16,7 +16,7 @@ Currently, the project includes only an initial version of the REST API, with al
 ## Project History
 
 This is an evolution of a previous beta version. The project was completely re-built from scratch strategically, looking for an architecture to ease the scalability and mainteinance. 
-This, and other technical decisions are explained in the [Thecnical Decisions Document](docs/TECH_DECISIONS.md).
+This, and other technical decisions are explained in the [Technical Decisions Document](docs/TECH_DECISIONS.md).
 
 **Beta Version**: [MoonVs 0.3.1-beta.2024-04](https://github.com/luanpozzobon/MoonVs)
 
