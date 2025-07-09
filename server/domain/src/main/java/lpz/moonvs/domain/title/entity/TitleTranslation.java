@@ -53,7 +53,31 @@ public class TitleTranslation {
         return new TitleTranslation(titleId, languageId, title, tagline, overview, poster);
     }
 
+    public Id<Title> getTitleId() {
+        return titleId;
+    }
+
+    public Id<Language> getLanguageId() {
+        return languageId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
     public void addPoster(final String poster) {
         this.poster = poster;
+    }
+
+    public String getPoster() {
+        return poster;
     }
 }

@@ -15,7 +15,6 @@ public record TitleDB(Id<Title> id,
                       Type type,
                       List<TitleTranslation> translations,
                       List<Genre> genres,
-                      String poster,
                       LocalDate releaseDate,
                       Integer screenTime,
                       Boolean adult) { }

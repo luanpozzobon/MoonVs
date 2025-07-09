@@ -35,11 +35,23 @@ public class Genre {
         return new Genre(id, tmdbId, null);
     }
 
+    public Id<Genre> getId() {
+        return id;
+    }
+
+    public Integer getTmdbId() {
+        return tmdbId;
+    }
+
     public void setTranslations(final List<GenreTranslation> translations) {
         this.translations = translations;
     }
 
     public void addTranslation(final GenreTranslation translation) {
         this.translations.add(translation);
+    }
+
+    public List<GenreTranslation> getTranslations() {
+        return this.translations;
     }
 }

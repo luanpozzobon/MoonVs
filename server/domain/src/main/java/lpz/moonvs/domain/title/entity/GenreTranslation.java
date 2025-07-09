@@ -26,4 +26,16 @@ public class GenreTranslation {
                                         final String name) {
         return new GenreTranslation(genreId, languageId, name);
     }
+
+    public Id<Genre> getGenreId() {
+        return genreId;
+    }
+
+    public Id<Language> getLanguageId() {
+        return languageId;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
