@@ -30,6 +30,10 @@ public class Id<T> {
         return new Id<>(String.valueOf(id));
     }
 
+    public static <T> Id<T> from(final Integer id) {
+        return new Id<>(String.valueOf(id));
+    }
+
     public String getValue() {
         return this.value;
     }

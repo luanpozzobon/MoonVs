@@ -42,4 +42,9 @@ error:
       type:
         invalid: The type can only be 'TV' or 'MOVIE'
 
+  title:
+    tmdb-id:
+      invalid: "The given TMDB Id is not in the range: {0}"
 
+    screen-time:
+      invalid: The title screen time cannot be less than {0} minute(s)
