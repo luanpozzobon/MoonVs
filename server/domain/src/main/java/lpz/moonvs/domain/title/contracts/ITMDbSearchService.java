@@ -7,6 +7,7 @@ import lpz.moonvs.domain.title.entity.TitleTranslation;
 import lpz.moonvs.domain.title.entity.Type;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ITMDbSearchService {
     List<Title> search(final String title,
@@ -14,9 +15,9 @@ public interface ITMDbSearchService {
                        final Language language,
                        final Integer page);
 
-    Title findDetailedTitle(final Integer tmdbId,
-                            final Type type,
-                            final Language language);
+    Optional<Title> findDetailedTitle(final Integer tmdbId,
+                               final Type type,
+                               final Language language);
 
     List<TitleTranslation> findTitleTranslations(final Integer tmdbId,
                                                  final Type type);

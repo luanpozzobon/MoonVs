@@ -1,14 +1,15 @@
 package lpz.moonvs.application.title.usecase;
 
-import lpz.moonvs.application.title.SearchProvider;
 import lpz.moonvs.application.title.command.SelectTitleCommand;
 import lpz.moonvs.application.title.output.SelectTitleOutput;
 import lpz.moonvs.domain.language.contracts.ILanguageRepository;
 import lpz.moonvs.domain.language.entity.Language;
+import lpz.moonvs.domain.seedwork.valueobject.Id;
 import lpz.moonvs.domain.title.contracts.ITMDbSearchService;
 import lpz.moonvs.domain.title.contracts.ITitleEventPublisher;
 import lpz.moonvs.domain.title.contracts.ITitleRepository;
 import lpz.moonvs.domain.title.entity.Title;
+import lpz.moonvs.domain.title.exception.TitleNotFoundException;
 
 import java.util.Optional;
 
@@ -31,15 +32,16 @@ public class SelectTitleUseCase {
     }
 
     public SelectTitleOutput execute(final SelectTitleCommand command) {
-        Optional<Title> foundTitle = Optional.empty();
-        if (!command.provider().equals(SearchProvider.INTERNAL)) {
-            foundTitle = findInternally(command);
-        }
+        Optional<Title> foundTitle = findInternally(command);
 
         if (foundTitle.isPresent())
             return SelectTitleOutput.from(foundTitle.get());
 
-        Title title = this.findExternally(command);
+        foundTitle = this.findExternally(command);
+        if (foundTitle.isEmpty())
+            throw new TitleNotFoundException();
+
+        Title title = foundTitle.get();
 
         title = this.repository.save(title);
         this.eventPublisher.publishTitleCreated(title.getId());
@@ -49,6 +51,13 @@ public class SelectTitleUseCase {
 
     private Optional<Title> findInternally(final SelectTitleCommand command) {
         switch (command.provider()) {
+            case INTERNAL -> {
+                Optional<Title> optTitle = this.repository.findById(Id.from(command.id()));
+                if (optTitle.isEmpty())
+                    throw new TitleNotFoundException();
+
+                return optTitle;
+            }
             case TMDB -> {
                 return this.repository.findByTmdbId(command.id());
             }
@@ -56,7 +65,7 @@ public class SelectTitleUseCase {
         }
     }
 
-    private Title findExternally(final SelectTitleCommand command) {
+    private Optional<Title> findExternally(final SelectTitleCommand command) {
         final Language language = this.languageRepository.findByName(command.language());
 
         switch (command.provider()) {
